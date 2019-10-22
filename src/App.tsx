@@ -11,43 +11,29 @@ import { apiOptions, baseURL, handleResponse } from "./api";
 import Concept from "./Concept";
 import Error from "./Error";
 import Loading from "./Loading";
+import Form from "./Form";
 
 const defaultBranch = "MAIN/SNOMEDCT-NO/GPFPICPC2";
 
-const referenceSets = [
-  {
-    id: "",
-    title: "[Not specified]",
-  },
-  {
-    id: "1031000202104",
-    title: "Målgruppe",
-  },
-  {
-    id: "1091000202103",
-    title: "Sykdommer",
-  },
-];
-
-interface IBranch {
+export interface IBranch {
   path: string;
 }
 
-interface ITerm {
+export interface ITerm {
   term: string;
 }
 
-interface IConcept {
+export interface IConcept {
   conceptId: string;
   fsn: ITerm;
   pt: ITerm;
 }
 
-interface IDescription {
+export interface IDescription {
   concept: IConcept;
 }
 
-interface IResult {
+export interface IResult {
   totalElements: number;
   items: IDescription[];
 }
@@ -103,8 +89,8 @@ const useSearch = () => {
     referenceSet,
     searchRequest,
     setBranch,
-    setReferenceSet,
     setQuery,
+    setReferenceSet,
   };
 };
 
@@ -153,64 +139,23 @@ const App: FunctionComponent = () => {
             <Error message={branchRequest.error.message} />
           )}
           {!branchRequest.loading && !branchRequest.error && (
-            <form onSubmit={handleFormSubmit}>
-              <div className="form-row">
-                <div className="col-sm-4">
-                  <div className="form-group mb-md-0">
-                    <label htmlFor="branch">Branch</label>
-                    <select
-                      id="branch"
-                      className="form-control"
-                      value={branch}
-                      onChange={handleBranchChange}
-                    >
-                      {branches.map(({ path }) => (
-                        <option value={path} key={path}>
-                          {path}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-                <div className="col-sm-4">
-                  <div className="form-group mb-md-0">
-                    <label htmlFor="referenceSet">Reference set</label>
-                    <select
-                      id="referenceSet"
-                      className="form-control"
-                      value={referenceSet}
-                      onChange={handleReferenceSetChange}
-                    >
-                      {referenceSets.map(({ id, title }) => (
-                        <option value={id} key={id}>
-                          {title}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-                <div className="col-sm-4">
-                  <div className="form-group mb-md-0">
-                    <label htmlFor="query">Search</label>
-                    <input
-                      id="query"
-                      className="form-control"
-                      type="text"
-                      value={query}
-                      autoComplete="off"
-                      onChange={handleQueryChange}
-                    />
-                    {searchRequest.error && (
-                      <Error message={searchRequest.error.message} />
-                    )}
-                  </div>
-                </div>
-              </div>
-            </form>
+            <Form
+              handleFormSubmit={handleFormSubmit}
+              handleBranchChange={handleBranchChange}
+              handleReferenceSetChange={handleReferenceSetChange}
+              handleQueryChange={handleQueryChange}
+              branches={branches}
+              branch={branch}
+              referenceSet={referenceSet}
+              query={query}
+            />
           )}
         </div>
         <div className="col-3 col-lg-2">
           {searchRequest.loading && <Loading />}
+          {searchRequest.error && (
+            <Error message={searchRequest.error.message} />
+          )}
           {totalElements > 0 && (
             <p className="mb-1">{`${totalElements} ${
               totalElements > 1 ? "hits" : "hit"
