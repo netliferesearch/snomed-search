@@ -2,6 +2,7 @@ import React, { FunctionComponent } from "react";
 import { useAsync } from "react-async-hook";
 import { apiOptions, baseURL, handleResponse } from "./api";
 import Loading from "./Loading";
+import Synonym from "./Synonym";
 
 const referenceSets = [
   {
@@ -64,6 +65,7 @@ const Concept: FunctionComponent<IConceptProps> = ({
     <div className="d-md-flex justify-content-between align-items-center">
       <div>
         <h2>{preferredTerm}</h2>
+        <Synonym id={id} branch={branch} />
         <p className="mb-md-0">{fullySpecifiedName}</p>
       </div>
       <dl className="mb-md-0">
