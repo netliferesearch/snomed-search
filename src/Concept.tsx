@@ -65,7 +65,7 @@ const Concept: FunctionComponent<IConceptProps> = ({
     <div className="d-md-flex justify-content-between align-items-center">
       <div>
         <h2>{preferredTerm}</h2>
-        <Synonym id={id} branch={branch} />
+        <Synonym id={id} branch={branch} preferredTerm={preferredTerm} />
         <p className="mb-md-0">{fullySpecifiedName}</p>
       </div>
       <dl className="mb-md-0">

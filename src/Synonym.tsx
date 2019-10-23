@@ -3,9 +3,11 @@ import { useAsync } from "react-async-hook";
 import { apiOptions, baseURL, handleResponse } from "./api";
 
 interface ISynonymProps {
+  preferredTerm: string;
   branch: string;
   id: string;
 }
+
 interface IDescription {
   term: string;
   type: string;
@@ -27,7 +29,11 @@ const fetchSynonyms = (branch: string, conceptId: string) => {
   );
 };
 
-const Synonym: FunctionComponent<ISynonymProps> = ({ branch, id }) => {
+const Synonym: FunctionComponent<ISynonymProps> = ({
+  preferredTerm,
+  branch,
+  id,
+}) => {
   const request = useAsync(fetchSynonyms, [branch, id]);
 
   const { items = [] } = request.result || {};
@@ -35,7 +41,8 @@ const Synonym: FunctionComponent<ISynonymProps> = ({ branch, id }) => {
   return (
     <>
       {items
-        .filter(({ lang }) => lang === "nb" || lang === "nn" || lang === "no")
+        .filter(({ lang }) => ["nb", "nn", "no"].includes(lang))
+        .filter(({ term }) => term !== preferredTerm)
         .map(({ term, descriptionId: id }) => (
           <p key={id}>{term}</p>
         ))}
