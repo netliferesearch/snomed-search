@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FormEvent, FunctionComponent } from "react";
-import { IBranch } from "./App";
+import { IBranch } from "./Search";
 
 type ISubmitFunc = (event: FormEvent<HTMLFormElement>) => void;
 
@@ -50,7 +50,7 @@ const Form: FunctionComponent<IFormProps> = ({
       <div className="form-row">
         {!scope && (
           <>
-            <div className="col-sm-4">
+            <div className="col-md-4">
               <div className="form-group mb-md-0">
                 <label htmlFor="branch">Branch</label>
                 <select
@@ -67,7 +67,7 @@ const Form: FunctionComponent<IFormProps> = ({
                 </select>
               </div>
             </div>
-            <div className="col-sm-4">
+            <div className="col-md-4">
               <div className="form-group mb-md-0">
                 <label htmlFor="referenceSet">Reference set</label>
                 <select
