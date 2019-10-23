@@ -23,7 +23,7 @@ const fetchSynonyms = (branch: string, conceptId: string) => {
   const url = new URL(`/${branch}/descriptions`, baseURL);
   url.searchParams.set("concept", conceptId);
   url.searchParams.set("offset", "0");
-  url.searchParams.set("limit", "50");
+  url.searchParams.set("limit", "10");
   return fetch(url.toString(), apiOptions).then((response) =>
     handleResponse<IResult>(response),
   );
@@ -41,6 +41,7 @@ const Synonym: FunctionComponent<ISynonymProps> = ({
   return (
     <>
       {items
+        .filter(({ type }) => type === "SYNONYM")
         .filter(({ lang }) => ["nb", "nn", "no"].includes(lang))
         .filter(({ term }) => term !== preferredTerm)
         .map(({ term, descriptionId: id }) => (
