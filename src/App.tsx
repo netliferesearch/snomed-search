@@ -4,7 +4,9 @@ import React, {
   FormEvent,
   FunctionComponent,
   useState,
+  useEffect,
 } from "react";
+import { useLocation } from "react-router-dom";
 import { useAsync } from "react-async-hook";
 import useConstant from "use-constant";
 import { apiOptions, baseURL, handleResponse } from "./api";
@@ -13,7 +15,7 @@ import Error from "./Error";
 import Loading from "./Loading";
 import Form from "./Form";
 
-const defaultBranch = "MAIN/SNOMEDCT-NO/GPFPICPC2";
+const defaultBranch = "MAIN/TEST7/ICPC2";
 
 export interface IBranch {
   path: string;
@@ -36,6 +38,10 @@ export interface IDescription {
 export interface IResult {
   totalElements: number;
   items: IDescription[];
+}
+
+interface ISearchProps {
+  scope: string;
 }
 
 const fetchBranches = () => {
@@ -94,7 +100,17 @@ const useSearch = () => {
   };
 };
 
+export const useQueryParams = () => {
+  return new URLSearchParams(useLocation().search);
+};
+
 const App: FunctionComponent = () => {
+  const queryParams = useQueryParams();
+  const scope = queryParams.get("scope") || "";
+  return <Search scope={scope} />;
+};
+
+const Search: FunctionComponent<ISearchProps> = ({ scope }) => {
   const {
     query,
     setQuery,
@@ -111,6 +127,14 @@ const App: FunctionComponent = () => {
       branchRequest.result.find((b) => b.path === defaultBranch) || {};
     setBranch(path);
   }
+
+  useEffect(() => {
+    if (scope === "disorder") {
+      setReferenceSet("1091000202103");
+    } else if (scope === "audience") {
+      setReferenceSet("1031000202104");
+    }
+  }, [setReferenceSet, scope]);
 
   const handleFormSubmit = (event: FormEvent) => {
     event.preventDefault();
@@ -148,6 +172,7 @@ const App: FunctionComponent = () => {
               branch={branch}
               referenceSet={referenceSet}
               query={query}
+              scope={scope}
             />
           )}
         </div>
