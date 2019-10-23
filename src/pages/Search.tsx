@@ -8,12 +8,12 @@ import React, {
 } from "react";
 import { useAsync } from "react-async-hook";
 import useConstant from "use-constant";
-import { apiOptions, baseURL, handleResponse } from "./api";
-import Concept from "./Concept";
-import Error from "./Error";
-import Loading from "./Loading";
-import Form from "./Form";
-import Header from "./Header";
+import { apiOptions, baseURL, handleResponse } from "../api";
+import Concept from "../components/Concept";
+import Error from "../components/Error";
+import Loading from "../components/Loading";
+import Form from "../components/Form";
+import Header from "../components/Header";
 
 const defaultBranch = "MAIN/TEST7/ICPC2";
 
@@ -168,7 +168,13 @@ const Search: FunctionComponent<ISearchProps> = ({ scope }) => {
           )}
         </div>
         <div className="col-3 col-md-2">
-          {searchRequest.loading && <Loading />}
+          <div className="d-flex h-100 align-items-center justify-content-center">
+            {searchRequest.loading && <Loading />}
+          </div>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col">
           {searchRequest.error && (
             <Error message={searchRequest.error.message} />
           )}
@@ -177,10 +183,6 @@ const Search: FunctionComponent<ISearchProps> = ({ scope }) => {
               totalElements > 1 ? "hits" : "hit"
             }`}</p>
           )}
-        </div>
-      </div>
-      <div className="row">
-        <div className="col">
           <ul className="list-group">
             {items.map(
               ({

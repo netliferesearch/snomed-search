@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FormEvent, FunctionComponent } from "react";
-import { IBranch } from "./Search";
+import { IBranch } from "../pages/Search";
 
 type ISubmitFunc = (event: FormEvent<HTMLFormElement>) => void;
 

@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 import { useAsync } from "react-async-hook";
-import { apiOptions, baseURL, handleResponse } from "./api";
+import { apiOptions, baseURL, handleResponse } from "../api";
 import Loading from "./Loading";
 import Synonym from "./Synonym";
 
