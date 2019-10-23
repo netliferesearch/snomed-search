@@ -6,7 +6,7 @@ import React, {
   useState,
   useEffect,
 } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useAsync } from "react-async-hook";
 import useConstant from "use-constant";
 import { apiOptions, baseURL, handleResponse } from "./api";
@@ -155,8 +155,32 @@ const Search: FunctionComponent<ISearchProps> = ({ scope }) => {
   const branches = branchRequest.result || [];
   const { totalElements = 0, items = [] } = searchRequest.result || {};
 
+  const navLinkClasses = (s: string) => {
+    if (s === scope) {
+      return "nav-link active";
+    }
+    return "nav-link";
+  };
+
   return (
     <div className="container">
+      <header className="row">
+        <div className="col">
+          <nav className="nav mb-3">
+            <Link className={navLinkClasses("")} to="/">
+              All
+            </Link>
+
+            <Link className={navLinkClasses("disorder")} to="/?scope=disorder">
+              Disorder
+            </Link>
+
+            <Link className={navLinkClasses("audience")} to="/?scope=audience">
+              Audience
+            </Link>
+          </nav>
+        </div>
+      </header>
       <div className="row mb-5">
         <div className="col-9 col-lg-10">
           {branchRequest.error && (
