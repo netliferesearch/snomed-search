@@ -3,6 +3,8 @@ import { useAsync } from "react-async-hook";
 import { apiOptions, baseURL, handleResponse } from "../api";
 import Loading from "./Loading";
 import Synonym from "./Synonym";
+import ClinicalTrial from "./ClinicalTrial";
+import Helsenorge from "./Helsenorge";
 
 const referenceSets = [
   {
@@ -20,6 +22,7 @@ interface IConceptProps {
   preferredTerm: string;
   fullySpecifiedName: string;
   id: string;
+  scope: string;
 }
 
 interface IFields {
@@ -56,6 +59,7 @@ const Concept: FunctionComponent<IConceptProps> = ({
   preferredTerm,
   fullySpecifiedName,
   id,
+  scope,
 }) => {
   const request = useAsync(fetchConcepts, [branch, id]);
 
@@ -67,6 +71,8 @@ const Concept: FunctionComponent<IConceptProps> = ({
         <h2>{preferredTerm}</h2>
         <Synonym id={id} branch={branch} preferredTerm={preferredTerm} />
         <p className="mb-md-0">{fullySpecifiedName}</p>
+        {scope === "trial" && <ClinicalTrial id={id} />}
+        {scope === "helsenorge" && <Helsenorge id={id} />}
       </div>
       <dl className="mb-md-0">
         <dt>Snomed CT</dt>

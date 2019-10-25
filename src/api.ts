@@ -3,6 +3,7 @@ export const baseURL = "https://snowstorm.rundberg.no";
 export const headers = {
   "Accept-Language": "no,nb;q=0.9,nn;q=0.8,en-US;q=0.7,en-GB;q=0.6",
   "Content-Type": "application/json",
+  Accept: "application/json",
 };
 
 export const apiOptions: RequestInit = {

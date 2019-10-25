@@ -198,6 +198,7 @@ const Search: FunctionComponent<ISearchProps> = ({ scope }) => {
                     branch={branch}
                     fullySpecifiedName={fullySpecifiedName}
                     id={id}
+                    scope={scope}
                   />
                 </li>
               ),

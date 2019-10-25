@@ -30,6 +30,16 @@ const Header: FunctionComponent<IHeaderProps> = ({ scope }) => {
                 Audience
               </Link>
             </li>
+            <li className={itemClassNames("trial")}>
+              <Link className="nav-link" to="/?scope=trial">
+                Clinical Trials
+              </Link>
+            </li>
+            <li className={itemClassNames("helsenorge")}>
+              <Link className="nav-link" to="/?scope=helsenorge">
+                Helsenorge
+              </Link>
+            </li>
           </ul>
         </nav>
       </div>
