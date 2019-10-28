@@ -66,7 +66,7 @@ const Concept: FunctionComponent<IConceptProps> = ({
   const { items = [] } = request.result || {};
 
   return (
-    <div className="d-md-flex justify-content-between align-items-center">
+    <div className="d-md-flex justify-content-between">
       <div>
         <h2>{preferredTerm}</h2>
         <Synonym id={id} branch={branch} preferredTerm={preferredTerm} />
@@ -74,7 +74,7 @@ const Concept: FunctionComponent<IConceptProps> = ({
         {scope === "trial" && <ClinicalTrial id={id} />}
         {scope === "helsenorge" && <Helsenorge id={id} />}
       </div>
-      <dl className="mb-md-0">
+      <dl className="mb-md-0 ml-md-5">
         <dt>Snomed CT</dt>
         <dd className="mb-md-0">{id}</dd>
       </dl>
@@ -88,7 +88,7 @@ const Concept: FunctionComponent<IConceptProps> = ({
           const { title } =
             referenceSets.find((set) => set.id === refsetId) || {};
           return (
-            <dl key={internalId} className="mb-md-0">
+            <dl key={internalId} className="mb-md-0 ml-md-5">
               <dt>{title}</dt>
               <dd className="mb-md-0" title={advice}>
                 {code ? code : advice}

@@ -35,11 +35,13 @@ const Header: FunctionComponent<IHeaderProps> = ({ scope }) => {
                 Clinical Trials
               </Link>
             </li>
-            <li className={itemClassNames("helsenorge")}>
-              <Link className="nav-link" to="/?scope=helsenorge">
-                Helsenorge
-              </Link>
-            </li>
+            {false && (
+              <li className={itemClassNames("helsenorge")}>
+                <Link className="nav-link" to="/?scope=helsenorge">
+                  Helsenorge
+                </Link>
+              </li>
+            )}
           </ul>
         </nav>
       </div>
