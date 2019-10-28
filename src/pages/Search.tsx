@@ -123,6 +123,8 @@ const Search: FunctionComponent<ISearchProps> = ({ scope }) => {
       setReferenceSet("1091000202103");
     } else if (scope === "audience") {
       setReferenceSet("1031000202104");
+    } else {
+      setReferenceSet("");
     }
   }, [setReferenceSet, scope]);
 
