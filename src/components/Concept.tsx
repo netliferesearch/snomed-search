@@ -1,10 +1,10 @@
 import React, { FunctionComponent } from "react";
 import { useAsync } from "react-async-hook";
 import { apiOptions, baseURL, handleResponse } from "../api";
-import Loading from "./Loading";
-import Synonym from "./Synonym";
 import ClinicalTrial from "./ClinicalTrial";
 import Helsenorge from "./Helsenorge";
+import Loading from "./Loading";
+import Synonym from "./Synonym";
 
 const referenceSets = [
   {
@@ -18,26 +18,26 @@ const referenceSets = [
 ];
 
 interface IConceptProps {
-  branch: string;
-  preferredTerm: string;
-  fullySpecifiedName: string;
-  id: string;
-  scope: string;
+  readonly branch: string;
+  readonly preferredTerm: string;
+  readonly fullySpecifiedName: string;
+  readonly conceptId: string;
+  readonly scope: string;
 }
 
 interface IFields {
-  mapAdvice: string;
-  mapTarget: string;
+  readonly mapAdvice: string;
+  readonly mapTarget: string;
 }
 
 interface IConcept {
-  internalId: string;
-  refsetId: string;
-  additionalFields: IFields;
+  readonly internalId: string;
+  readonly refsetId: string;
+  readonly additionalFields: IFields;
 }
 
 interface IResult {
-  items: IConcept[];
+  readonly items: IConcept[];
 }
 
 const fetchConcepts = (branch: string, conceptId: string) => {
@@ -58,10 +58,10 @@ const Concept: FunctionComponent<IConceptProps> = ({
   branch,
   preferredTerm,
   fullySpecifiedName,
-  id,
+  conceptId,
   scope,
 }) => {
-  const request = useAsync(fetchConcepts, [branch, id]);
+  const request = useAsync(fetchConcepts, [branch, conceptId]);
 
   const { items = [] } = request.result || {};
 
@@ -69,14 +69,18 @@ const Concept: FunctionComponent<IConceptProps> = ({
     <div className="d-md-flex justify-content-between">
       <div>
         <h2>{preferredTerm}</h2>
-        <Synonym id={id} branch={branch} preferredTerm={preferredTerm} />
+        <Synonym
+          conceptId={conceptId}
+          branch={branch}
+          preferredTerm={preferredTerm}
+        />
         <p className="mb-md-0">{fullySpecifiedName}</p>
-        {scope === "trial" && <ClinicalTrial id={id} />}
-        {scope === "helsenorge" && <Helsenorge id={id} />}
+        {scope === "trial" && <ClinicalTrial conceptId={conceptId} />}
+        {scope === "helsenorge" && <Helsenorge conceptId={conceptId} />}
       </div>
       <dl className="mb-md-0 ml-md-5">
         <dt>Snomed CT</dt>
-        <dd className="mb-md-0">{id}</dd>
+        <dd className="mb-md-0">{conceptId}</dd>
       </dl>
       {request.loading && <Loading />}
       {items.map(

@@ -8,15 +8,15 @@ type ISelectChangeFunc = (event: ChangeEvent<HTMLSelectElement>) => void;
 type IQueryChangeFunc = (event: ChangeEvent<HTMLInputElement>) => void;
 
 interface IFormProps {
-  handleFormSubmit: ISubmitFunc;
-  handleBranchChange: ISelectChangeFunc;
-  handleReferenceSetChange: ISelectChangeFunc;
-  handleQueryChange: IQueryChangeFunc;
-  branches: IBranch[];
-  branch: string;
-  referenceSet: string;
-  query: string;
-  scope: string;
+  readonly handleFormSubmit: ISubmitFunc;
+  readonly handleBranchChange: ISelectChangeFunc;
+  readonly handleReferenceSetChange: ISelectChangeFunc;
+  readonly handleQueryChange: IQueryChangeFunc;
+  readonly branches: IBranch[];
+  readonly branch: string;
+  readonly referenceSet: string;
+  readonly query: string;
+  readonly scope: string;
 }
 
 const referenceSets = [

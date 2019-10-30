@@ -3,20 +3,20 @@ import { useAsync } from "react-async-hook";
 import { apiOptions, baseURL, handleResponse } from "../api";
 
 interface ISynonymProps {
-  preferredTerm: string;
-  branch: string;
-  id: string;
+  readonly preferredTerm: string;
+  readonly branch: string;
+  readonly conceptId: string;
 }
 
 interface IDescription {
-  term: string;
-  type: string;
-  lang: string;
-  descriptionId: string;
+  readonly term: string;
+  readonly type: string;
+  readonly lang: string;
+  readonly descriptionId: string;
 }
 
 interface IResult {
-  items: IDescription[];
+  readonly items: IDescription[];
 }
 
 const fetchSynonyms = (branch: string, conceptId: string) => {
@@ -32,9 +32,9 @@ const fetchSynonyms = (branch: string, conceptId: string) => {
 const Synonym: FunctionComponent<ISynonymProps> = ({
   preferredTerm,
   branch,
-  id,
+  conceptId,
 }) => {
-  const request = useAsync(fetchSynonyms, [branch, id]);
+  const request = useAsync(fetchSynonyms, [branch, conceptId]);
 
   const { items = [] } = request.result || {};
 

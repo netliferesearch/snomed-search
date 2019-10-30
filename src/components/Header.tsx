@@ -1,8 +1,10 @@
 import React, { FunctionComponent } from "react";
 import { Link } from "react-router-dom";
+
 interface IHeaderProps {
-  scope: string;
+  readonly scope: string;
 }
+
 const Header: FunctionComponent<IHeaderProps> = ({ scope }) => {
   const itemClassNames = (link: string) => {
     if (link === scope) {

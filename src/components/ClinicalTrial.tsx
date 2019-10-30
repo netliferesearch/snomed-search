@@ -3,16 +3,16 @@ import { useAsync } from "react-async-hook";
 import { handleResponse } from "../api";
 
 interface ITrialProps {
-  id: string;
+  readonly conceptId: string;
 }
 
 interface ITrial {
-  id: string;
-  title: string;
-  summary: string;
-  status: string;
-  link: string;
-  conductedBy: string;
+  readonly id: string;
+  readonly title: string;
+  readonly summary: string;
+  readonly status: string;
+  readonly link: string;
+  readonly conductedBy: string;
 }
 
 const fetchTrials = (conceptId: string) => {
@@ -25,12 +25,14 @@ const fetchTrials = (conceptId: string) => {
   );
 };
 
-const ClinicalTrial: FunctionComponent<ITrialProps> = ({ id }) => {
-  const request = useAsync(fetchTrials, [id]);
+const ClinicalTrial: FunctionComponent<ITrialProps> = ({ conceptId }) => {
+  const request = useAsync(fetchTrials, [conceptId]);
 
   const items = request.result || [];
 
-  if (items.length === 0) return null;
+  if (items.length === 0) {
+    return null;
+  }
 
   return (
     <div>

@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from "react";
 
 interface IErrorProps {
-  message: string;
+  readonly message: string;
 }
 
 const Error: FunctionComponent<IErrorProps> = ({ message }) => (

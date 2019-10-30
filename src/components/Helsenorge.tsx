@@ -1,15 +1,15 @@
 import React, { FunctionComponent } from "react";
 import { useAsync } from "react-async-hook";
-import { handleResponse, apiOptions } from "../api";
+import { apiOptions, handleResponse } from "../api";
 
 interface IHelsenorgeProps {
-  id: string;
+  readonly conceptId: string;
 }
 
 interface IHelsenorgePage {
-  title: string;
-  description: string;
-  link: string;
+  readonly title: string;
+  readonly description: string;
+  readonly link: string;
 }
 
 const fetchPages = (conceptId: string) => {
@@ -20,11 +20,13 @@ const fetchPages = (conceptId: string) => {
   );
 };
 
-const Helsenorge: FunctionComponent<IHelsenorgeProps> = ({ id }) => {
-  const request = useAsync(fetchPages, [id]);
+const Helsenorge: FunctionComponent<IHelsenorgeProps> = ({ conceptId }) => {
+  const request = useAsync(fetchPages, [conceptId]);
   const items = request.result || [];
 
-  if (items.length === 0) return null;
+  if (items.length === 0) {
+    return null;
+  }
 
   return (
     <div>

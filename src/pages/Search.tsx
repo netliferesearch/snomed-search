@@ -3,45 +3,45 @@ import React, {
   ChangeEvent,
   FormEvent,
   FunctionComponent,
-  useState,
   useEffect,
+  useState,
 } from "react";
 import { useAsync } from "react-async-hook";
 import useConstant from "use-constant";
 import { apiOptions, baseURL, handleResponse } from "../api";
 import Concept from "../components/Concept";
 import Error from "../components/Error";
-import Loading from "../components/Loading";
 import Form from "../components/Form";
 import Header from "../components/Header";
+import Loading from "../components/Loading";
 
 const defaultBranch = "MAIN/TEST7/ICPC2";
 
 export interface IBranch {
-  path: string;
+  readonly path: string;
 }
 
 interface ITerm {
-  term: string;
+  readonly term: string;
 }
 
 interface IConcept {
-  conceptId: string;
-  fsn: ITerm;
-  pt: ITerm;
+  readonly conceptId: string;
+  readonly fsn: ITerm;
+  readonly pt: ITerm;
 }
 
 interface IDescription {
-  concept: IConcept;
+  readonly concept: IConcept;
 }
 
 interface IResult {
-  totalElements: number;
-  items: IDescription[];
+  readonly totalElements: number;
+  readonly items: IDescription[];
 }
 
 interface ISearchProps {
-  scope: string;
+  readonly scope: string;
 }
 
 const fetchBranches = () => {
@@ -189,17 +189,17 @@ const Search: FunctionComponent<ISearchProps> = ({ scope }) => {
             {items.map(
               ({
                 concept: {
-                  conceptId: id,
+                  conceptId,
                   fsn: { term: fullySpecifiedName },
                   pt: { term: preferredTerm },
                 },
               }) => (
-                <li key={id} className="list-group-item mb-3">
+                <li key={conceptId} className="list-group-item mb-3">
                   <Concept
                     preferredTerm={preferredTerm}
                     branch={branch}
                     fullySpecifiedName={fullySpecifiedName}
-                    id={id}
+                    conceptId={conceptId}
                     scope={scope}
                   />
                 </li>
