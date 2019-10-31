@@ -8,69 +8,18 @@ import React, {
 } from "react";
 import { useAsync } from "react-async-hook";
 import useConstant from "use-constant";
-import { apiOptions, baseURL, handleResponse } from "../api";
 import Concept from "../components/Concept";
 import Error from "../components/Error";
 import Form from "../components/Form";
 import Header from "../components/Header";
 import Loading from "../components/Loading";
+import { fetchBranches, ISearchResult, searchDescriptions } from "../store";
 
 const defaultBranch = "MAIN/TEST7/ICPC2";
-
-export interface IBranch {
-  path: string;
-}
-
-interface ITerm {
-  term: string;
-}
-
-interface IConcept {
-  conceptId: string;
-  fsn: Readonly<ITerm>;
-  pt: Readonly<ITerm>;
-}
-
-interface IDescription {
-  concept: Readonly<IConcept>;
-}
-
-interface IResult {
-  totalElements: number;
-  items: Array<Readonly<IDescription>>;
-}
 
 interface ISearchProps {
   scope: string;
 }
-
-const fetchBranches = () => {
-  const url = new URL(`branches`, baseURL);
-  return fetch(url.toString(), apiOptions)
-    .then((response) => handleResponse<Array<Readonly<IBranch>>>(response))
-    .then((branches: Array<Readonly<IBranch>>) => branches);
-};
-
-const searchDescriptions = (
-  query: string,
-  branch: string,
-  referenceSet: string,
-) => {
-  const url = new URL(`browser/${branch}/descriptions`, baseURL);
-  url.searchParams.set("limit", "10");
-  url.searchParams.set("active", "true");
-  url.searchParams.set("groupByConcept", "true");
-  url.searchParams.set("language", "no");
-  url.searchParams.append("language", "nb");
-  url.searchParams.append("language", "nn");
-  url.searchParams.append("language", "en");
-  url.searchParams.set("conceptActive", "true");
-  url.searchParams.set("conceptRefset", referenceSet);
-  url.searchParams.set("term", query);
-  return fetch(url.toString(), apiOptions).then((response) =>
-    handleResponse<Readonly<IResult>>(response),
-  );
-};
 
 const useSearch = () => {
   // Handle the input text state
@@ -83,7 +32,7 @@ const useSearch = () => {
 
   const searchRequest = useAsync(async () => {
     if (query.length === 0) {
-      return ({} as any) as Readonly<IResult>;
+      return ({} as any) as Readonly<ISearchResult>;
     }
     return debouncedSearch(query, branch, referenceSet);
   }, [query, branch, referenceSet]); // Ensure a new request is made everytime the text changes (even if it's debounced)

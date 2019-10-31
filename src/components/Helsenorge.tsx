@@ -1,24 +1,10 @@
 import React, { FunctionComponent } from "react";
 import { useAsync } from "react-async-hook";
-import { apiOptions, handleResponse } from "../api";
+import { fetchPages } from "../store";
 
 interface IHelsenorgeProps {
   conceptId: string;
 }
-
-interface IHelsenorgePage {
-  title: string;
-  description: string;
-  link: string;
-}
-
-const fetchPages = (conceptId: string) => {
-  const url = new URL("http://localhost:51338/sokeside/snomed");
-  url.searchParams.set("id", conceptId);
-  return fetch(url.toString(), apiOptions).then((response) =>
-    handleResponse<Array<Readonly<IHelsenorgePage>>>(response),
-  );
-};
 
 const Helsenorge: FunctionComponent<Readonly<IHelsenorgeProps>> = ({
   conceptId,

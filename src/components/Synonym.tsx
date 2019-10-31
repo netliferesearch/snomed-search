@@ -1,33 +1,12 @@
 import React, { FunctionComponent } from "react";
 import { useAsync } from "react-async-hook";
-import { apiOptions, baseURL, handleResponse } from "../api";
+import { fetchSynonyms } from "../store";
 
 interface ISynonymProps {
   preferredTerm: string;
   branch: string;
   conceptId: string;
 }
-
-interface IDescription {
-  term: string;
-  type: string;
-  lang: string;
-  descriptionId: string;
-}
-
-interface IResult {
-  items: Array<Readonly<IDescription>>;
-}
-
-const fetchSynonyms = (branch: string, conceptId: string) => {
-  const url = new URL(`/${branch}/descriptions`, baseURL);
-  url.searchParams.set("concept", conceptId);
-  url.searchParams.set("offset", "0");
-  url.searchParams.set("limit", "10");
-  return fetch(url.toString(), apiOptions).then((response) =>
-    handleResponse<Readonly<IResult>>(response),
-  );
-};
 
 const Synonym: FunctionComponent<Readonly<ISynonymProps>> = ({
   preferredTerm,

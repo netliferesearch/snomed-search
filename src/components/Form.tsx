@@ -1,5 +1,6 @@
 import React, { ChangeEvent, FormEvent, FunctionComponent } from "react";
-import { IBranch } from "../pages/Search";
+import { referenceSets } from "../config";
+import { IBranch } from "../store";
 
 type ISubmitFunc = (event: FormEvent<HTMLFormElement>) => void;
 
@@ -18,21 +19,6 @@ interface IFormProps {
   query: string;
   scope: string;
 }
-
-const referenceSets = [
-  {
-    id: "",
-    title: "[Not specified]",
-  },
-  {
-    id: "1031000202104",
-    title: "Målgruppe",
-  },
-  {
-    id: "1091000202103",
-    title: "Sykdommer",
-  },
-];
 
 const Form: FunctionComponent<Readonly<IFormProps>> = ({
   handleFormSubmit,

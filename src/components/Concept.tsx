@@ -1,21 +1,11 @@
 import React, { FunctionComponent } from "react";
 import { useAsync } from "react-async-hook";
-import { apiOptions, baseURL, handleResponse } from "../api";
+import { codeSystems } from "../config";
+import { fetchConcepts } from "../store";
 import ClinicalTrial from "./ClinicalTrial";
 import Helsenorge from "./Helsenorge";
 import Loading from "./Loading";
 import Synonym from "./Synonym";
-
-const referenceSets = [
-  {
-    id: "450993002",
-    title: "ICPC-2",
-  },
-  {
-    id: "447562003",
-    title: "ICD-10",
-  },
-];
 
 interface IConceptProps {
   branch: string;
@@ -24,35 +14,6 @@ interface IConceptProps {
   conceptId: string;
   scope: string;
 }
-
-interface IFields {
-  mapAdvice: string;
-  mapTarget: string;
-}
-
-interface IConcept {
-  internalId: string;
-  refsetId: string;
-  additionalFields: Readonly<IFields>;
-}
-
-interface IResult {
-  items: Array<Readonly<IConcept>>;
-}
-
-const fetchConcepts = (branch: string, conceptId: string) => {
-  const url = new URL(`browser/${branch}/members`, baseURL);
-  url.searchParams.set("limit", "10");
-  url.searchParams.set("active", "true");
-  url.searchParams.set(
-    "referenceSet",
-    referenceSets.map(({ id }) => id).join(" OR "),
-  );
-  url.searchParams.set("referencedComponentId", conceptId);
-  return fetch(url.toString(), apiOptions).then((response) =>
-    handleResponse<Readonly<IResult>>(response),
-  );
-};
 
 const Concept: FunctionComponent<Readonly<IConceptProps>> = ({
   branch,
@@ -90,7 +51,7 @@ const Concept: FunctionComponent<Readonly<IConceptProps>> = ({
           additionalFields: { mapAdvice: advice, mapTarget: code },
         }) => {
           const { title } =
-            referenceSets.find((set) => set.id === refsetId) || {};
+            codeSystems.find((set) => set.id === refsetId) || {};
           return (
             <dl key={internalId} className="mb-md-0 ml-md-5">
               <dt>{title}</dt>

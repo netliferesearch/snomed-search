@@ -1,29 +1,10 @@
 import React, { FunctionComponent } from "react";
 import { useAsync } from "react-async-hook";
-import { handleResponse } from "../api";
+import { fetchTrials } from "../store";
 
 interface ITrialProps {
   conceptId: string;
 }
-
-interface ITrial {
-  id: string;
-  title: string;
-  summary: string;
-  status: string;
-  link: string;
-  conductedBy: string;
-}
-
-const fetchTrials = (conceptId: string) => {
-  const url = new URL(
-    conceptId,
-    "https://functions-hnf2-1-02.int-hn.nhn.no/api/clinicaltrials/search/",
-  );
-  return fetch(url.toString()).then((response) =>
-    handleResponse<Array<Readonly<ITrial>>>(response),
-  );
-};
 
 const ClinicalTrial: FunctionComponent<Readonly<ITrialProps>> = ({
   conceptId,
