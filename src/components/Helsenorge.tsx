@@ -3,24 +3,26 @@ import { useAsync } from "react-async-hook";
 import { apiOptions, handleResponse } from "../api";
 
 interface IHelsenorgeProps {
-  readonly conceptId: string;
+  conceptId: string;
 }
 
 interface IHelsenorgePage {
-  readonly title: string;
-  readonly description: string;
-  readonly link: string;
+  title: string;
+  description: string;
+  link: string;
 }
 
 const fetchPages = (conceptId: string) => {
   const url = new URL("http://localhost:51338/sokeside/snomed");
   url.searchParams.set("id", conceptId);
   return fetch(url.toString(), apiOptions).then((response) =>
-    handleResponse<IHelsenorgePage[]>(response),
+    handleResponse<Array<Readonly<IHelsenorgePage>>>(response),
   );
 };
 
-const Helsenorge: FunctionComponent<IHelsenorgeProps> = ({ conceptId }) => {
+const Helsenorge: FunctionComponent<Readonly<IHelsenorgeProps>> = ({
+  conceptId,
+}) => {
   const request = useAsync(fetchPages, [conceptId]);
   const items = request.result || [];
 

@@ -3,20 +3,20 @@ import { useAsync } from "react-async-hook";
 import { apiOptions, baseURL, handleResponse } from "../api";
 
 interface ISynonymProps {
-  readonly preferredTerm: string;
-  readonly branch: string;
-  readonly conceptId: string;
+  preferredTerm: string;
+  branch: string;
+  conceptId: string;
 }
 
 interface IDescription {
-  readonly term: string;
-  readonly type: string;
-  readonly lang: string;
-  readonly descriptionId: string;
+  term: string;
+  type: string;
+  lang: string;
+  descriptionId: string;
 }
 
 interface IResult {
-  readonly items: IDescription[];
+  items: Array<Readonly<IDescription>>;
 }
 
 const fetchSynonyms = (branch: string, conceptId: string) => {
@@ -25,11 +25,11 @@ const fetchSynonyms = (branch: string, conceptId: string) => {
   url.searchParams.set("offset", "0");
   url.searchParams.set("limit", "10");
   return fetch(url.toString(), apiOptions).then((response) =>
-    handleResponse<IResult>(response),
+    handleResponse<Readonly<IResult>>(response),
   );
 };
 
-const Synonym: FunctionComponent<ISynonymProps> = ({
+const Synonym: FunctionComponent<Readonly<ISynonymProps>> = ({
   preferredTerm,
   branch,
   conceptId,

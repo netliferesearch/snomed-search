@@ -8,15 +8,15 @@ type ISelectChangeFunc = (event: ChangeEvent<HTMLSelectElement>) => void;
 type IQueryChangeFunc = (event: ChangeEvent<HTMLInputElement>) => void;
 
 interface IFormProps {
-  readonly handleFormSubmit: ISubmitFunc;
-  readonly handleBranchChange: ISelectChangeFunc;
-  readonly handleReferenceSetChange: ISelectChangeFunc;
-  readonly handleQueryChange: IQueryChangeFunc;
-  readonly branches: IBranch[];
-  readonly branch: string;
-  readonly referenceSet: string;
-  readonly query: string;
-  readonly scope: string;
+  handleFormSubmit: ISubmitFunc;
+  handleBranchChange: ISelectChangeFunc;
+  handleReferenceSetChange: ISelectChangeFunc;
+  handleQueryChange: IQueryChangeFunc;
+  branches: Array<Readonly<IBranch>>;
+  branch: string;
+  referenceSet: string;
+  query: string;
+  scope: string;
 }
 
 const referenceSets = [
@@ -34,7 +34,7 @@ const referenceSets = [
   },
 ];
 
-const Form: FunctionComponent<IFormProps> = ({
+const Form: FunctionComponent<Readonly<IFormProps>> = ({
   handleFormSubmit,
   handleBranchChange,
   handleReferenceSetChange,

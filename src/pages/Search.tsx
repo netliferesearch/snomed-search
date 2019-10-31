@@ -18,37 +18,37 @@ import Loading from "../components/Loading";
 const defaultBranch = "MAIN/TEST7/ICPC2";
 
 export interface IBranch {
-  readonly path: string;
+  path: string;
 }
 
 interface ITerm {
-  readonly term: string;
+  term: string;
 }
 
 interface IConcept {
-  readonly conceptId: string;
-  readonly fsn: ITerm;
-  readonly pt: ITerm;
+  conceptId: string;
+  fsn: Readonly<ITerm>;
+  pt: Readonly<ITerm>;
 }
 
 interface IDescription {
-  readonly concept: IConcept;
+  concept: Readonly<IConcept>;
 }
 
 interface IResult {
-  readonly totalElements: number;
-  readonly items: IDescription[];
+  totalElements: number;
+  items: Array<Readonly<IDescription>>;
 }
 
 interface ISearchProps {
-  readonly scope: string;
+  scope: string;
 }
 
 const fetchBranches = () => {
   const url = new URL(`branches`, baseURL);
   return fetch(url.toString(), apiOptions)
-    .then((response) => handleResponse<IBranch[]>(response))
-    .then((branches: IBranch[]) => branches);
+    .then((response) => handleResponse<Array<Readonly<IBranch>>>(response))
+    .then((branches: Array<Readonly<IBranch>>) => branches);
 };
 
 const searchDescriptions = (
@@ -68,7 +68,7 @@ const searchDescriptions = (
   url.searchParams.set("conceptRefset", referenceSet);
   url.searchParams.set("term", query);
   return fetch(url.toString(), apiOptions).then((response) =>
-    handleResponse<IResult>(response),
+    handleResponse<Readonly<IResult>>(response),
   );
 };
 
@@ -83,7 +83,7 @@ const useSearch = () => {
 
   const searchRequest = useAsync(async () => {
     if (query.length === 0) {
-      return ({} as any) as IResult;
+      return ({} as any) as Readonly<IResult>;
     }
     return debouncedSearch(query, branch, referenceSet);
   }, [query, branch, referenceSet]); // Ensure a new request is made everytime the text changes (even if it's debounced)
@@ -100,7 +100,7 @@ const useSearch = () => {
   };
 };
 
-const Search: FunctionComponent<ISearchProps> = ({ scope }) => {
+const Search: FunctionComponent<Readonly<ISearchProps>> = ({ scope }) => {
   const {
     query,
     setQuery,

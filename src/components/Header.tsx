@@ -2,10 +2,10 @@ import React, { FunctionComponent } from "react";
 import { Link } from "react-router-dom";
 
 interface IHeaderProps {
-  readonly scope: string;
+  scope: string;
 }
 
-const Header: FunctionComponent<IHeaderProps> = ({ scope }) => {
+const Header: FunctionComponent<Readonly<IHeaderProps>> = ({ scope }) => {
   const itemClassNames = (link: string) => {
     if (link === scope) {
       return "nav-item active";

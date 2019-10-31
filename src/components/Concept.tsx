@@ -18,26 +18,26 @@ const referenceSets = [
 ];
 
 interface IConceptProps {
-  readonly branch: string;
-  readonly preferredTerm: string;
-  readonly fullySpecifiedName: string;
-  readonly conceptId: string;
-  readonly scope: string;
+  branch: string;
+  preferredTerm: string;
+  fullySpecifiedName: string;
+  conceptId: string;
+  scope: string;
 }
 
 interface IFields {
-  readonly mapAdvice: string;
-  readonly mapTarget: string;
+  mapAdvice: string;
+  mapTarget: string;
 }
 
 interface IConcept {
-  readonly internalId: string;
-  readonly refsetId: string;
-  readonly additionalFields: IFields;
+  internalId: string;
+  refsetId: string;
+  additionalFields: Readonly<IFields>;
 }
 
 interface IResult {
-  readonly items: IConcept[];
+  items: Array<Readonly<IConcept>>;
 }
 
 const fetchConcepts = (branch: string, conceptId: string) => {
@@ -50,11 +50,11 @@ const fetchConcepts = (branch: string, conceptId: string) => {
   );
   url.searchParams.set("referencedComponentId", conceptId);
   return fetch(url.toString(), apiOptions).then((response) =>
-    handleResponse<IResult>(response),
+    handleResponse<Readonly<IResult>>(response),
   );
 };
 
-const Concept: FunctionComponent<IConceptProps> = ({
+const Concept: FunctionComponent<Readonly<IConceptProps>> = ({
   branch,
   preferredTerm,
   fullySpecifiedName,
