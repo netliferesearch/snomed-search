@@ -6,9 +6,7 @@ interface ITrialProps {
   conceptId: string;
 }
 
-const ClinicalTrial: FunctionComponent<Readonly<ITrialProps>> = ({
-  conceptId,
-}) => {
+const ClinicalTrial: FunctionComponent<ITrialProps> = ({ conceptId }) => {
   const request = useAsync(fetchTrials, [conceptId]);
 
   const items = request.result || [];

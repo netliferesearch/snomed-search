@@ -20,7 +20,7 @@ interface IFormProps {
   scope: string;
 }
 
-const Form: FunctionComponent<Readonly<IFormProps>> = ({
+const Form: FunctionComponent<IFormProps> = ({
   handleFormSubmit,
   handleBranchChange,
   handleReferenceSetChange,

@@ -8,7 +8,7 @@ interface ISynonymProps {
   conceptId: string;
 }
 
-const Synonym: FunctionComponent<Readonly<ISynonymProps>> = ({
+const Synonym: FunctionComponent<ISynonymProps> = ({
   preferredTerm,
   branch,
   conceptId,

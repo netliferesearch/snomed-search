@@ -5,7 +5,7 @@ interface IHeaderProps {
   scope: string;
 }
 
-const Header: FunctionComponent<Readonly<IHeaderProps>> = ({ scope }) => {
+const Header: FunctionComponent<IHeaderProps> = ({ scope }) => {
   const itemClassNames = (link: string) => {
     if (link === scope) {
       return "nav-item active";

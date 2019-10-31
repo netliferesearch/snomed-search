@@ -49,7 +49,7 @@ const useSearch = () => {
   };
 };
 
-const Search: FunctionComponent<Readonly<ISearchProps>> = ({ scope }) => {
+const Search: FunctionComponent<ISearchProps> = ({ scope }) => {
   const {
     query,
     setQuery,

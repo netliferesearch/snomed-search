@@ -15,7 +15,7 @@ interface IConceptProps {
   scope: string;
 }
 
-const Concept: FunctionComponent<Readonly<IConceptProps>> = ({
+const Concept: FunctionComponent<IConceptProps> = ({
   branch,
   preferredTerm,
   fullySpecifiedName,

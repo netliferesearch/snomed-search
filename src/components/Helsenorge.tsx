@@ -6,9 +6,7 @@ interface IHelsenorgeProps {
   conceptId: string;
 }
 
-const Helsenorge: FunctionComponent<Readonly<IHelsenorgeProps>> = ({
-  conceptId,
-}) => {
+const Helsenorge: FunctionComponent<IHelsenorgeProps> = ({ conceptId }) => {
   const request = useAsync(fetchPages, [conceptId]);
   const items = request.result || [];
 
