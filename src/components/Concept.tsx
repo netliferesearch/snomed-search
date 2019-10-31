@@ -24,7 +24,7 @@ const Concept: FunctionComponent<IConceptProps> = ({
 }) => {
   const request = useAsync(fetchConcepts, [branch, conceptId]);
 
-  const { items = [] } = request.result || {};
+  const { items: concepts = [] } = request.result || {};
 
   return (
     <div className="d-md-flex justify-content-between">
@@ -44,7 +44,7 @@ const Concept: FunctionComponent<IConceptProps> = ({
         <dd className="mb-md-0">{conceptId}</dd>
       </dl>
       {request.loading && <Loading />}
-      {items.map(
+      {concepts.map(
         ({
           internalId,
           refsetId,

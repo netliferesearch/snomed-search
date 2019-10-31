@@ -1,5 +1,6 @@
 import React, { FunctionComponent } from "react";
 import { useAsync } from "react-async-hook";
+import { languages } from "../config";
 import { fetchSynonyms } from "../store";
 
 interface ISynonymProps {
@@ -15,13 +16,13 @@ const Synonym: FunctionComponent<ISynonymProps> = ({
 }) => {
   const request = useAsync(fetchSynonyms, [branch, conceptId]);
 
-  const { items = [] } = request.result || {};
+  const { items: synonyms = [] } = request.result || {};
 
   return (
     <>
-      {items
+      {synonyms
         .filter(({ type }) => type === "SYNONYM")
-        .filter(({ lang }) => ["nb", "nn", "no"].includes(lang))
+        .filter(({ lang }) => languages.includes(lang))
         .filter(({ term }) => term !== preferredTerm)
         .map(({ term, descriptionId: id }) => (
           <p key={id}>{term}</p>

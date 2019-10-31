@@ -25,3 +25,5 @@ export const referenceSets = [
 ];
 
 export const limit = "10";
+
+export const languages = ["nb", "nn", "no"];

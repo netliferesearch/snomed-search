@@ -9,16 +9,16 @@ interface ITrialProps {
 const ClinicalTrial: FunctionComponent<ITrialProps> = ({ conceptId }) => {
   const request = useAsync(fetchTrials, [conceptId]);
 
-  const items = request.result || [];
+  const trials = request.result || [];
 
-  if (items.length === 0) {
+  if (trials.length === 0) {
     return null;
   }
 
   return (
     <div>
       <h3 className="mt-3">Clinical trials</h3>
-      {items.map(({ id, title, summary, link, conductedBy }) => (
+      {trials.map(({ id, title, summary, link, conductedBy }) => (
         <div key={id}>
           <h4>
             <a href={link}>{title}</a>

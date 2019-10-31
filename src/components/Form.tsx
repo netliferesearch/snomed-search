@@ -2,17 +2,11 @@ import React, { ChangeEvent, FormEvent, FunctionComponent } from "react";
 import { referenceSets } from "../config";
 import { IBranch } from "../store";
 
-type ISubmitFunc = (event: FormEvent<HTMLFormElement>) => void;
-
-type ISelectChangeFunc = (event: ChangeEvent<HTMLSelectElement>) => void;
-
-type IQueryChangeFunc = (event: ChangeEvent<HTMLInputElement>) => void;
-
 interface IFormProps {
-  handleFormSubmit: ISubmitFunc;
-  handleBranchChange: ISelectChangeFunc;
-  handleReferenceSetChange: ISelectChangeFunc;
-  handleQueryChange: IQueryChangeFunc;
+  handleFormSubmit: (event: FormEvent<HTMLFormElement>) => void;
+  handleBranchChange: (event: ChangeEvent<HTMLSelectElement>) => void;
+  handleReferenceSetChange: (event: ChangeEvent<HTMLSelectElement>) => void;
+  handleQueryChange: (event: ChangeEvent<HTMLInputElement>) => void;
   branches: Array<Readonly<IBranch>>;
   branch: string;
   referenceSet: string;
