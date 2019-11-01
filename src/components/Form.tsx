@@ -1,9 +1,4 @@
-import React, {
-  ChangeEvent,
-  FormEvent,
-  FunctionComponent,
-  useContext,
-} from "react";
+import React, { ChangeEvent, FormEvent, useContext } from "react";
 import { referenceSets } from "../config";
 import { BranchContext, IBranch } from "../store";
 
@@ -18,7 +13,7 @@ type FormProps = {
   scope: string;
 };
 
-const Form: FunctionComponent<FormProps> = ({
+const Form = ({
   handleFormSubmit,
   handleBranchChange,
   handleReferenceSetChange,
@@ -27,7 +22,7 @@ const Form: FunctionComponent<FormProps> = ({
   scope,
   referenceSet,
   query,
-}) => {
+}: FormProps) => {
   const branch = useContext(BranchContext);
   return (
     <form onSubmit={handleFormSubmit}>

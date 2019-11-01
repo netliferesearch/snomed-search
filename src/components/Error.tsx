@@ -1,10 +1,10 @@
-import React, { FunctionComponent } from "react";
+import React from "react";
 
 type ErrorProps = {
   message: string;
 };
 
-const Error: FunctionComponent<ErrorProps> = ({ message }) => (
+const Error = ({ message }: ErrorProps) => (
   <div className="alert alert-danger d-inline-block" role="alert">
     {message}
   </div>

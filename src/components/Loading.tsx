@@ -1,7 +1,7 @@
-import React, { FunctionComponent } from "react";
+import React from "react";
 import "./Loading.css";
 
-const Loading: FunctionComponent = () => (
+const Loading = () => (
   <div className="spinner-border loading text-secondary" role="status">
     <span className="sr-only">Loading...</span>
   </div>

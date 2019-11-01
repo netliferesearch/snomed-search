@@ -1,11 +1,5 @@
 import debounce from "awesome-debounce-promise";
-import React, {
-  ChangeEvent,
-  FormEvent,
-  FunctionComponent,
-  useEffect,
-  useState,
-} from "react";
+import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useAsync } from "react-async-hook";
 import useConstant from "use-constant";
 import Concept from "../components/Concept";
@@ -53,7 +47,7 @@ const useSearch = () => {
   };
 };
 
-const Search: FunctionComponent<SearchProps> = ({ scope }) => {
+const Search = ({ scope }: SearchProps) => {
   const {
     query,
     setQuery,

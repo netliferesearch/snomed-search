@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useContext } from "react";
+import React, { useContext } from "react";
 import { useAsync } from "react-async-hook";
 import { codeSystems } from "../config";
 import { BranchContext, fetchConcepts } from "../store";
@@ -14,12 +14,12 @@ type ConceptProps = {
   scope: string;
 };
 
-const Concept: FunctionComponent<ConceptProps> = ({
+const Concept = ({
   preferredTerm,
   fullySpecifiedName,
   conceptId,
   scope,
-}) => {
+}: ConceptProps) => {
   const branch = useContext(BranchContext);
   const request = useAsync(fetchConcepts, [branch, conceptId]);
 
