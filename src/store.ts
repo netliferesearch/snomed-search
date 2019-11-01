@@ -1,5 +1,11 @@
 import { createContext } from "react";
-import { apiOptions, baseURL, handleResponse } from "./api";
+import {
+  apiOptions,
+  clinicalTrialsUrl,
+  episerverUrl,
+  handleResponse,
+  snowstormUrl,
+} from "./api";
 import { limit, referenceSets } from "./config";
 
 interface IFields {
@@ -18,7 +24,7 @@ interface IConceptResult {
 }
 
 export const fetchConcepts = (branch: string, conceptId: string) => {
-  const url = new URL(`browser/${branch}/members`, baseURL);
+  const url = new URL(`browser/${branch}/members`, snowstormUrl);
   url.searchParams.set("limit", limit);
   url.searchParams.set("active", "true");
   url.searchParams.set(
@@ -41,10 +47,7 @@ interface ITrial {
 }
 
 export const fetchTrials = (conceptId: string) => {
-  const url = new URL(
-    conceptId,
-    "https://functions-hnf2-1-02.int-hn.nhn.no/api/clinicaltrials/search/",
-  );
+  const url = new URL(conceptId, clinicalTrialsUrl);
   return fetch(url.toString()).then((response) =>
     handleResponse<Array<Readonly<ITrial>>>(response),
   );
@@ -57,7 +60,7 @@ interface IHelsenorgePage {
 }
 
 export const fetchPages = (conceptId: string) => {
-  const url = new URL("http://localhost:51338/sokeside/snomed");
+  const url = new URL(episerverUrl);
   url.searchParams.set("id", conceptId);
   return fetch(url.toString(), apiOptions).then((response) =>
     handleResponse<Array<Readonly<IHelsenorgePage>>>(response),
@@ -76,10 +79,10 @@ interface ISynonymResult {
 }
 
 export const fetchSynonyms = (branch: string, conceptId: string) => {
-  const url = new URL(`/${branch}/descriptions`, baseURL);
+  const url = new URL(`/${branch}/descriptions`, snowstormUrl);
   url.searchParams.set("concept", conceptId);
   url.searchParams.set("offset", "0");
-  url.searchParams.set("limit", "10");
+  url.searchParams.set("limit", limit);
   return fetch(url.toString(), apiOptions).then((response) =>
     handleResponse<Readonly<ISynonymResult>>(response),
   );
@@ -109,7 +112,7 @@ export interface ISearchResult {
 }
 
 export const fetchBranches = () => {
-  const url = new URL(`branches`, baseURL);
+  const url = new URL(`branches`, snowstormUrl);
   return fetch(url.toString(), apiOptions)
     .then((response) => handleResponse<Array<Readonly<IBranch>>>(response))
     .then((branches: Array<Readonly<IBranch>>) => branches);
@@ -120,8 +123,8 @@ export const searchDescriptions = (
   branch: string,
   referenceSet: string,
 ) => {
-  const url = new URL(`browser/${branch}/descriptions`, baseURL);
-  url.searchParams.set("limit", "10");
+  const url = new URL(`browser/${branch}/descriptions`, snowstormUrl);
+  url.searchParams.set("limit", limit);
   url.searchParams.set("active", "true");
   url.searchParams.set("groupByConcept", "true");
   url.searchParams.set("language", "no");

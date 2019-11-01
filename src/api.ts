@@ -1,4 +1,7 @@
-export const baseURL = "https://snowstorm.rundberg.no";
+export const snowstormUrl = "https://snowstorm.rundberg.no";
+export const clinicalTrialsUrl =
+  "https://functions-hnf2-1-02.int-hn.nhn.no/api/clinicaltrials/search/";
+export const episerverUrl = "http://localhost:51338/sokeside/snomed";
 
 export const headers = {
   Accept: "application/json",

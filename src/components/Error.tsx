@@ -1,12 +1,12 @@
 import React from "react";
 
 type ErrorProps = {
-  message: string;
+  children: string;
 };
 
-const Error = ({ message }: ErrorProps) => (
+const Error = ({ children }: ErrorProps) => (
   <div className="alert alert-danger d-inline-block" role="alert">
-    {message}
+    {children}
   </div>
 );
 
