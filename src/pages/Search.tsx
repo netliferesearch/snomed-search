@@ -1,7 +1,6 @@
 import debounce from "awesome-debounce-promise";
 import React, {
   ChangeEvent,
-  createContext,
   FormEvent,
   FunctionComponent,
   useEffect,
@@ -14,9 +13,13 @@ import Error from "../components/Error";
 import Form from "../components/Form";
 import Header from "../components/Header";
 import Loading from "../components/Loading";
-import { fetchBranches, ISearchResult, searchDescriptions } from "../store";
-
-const defaultBranch = "MAIN/TEST7/ICPC2";
+import { defaultBranch } from "../config";
+import {
+  BranchContext,
+  fetchBranches,
+  ISearchResult,
+  searchDescriptions,
+} from "../store";
 
 interface ISearchProps {
   scope: string;
@@ -49,8 +52,6 @@ const useSearch = () => {
     setReferenceSet,
   };
 };
-
-export const BranchContext = createContext("");
 
 const Search: FunctionComponent<ISearchProps> = ({ scope }) => {
   const {

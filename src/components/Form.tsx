@@ -5,8 +5,7 @@ import React, {
   useContext,
 } from "react";
 import { referenceSets } from "../config";
-import { BranchContext } from "../pages/Search";
-import { IBranch } from "../store";
+import { BranchContext, IBranch } from "../store";
 
 interface IFormProps {
   handleFormSubmit: (event: FormEvent<HTMLFormElement>) => void;

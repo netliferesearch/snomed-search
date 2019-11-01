@@ -1,8 +1,7 @@
 import React, { FunctionComponent, useContext } from "react";
 import { useAsync } from "react-async-hook";
 import { codeSystems } from "../config";
-import { BranchContext } from "../pages/Search";
-import { fetchConcepts } from "../store";
+import { BranchContext, fetchConcepts } from "../store";
 import ClinicalTrial from "./ClinicalTrial";
 import Helsenorge from "./Helsenorge";
 import Loading from "./Loading";

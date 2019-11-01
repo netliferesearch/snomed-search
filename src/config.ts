@@ -1,3 +1,5 @@
+export const defaultBranch = "MAIN/TEST7/ICPC2";
+
 export const codeSystems = [
   {
     id: "450993002",

@@ -1,8 +1,7 @@
 import React, { FunctionComponent, useContext } from "react";
 import { useAsync } from "react-async-hook";
 import { languages } from "../config";
-import { BranchContext } from "../pages/Search";
-import { fetchSynonyms } from "../store";
+import { BranchContext, fetchSynonyms } from "../store";
 
 interface ISynonymProps {
   preferredTerm: string;

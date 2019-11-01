@@ -1,3 +1,4 @@
+import { createContext } from "react";
 import { apiOptions, baseURL, handleResponse } from "./api";
 import { limit, referenceSets } from "./config";
 
@@ -134,3 +135,5 @@ export const searchDescriptions = (
     handleResponse<Readonly<ISearchResult>>(response),
   );
 };
+
+export const BranchContext = createContext("");
