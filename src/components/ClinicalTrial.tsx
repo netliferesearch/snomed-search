@@ -2,11 +2,13 @@ import React, { FunctionComponent } from "react";
 import { useAsync } from "react-async-hook";
 import { fetchTrials } from "../store";
 
-interface ITrialProps {
+type ClinicalTrialProps = {
   conceptId: string;
-}
+};
 
-const ClinicalTrial: FunctionComponent<ITrialProps> = ({ conceptId }) => {
+const ClinicalTrial: FunctionComponent<ClinicalTrialProps> = ({
+  conceptId,
+}) => {
   const request = useAsync(fetchTrials, [conceptId]);
 
   const trials = request.result || [];

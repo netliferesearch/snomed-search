@@ -7,14 +7,14 @@ import Helsenorge from "./Helsenorge";
 import Loading from "./Loading";
 import Synonym from "./Synonym";
 
-interface IConceptProps {
+type ConceptProps = {
   preferredTerm: string;
   fullySpecifiedName: string;
   conceptId: string;
   scope: string;
-}
+};
 
-const Concept: FunctionComponent<IConceptProps> = ({
+const Concept: FunctionComponent<ConceptProps> = ({
   preferredTerm,
   fullySpecifiedName,
   conceptId,

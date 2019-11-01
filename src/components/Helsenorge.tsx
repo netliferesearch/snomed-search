@@ -2,11 +2,11 @@ import React, { FunctionComponent } from "react";
 import { useAsync } from "react-async-hook";
 import { fetchPages } from "../store";
 
-interface IHelsenorgeProps {
+type HelsenorgeProps = {
   conceptId: string;
-}
+};
 
-const Helsenorge: FunctionComponent<IHelsenorgeProps> = ({ conceptId }) => {
+const Helsenorge: FunctionComponent<HelsenorgeProps> = ({ conceptId }) => {
   const request = useAsync(fetchPages, [conceptId]);
   const items = request.result || [];
 

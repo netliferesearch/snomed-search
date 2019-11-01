@@ -21,9 +21,9 @@ import {
   searchDescriptions,
 } from "../store";
 
-interface ISearchProps {
+type SearchProps = {
   scope: string;
-}
+};
 
 const useSearch = () => {
   // Handle the input text state
@@ -53,7 +53,7 @@ const useSearch = () => {
   };
 };
 
-const Search: FunctionComponent<ISearchProps> = ({ scope }) => {
+const Search: FunctionComponent<SearchProps> = ({ scope }) => {
   const {
     query,
     setQuery,

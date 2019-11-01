@@ -7,7 +7,7 @@ import React, {
 import { referenceSets } from "../config";
 import { BranchContext, IBranch } from "../store";
 
-interface IFormProps {
+type FormProps = {
   handleFormSubmit: (event: FormEvent<HTMLFormElement>) => void;
   handleBranchChange: (event: ChangeEvent<HTMLSelectElement>) => void;
   handleReferenceSetChange: (event: ChangeEvent<HTMLSelectElement>) => void;
@@ -16,9 +16,9 @@ interface IFormProps {
   referenceSet: string;
   query: string;
   scope: string;
-}
+};
 
-const Form: FunctionComponent<IFormProps> = ({
+const Form: FunctionComponent<FormProps> = ({
   handleFormSubmit,
   handleBranchChange,
   handleReferenceSetChange,

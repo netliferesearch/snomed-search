@@ -3,12 +3,12 @@ import { useAsync } from "react-async-hook";
 import { languages } from "../config";
 import { BranchContext, fetchSynonyms } from "../store";
 
-interface ISynonymProps {
+type SynonymProps = {
   preferredTerm: string;
   conceptId: string;
-}
+};
 
-const Synonym: FunctionComponent<ISynonymProps> = ({
+const Synonym: FunctionComponent<SynonymProps> = ({
   preferredTerm,
   conceptId,
 }) => {

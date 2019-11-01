@@ -1,11 +1,11 @@
 import React, { FunctionComponent } from "react";
 import { Link } from "react-router-dom";
 
-interface IHeaderProps {
+type HeaderProps = {
   scope: string;
-}
+};
 
-const Header: FunctionComponent<IHeaderProps> = ({ scope }) => {
+const Header: FunctionComponent<HeaderProps> = ({ scope }) => {
   const itemClassNames = (link: string) => {
     if (link === scope) {
       return "nav-item active";
