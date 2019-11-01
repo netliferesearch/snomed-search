@@ -1,6 +1,7 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useContext } from "react";
 import { useAsync } from "react-async-hook";
 import { codeSystems } from "../config";
+import { BranchContext } from "../pages/Search";
 import { fetchConcepts } from "../store";
 import ClinicalTrial from "./ClinicalTrial";
 import Helsenorge from "./Helsenorge";
@@ -8,7 +9,6 @@ import Loading from "./Loading";
 import Synonym from "./Synonym";
 
 interface IConceptProps {
-  branch: string;
   preferredTerm: string;
   fullySpecifiedName: string;
   conceptId: string;
@@ -16,12 +16,12 @@ interface IConceptProps {
 }
 
 const Concept: FunctionComponent<IConceptProps> = ({
-  branch,
   preferredTerm,
   fullySpecifiedName,
   conceptId,
   scope,
 }) => {
+  const branch = useContext(BranchContext);
   const request = useAsync(fetchConcepts, [branch, conceptId]);
 
   const { items: concepts = [] } = request.result || {};
@@ -30,11 +30,7 @@ const Concept: FunctionComponent<IConceptProps> = ({
     <div className="d-md-flex justify-content-between">
       <div>
         <h2>{preferredTerm}</h2>
-        <Synonym
-          conceptId={conceptId}
-          branch={branch}
-          preferredTerm={preferredTerm}
-        />
+        <Synonym conceptId={conceptId} preferredTerm={preferredTerm} />
         <p className="mb-md-0">{fullySpecifiedName}</p>
         {scope === "trial" && <ClinicalTrial conceptId={conceptId} />}
         {scope === "helsenorge" && <Helsenorge conceptId={conceptId} />}

@@ -1,19 +1,19 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useContext } from "react";
 import { useAsync } from "react-async-hook";
 import { languages } from "../config";
+import { BranchContext } from "../pages/Search";
 import { fetchSynonyms } from "../store";
 
 interface ISynonymProps {
   preferredTerm: string;
-  branch: string;
   conceptId: string;
 }
 
 const Synonym: FunctionComponent<ISynonymProps> = ({
   preferredTerm,
-  branch,
   conceptId,
 }) => {
+  const branch = useContext(BranchContext);
   const request = useAsync(fetchSynonyms, [branch, conceptId]);
 
   const { items: synonyms = [] } = request.result || {};

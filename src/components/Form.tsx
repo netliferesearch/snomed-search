@@ -1,5 +1,11 @@
-import React, { ChangeEvent, FormEvent, FunctionComponent } from "react";
+import React, {
+  ChangeEvent,
+  FormEvent,
+  FunctionComponent,
+  useContext,
+} from "react";
 import { referenceSets } from "../config";
+import { BranchContext } from "../pages/Search";
 import { IBranch } from "../store";
 
 interface IFormProps {
@@ -8,7 +14,6 @@ interface IFormProps {
   handleReferenceSetChange: (event: ChangeEvent<HTMLSelectElement>) => void;
   handleQueryChange: (event: ChangeEvent<HTMLInputElement>) => void;
   branches: Array<Readonly<IBranch>>;
-  branch: string;
   referenceSet: string;
   query: string;
   scope: string;
@@ -20,11 +25,11 @@ const Form: FunctionComponent<IFormProps> = ({
   handleReferenceSetChange,
   handleQueryChange,
   branches,
-  branch,
   scope,
   referenceSet,
   query,
 }) => {
+  const branch = useContext(BranchContext);
   return (
     <form onSubmit={handleFormSubmit}>
       <div className="form-row">

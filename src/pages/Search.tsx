@@ -1,6 +1,7 @@
 import debounce from "awesome-debounce-promise";
 import React, {
   ChangeEvent,
+  createContext,
   FormEvent,
   FunctionComponent,
   useEffect,
@@ -48,6 +49,8 @@ const useSearch = () => {
     setReferenceSet,
   };
 };
+
+export const BranchContext = createContext("");
 
 const Search: FunctionComponent<ISearchProps> = ({ scope }) => {
   const {
@@ -97,67 +100,67 @@ const Search: FunctionComponent<ISearchProps> = ({ scope }) => {
   const { totalElements = 0, items = [] } = searchRequest.result || {};
 
   return (
-    <div className="container">
-      <Header scope={scope} />
-      <div className="row mb-5">
-        <div className="col-9 col-md-10">
-          {branchRequest.error && (
-            <Error message={branchRequest.error.message} />
-          )}
-          {!branchRequest.loading && !branchRequest.error && (
-            <Form
-              handleFormSubmit={handleFormSubmit}
-              handleBranchChange={handleBranchChange}
-              handleReferenceSetChange={handleReferenceSetChange}
-              handleQueryChange={handleQueryChange}
-              branches={branches}
-              branch={branch}
-              referenceSet={referenceSet}
-              query={query}
-              scope={scope}
-            />
-          )}
+    <BranchContext.Provider value={branch}>
+      <div className="container">
+        <Header scope={scope} />
+        <div className="row mb-5">
+          <div className="col-9 col-md-10">
+            {branchRequest.error && (
+              <Error message={branchRequest.error.message} />
+            )}
+            {!branchRequest.loading && !branchRequest.error && (
+              <Form
+                handleFormSubmit={handleFormSubmit}
+                handleBranchChange={handleBranchChange}
+                handleReferenceSetChange={handleReferenceSetChange}
+                handleQueryChange={handleQueryChange}
+                branches={branches}
+                referenceSet={referenceSet}
+                query={query}
+                scope={scope}
+              />
+            )}
+          </div>
+          <div className="col-3 col-md-2">
+            <div className="d-flex h-100 align-items-center justify-content-center">
+              {searchRequest.loading && <Loading />}
+            </div>
+          </div>
         </div>
-        <div className="col-3 col-md-2">
-          <div className="d-flex h-100 align-items-center justify-content-center">
-            {searchRequest.loading && <Loading />}
+        <div className="row">
+          <div className="col">
+            {searchRequest.error && (
+              <Error message={searchRequest.error.message} />
+            )}
+            {totalElements > 0 && (
+              <p className="mb-1">{`${totalElements} ${
+                totalElements > 1 ? "hits" : "hit"
+              }`}</p>
+            )}
+            <ul className="list-group">
+              {items.map(
+                ({
+                  concept: {
+                    conceptId,
+                    fsn: { term: fullySpecifiedName },
+                    pt: { term: preferredTerm },
+                  },
+                }) => (
+                  <li key={conceptId} className="list-group-item mb-3">
+                    <Concept
+                      preferredTerm={preferredTerm}
+                      fullySpecifiedName={fullySpecifiedName}
+                      conceptId={conceptId}
+                      scope={scope}
+                    />
+                  </li>
+                ),
+              )}
+            </ul>
           </div>
         </div>
       </div>
-      <div className="row">
-        <div className="col">
-          {searchRequest.error && (
-            <Error message={searchRequest.error.message} />
-          )}
-          {totalElements > 0 && (
-            <p className="mb-1">{`${totalElements} ${
-              totalElements > 1 ? "hits" : "hit"
-            }`}</p>
-          )}
-          <ul className="list-group">
-            {items.map(
-              ({
-                concept: {
-                  conceptId,
-                  fsn: { term: fullySpecifiedName },
-                  pt: { term: preferredTerm },
-                },
-              }) => (
-                <li key={conceptId} className="list-group-item mb-3">
-                  <Concept
-                    preferredTerm={preferredTerm}
-                    branch={branch}
-                    fullySpecifiedName={fullySpecifiedName}
-                    conceptId={conceptId}
-                    scope={scope}
-                  />
-                </li>
-              ),
-            )}
-          </ul>
-        </div>
-      </div>
-    </div>
+    </BranchContext.Provider>
   );
 };
 
