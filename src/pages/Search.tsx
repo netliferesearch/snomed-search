@@ -59,13 +59,11 @@ const Search = ({ scope }: SearchProps) => {
   } = useSearch();
   const branchRequest = useAsync(fetchBranches, []);
 
-  useEffect(() => {
-    if (branchRequest.result) {
-      const { path = "" } =
-        branchRequest.result.find((b) => b.path === defaultBranch) || {};
-      setBranch(path);
-    }
-  }, [branchRequest, setBranch]);
+  if (branchRequest.result && !branch) {
+    const { path = "" } =
+      branchRequest.result.find((b) => b.path === defaultBranch) || {};
+    setBranch(path);
+  }
 
   useEffect(() => {
     if (scope === "disorder") {
