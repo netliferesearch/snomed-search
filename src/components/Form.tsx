@@ -1,6 +1,7 @@
-import React, { ChangeEvent, FormEvent, useContext } from "react";
+import React, { ChangeEvent, FormEvent } from "react";
+import { useQueryParam, StringParam } from "use-query-params";
 import { referenceSets } from "../config";
-import { BranchContext, IBranch } from "../store";
+import { IBranch } from "../store";
 
 type FormProps = {
   handleFormSubmit: (event: FormEvent<HTMLFormElement>) => void;
@@ -23,7 +24,7 @@ const Form = ({
   referenceSet,
   query,
 }: FormProps) => {
-  const branch = useContext(BranchContext);
+  const [branch] = useQueryParam("b", StringParam);
   return (
     <form onSubmit={handleFormSubmit}>
       <div className="form-row">
