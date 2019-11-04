@@ -17,10 +17,10 @@ interface IConceptResult {
   items: Array<Readonly<IConcept>>;
 }
 
-export const fetchConcepts = (branch: string, conceptId: string) => {
+export const fetchCodeSystems = (branch: string, conceptId: string) => {
   const url = new URL(`browser/${branch}/members`, baseURL);
   url.searchParams.set("limit", limit);
-  url.searchParams.set("active", "true");
+  url.searchParams.set("active", "");
   url.searchParams.set(
     "referenceSet",
     codeSystems.map(({ id }) => id).join(" OR "),

@@ -1,7 +1,7 @@
-import React, { useContext } from "react";
+import React from "react";
 import { useAsync } from "react-async-hook";
-import { codeSystems } from "../config";
-import { BranchContext, fetchConcepts } from "../store";
+import { codeSystemBranch, codeSystems } from "../config";
+import { fetchCodeSystems } from "../store";
 import ClinicalTrial from "./ClinicalTrial";
 import Helsenorge from "./Helsenorge";
 import Loading from "./Loading";
@@ -20,8 +20,7 @@ const Concept = ({
   conceptId,
   scope,
 }: ConceptProps) => {
-  const branch = useContext(BranchContext);
-  const request = useAsync(fetchConcepts, [branch, conceptId]);
+  const request = useAsync(fetchCodeSystems, [codeSystemBranch, conceptId]);
 
   const { items: concepts = [] } = request.result || {};
 
