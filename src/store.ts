@@ -1,6 +1,6 @@
 import { createContext } from "react";
 import { apiOptions, baseURL, handleResponse } from "./api";
-import { limit, referenceSets } from "./config";
+import { limit, codeSystems } from "./config";
 
 interface IFields {
   mapAdvice: string;
@@ -23,7 +23,7 @@ export const fetchConcepts = (branch: string, conceptId: string) => {
   url.searchParams.set("active", "true");
   url.searchParams.set(
     "referenceSet",
-    referenceSets.map(({ id }) => id).join(" OR "),
+    codeSystems.map(({ id }) => id).join(" OR "),
   );
   url.searchParams.set("referencedComponentId", conceptId);
   return fetch(url.toString(), apiOptions).then((response) =>
