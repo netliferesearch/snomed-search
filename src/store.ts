@@ -86,6 +86,7 @@ export const fetchSynonyms = (branch: string, conceptId: string) => {
 
 export interface IBranch {
   path: string;
+  containsContent: boolean;
 }
 
 interface ITerm {
@@ -111,7 +112,9 @@ export const fetchBranches = () => {
   const url = new URL(`branches`, baseURL);
   return fetch(url.toString(), apiOptions)
     .then((response) => handleResponse<Array<Readonly<IBranch>>>(response))
-    .then((branches: Array<Readonly<IBranch>>) => branches);
+    .then((branches: Array<Readonly<IBranch>>) =>
+      branches.filter(({ containsContent }) => containsContent),
+    );
 };
 
 export const searchDescriptions = (
