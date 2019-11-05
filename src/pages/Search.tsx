@@ -1,15 +1,15 @@
 import debounce from "awesome-debounce-promise";
 import React, { ChangeEvent, FormEvent, useEffect } from "react";
-import { useQueryParam, StringParam } from "use-query-params";
 import { useAsync } from "react-async-hook";
 import useConstant from "use-constant";
+import { StringParam, useQueryParam } from "use-query-params";
 import Concept from "../components/Concept";
 import Error from "../components/Error";
 import Form from "../components/Form";
 import Header from "../components/Header";
 import Loading from "../components/Loading";
 import { defaultBranch } from "../config";
-import { fetchBranches, ISearchResult, searchDescriptions } from "../store";
+import { fetchBranches, fetchConcepts, IConceptResult } from "../store";
 
 type SearchProps = {
   scope: string;
@@ -22,13 +22,13 @@ const useSearch = () => {
   const [referenceSet, setReferenceSet] = useQueryParam("rs", StringParam);
 
   // Debounce the original search async function
-  const debouncedSearch = useConstant(() => debounce(searchDescriptions, 500));
+  const debouncedSearch = useConstant(() => debounce(fetchConcepts, 500));
 
   const searchRequest = useAsync(async () => {
     if (query && branch) {
       return debouncedSearch(query, branch, referenceSet || "");
     }
-    return ({} as any) as Readonly<ISearchResult>;
+    return ({} as any) as Readonly<IConceptResult>;
   }, [query, branch, referenceSet]); // Ensure a new request is made everytime the text changes (even if it's debounced)
 
   // Return everything needed for the hook consumer

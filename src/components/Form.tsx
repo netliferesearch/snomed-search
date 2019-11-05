@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FormEvent } from "react";
-import { useQueryParam, StringParam } from "use-query-params";
+import { StringParam, useQueryParam } from "use-query-params";
 import { referenceSets } from "../config";
 import { IBranch } from "../store";
 

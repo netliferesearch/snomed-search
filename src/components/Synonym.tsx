@@ -1,6 +1,6 @@
 import React from "react";
-import { useQueryParam, StringParam } from "use-query-params";
 import { useAsync } from "react-async-hook";
+import { StringParam, useQueryParam } from "use-query-params";
 import { languages } from "../config";
 import { fetchSynonyms } from "../store";
 
