@@ -1,4 +1,5 @@
-export const defaultBranch = "MAIN/TEST7/ICPC2";
+export const defaultBranch = "MAIN/SNOMEDCT-NO-EXTENDED";
+export const codeSystemBranch = "MAIN/ICPC2";
 
 export const codeSystems = [
   {

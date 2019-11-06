@@ -2,6 +2,7 @@
   "extends": ["tslint:latest", "tslint-react"],
   "rules": {
     "jsx-no-multiline-js": false,
+    "jsx-wrap-multiline": false,
     "interface-over-type-literal": false
   }
 }

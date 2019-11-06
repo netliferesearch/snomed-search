@@ -1,13 +1,13 @@
 import React from "react";
 import { useAsync } from "react-async-hook";
-import { fetchTrials } from "../store";
+import { fetchClinicalTrials } from "../store";
 
 type ClinicalTrialProps = {
   conceptId: string;
 };
 
 const ClinicalTrial = ({ conceptId }: ClinicalTrialProps) => {
-  const request = useAsync(fetchTrials, [conceptId]);
+  const request = useAsync(fetchClinicalTrials, [conceptId]);
 
   const trials = request.result || [];
 
