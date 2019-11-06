@@ -1,4 +1,4 @@
-import { apiOptions, baseURL, handleResponse } from "../api";
+import { apiOptions, snowstormUrl, handleResponse } from "../api";
 import { codeSystems, limit } from "../config";
 
 interface IFields {
@@ -17,7 +17,7 @@ interface ICodeSystemResult {
 }
 
 export const fetchCodeSystems = (branch: string, conceptId: string) => {
-  const url = new URL(`browser/${branch}/members`, baseURL);
+  const url = new URL(`browser/${branch}/members`, snowstormUrl);
   url.searchParams.set("limit", limit);
   url.searchParams.set("active", "");
   url.searchParams.set(

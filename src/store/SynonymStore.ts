@@ -1,4 +1,4 @@
-import { apiOptions, baseURL, handleResponse } from "../api";
+import { apiOptions, snowstormUrl, handleResponse } from "../api";
 import { limit } from "../config";
 
 interface IDescription {
@@ -13,7 +13,7 @@ interface ISynonymResult {
 }
 
 export const fetchSynonyms = (branch: string, conceptId: string) => {
-  const url = new URL(`/${branch}/descriptions`, baseURL);
+  const url = new URL(`/${branch}/descriptions`, snowstormUrl);
   url.searchParams.set("concept", conceptId);
   url.searchParams.set("offset", "0");
   url.searchParams.set("limit", limit);
