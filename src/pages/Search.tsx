@@ -97,9 +97,7 @@ const Search = ({ scope }: SearchProps) => {
       <Header scope={scope} />
       <div className="row mb-5">
         <div className="col-9 col-md-10">
-          {branchRequest.error && (
-            <Error message={branchRequest.error.message} />
-          )}
+          {branchRequest.error && <Error>{branchRequest.error.message}</Error>}
           {!branchRequest.loading && !branchRequest.error && (
             <Form
               handleFormSubmit={handleFormSubmit}
@@ -121,9 +119,7 @@ const Search = ({ scope }: SearchProps) => {
       </div>
       <div className="row">
         <div className="col">
-          {searchRequest.error && (
-            <Error message={searchRequest.error.message} />
-          )}
+          {searchRequest.error && <Error>{searchRequest.error.message}</Error>}
           {totalElements > 0 && (
             <p className="mb-1">{`${totalElements} ${
               totalElements > 1 ? "hits" : "hit"
