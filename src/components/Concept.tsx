@@ -8,6 +8,7 @@ import Loading from "./Loading";
 import Synonym from "./Synonym";
 
 type ConceptProps = {
+  branch: string;
   preferredTerm: string;
   fullySpecifiedName: string;
   conceptId: string;
@@ -15,6 +16,7 @@ type ConceptProps = {
 };
 
 const Concept = ({
+  branch,
   preferredTerm,
   fullySpecifiedName,
   conceptId,
@@ -28,7 +30,11 @@ const Concept = ({
     <div className="d-md-flex justify-content-between">
       <div>
         <h2>{preferredTerm}</h2>
-        <Synonym conceptId={conceptId} preferredTerm={preferredTerm} />
+        <Synonym
+          branch={branch}
+          conceptId={conceptId}
+          preferredTerm={preferredTerm}
+        />
         <p className="mb-md-0">{fullySpecifiedName}</p>
         {scope === "trial" && <ClinicalTrial conceptId={conceptId} />}
         {scope === "helsenorge" && <Helsenorge conceptId={conceptId} />}

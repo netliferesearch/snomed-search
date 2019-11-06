@@ -55,13 +55,15 @@ const Search = ({ scope }: SearchProps) => {
   } = useSearch();
   const branchRequest = useAsync(fetchBranches, []);
 
-  if (branchRequest.result && !branch) {
-    const { path } =
-      branchRequest.result.find((b) => b.path === defaultBranch) || {};
-    if (path) {
-      setBranch(path);
+  useEffect(() => {
+    if (branchRequest.result && !branch) {
+      const { path } =
+        branchRequest.result.find((b) => b.path === defaultBranch) || {};
+      if (path) {
+        setBranch(path);
+      }
     }
-  }
+  }, [branch, branchRequest, setBranch]);
 
   useEffect(() => {
     if (scope === "disorder") {
@@ -136,6 +138,7 @@ const Search = ({ scope }: SearchProps) => {
               }) => (
                 <li key={conceptId} className="list-group-item mb-3">
                   <Concept
+                    branch={branch || ""}
                     preferredTerm={preferredTerm}
                     fullySpecifiedName={fullySpecifiedName}
                     conceptId={conceptId}

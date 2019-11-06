@@ -1,17 +1,16 @@
 import React from "react";
 import { useAsync } from "react-async-hook";
-import { StringParam, useQueryParam } from "use-query-params";
 import { languages } from "../config";
 import { fetchSynonyms } from "../store";
 
 type SynonymProps = {
+  branch: string;
   preferredTerm: string;
   conceptId: string;
 };
 
-const Synonym = ({ preferredTerm, conceptId }: SynonymProps) => {
-  const [branch] = useQueryParam("b", StringParam);
-  const request = useAsync(fetchSynonyms, [branch || "", conceptId]);
+const Synonym = ({ branch, preferredTerm, conceptId }: SynonymProps) => {
+  const request = useAsync(fetchSynonyms, [branch, conceptId]);
 
   const { items: synonyms = [] } = request.result || {};
 
