@@ -19,7 +19,7 @@ interface ICodeSystemResult {
 export const fetchCodeSystems = (branch: string, conceptId: string) => {
   const url = new URL(`browser/${branch}/members`, snowstormUrl);
   url.searchParams.set("limit", limit);
-  url.searchParams.set("active", "");
+  url.searchParams.set("active", "true");
   url.searchParams.set(
     "referenceSet",
     codeSystems.map(({ id }) => id).join(" OR "),
