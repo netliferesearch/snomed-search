@@ -25,7 +25,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "deploy": "yarn build && netlify deploy --prod",
+    "deploy": "netlify deploy --prod",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
