@@ -4,17 +4,15 @@
 
 We've installed it on Ubuntu 18.04 server with 4 vCPUs, 8GB RAM and 160GB SSD. This is a \$40 per month server on Digital Ocean.
 
-## Server setup
-
 The Snowstorm server contains the Elasticsearch database, the Snowstorm runtime and an Nginx server acting as a proxy. Only Nginx is available from the outside.
 
 ## Versions
 
 - Ubuntu 18.04.3 LTS
-- Java 11.0.4
-- Apache Maven 3.6.0
 - Elasticsearch 6.8.3 (Important! This is _not_ the latest version! Do not use Eliasticsearch 7!)
 - Snowstorm 4.5.1
+- Java 11.0.4
+- Apache Maven 3.6.0
 - Nginx 1.14.0
 
 ## Compiling from source
@@ -29,9 +27,9 @@ mvn clean package
 
 ### Optional install
 
-We installed http://tomcat.apache.org/native-doc/ as well, as Snowstorm was suggesting it on startup, but it's not necessary. Suggest to get everything running first and consult someone who knows their Java about whether this is a good idea or not...
+We installed http://tomcat.apache.org/native-doc/ as well, as Snowstorm was suggesting it on startup, but it's not necessary. Suggest to get everything running first and consult someone who knows their Java about whether Tomcat Native is necessary.
 
-## Configuration
+## Elasticsearch config
 
 /etc/elasticsearch/elasticsearch.yml:
 
@@ -49,16 +47,26 @@ We installed http://tomcat.apache.org/native-doc/ as well, as Snowstorm was sugg
 -Xmx4g
 ```
 
+## First import
+
+Upload the snapshot .zip-file to the server and run the following command to start Snowstorm and begin the import. It will take 20-30 minutes. You will get an "import complete" message once it's done.
+
+```
+java -Xms2g -Xmx2g -jar snowstorm/snowstorm-4.5.1.jar --delete-indices --import=SnomedCT_InternationalRF2_PRODUCTION_20190731T120000Z.zip --exit &
+```
+
+## nginx configuration
+
 This is the nginx config for the domain where Snowstorm is accessible.
 
-Very much up to your requirements, but this is what it does:
+This is what it does:
 
 - Caches requests (currently disabled)
 - Requires a password for all write requests (POST, PATCH/PUT etc)
 - Enable CORS
 - Use certbot and Let's encrypt for SSL in Nginx
 
-/etc/nginx/sites-available/snowstorm.rundberg.no
+/etc/nginx/sites-available/snowstorm.rundberg.no:
 
 ```
 proxy_cache_path        /var/cache/nginx levels=1:2 keys_zone=snowstorm:10m max_size=10g
@@ -150,6 +158,19 @@ server {
 }
 ```
 
+## ufw config
+
+```
+To                         Action      From
+--                         ------      ----
+22/tcp (OpenSSH)           ALLOW IN    Anywhere
+80,443/tcp (Nginx Full)    ALLOW IN    Anywhere
+8080                       DENY IN     Anywhere
+22/tcp (OpenSSH (v6))      ALLOW IN    Anywhere (v6)
+80,443/tcp (Nginx Full (v6)) ALLOW IN    Anywhere (v6)
+8080 (v6)                  DENY IN     Anywhere (v6)
+```
+
 ## Startup
 
 /etc/systemd/system/snowstorm.service:
@@ -181,18 +202,16 @@ server.port=8080
 snowstorm.rest-api.readonly=false
 ```
 
-# First import
+## Helpful commands
 
-sudo systemctl stop snowstorm
+### Delete all Elasticsearch indices
 
-java -Xms2g -Xmx2g -jar snowstorm/snowstorm-4.5.1.jar --delete-indices --import=SnomedCT_InternationalRF2_PRODUCTION_20190731T120000Z.zip --exit &
-
-# Helpful commands
-
-## Delete all Elasticsearch indices
-
+```
 curl -XDELETE 'http://localhost:9200/*'
+```
 
-## Full import
+### Full import
 
+```
 java -Xms2g -Xmx2g -jar snowstorm/snowstorm-4.5.1.jar --delete-indices --import-full=SnomedCT_InternationalRF2_PRODUCTION_20190731T120000Z.zip --exit &
+```
