@@ -21,7 +21,11 @@ The Snowstorm server contains the Elasticsearch database, the Snowstorm runtime 
 
 We saw improved request throughput after downloading and compiling from source compared to the pre-built binary.
 
-Compiling is done by running `mvn clean package` after downloading the source.
+```
+wget https://github.com/IHTSDO/snowstorm/archive/4.5.1.zip
+cd snowstorm-4.5.1
+mvn clean package
+```
 
 ### Optional install
 
