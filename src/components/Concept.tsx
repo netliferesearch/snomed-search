@@ -22,9 +22,9 @@ const Concept = ({
   conceptId,
   scope,
 }: ConceptProps) => {
-  //  const request = useAsync(fetchCodeSystems, [codeSystemBranch, conceptId]);
+  const request = useAsync(fetchCodeSystems, [codeSystemBranch, conceptId]);
 
-  //  const { items: concepts = [] } = request.result || {};
+  const { items: concepts = [] } = request.result || {};
 
   return (
     <div className="d-md-flex justify-content-between">
@@ -43,6 +43,25 @@ const Concept = ({
         <dt>Snomed CT</dt>
         <dd className="mb-md-0">{conceptId}</dd>
       </dl>
+      {request.loading && <Loading />}
+      {concepts.map(
+        ({
+          internalId,
+          refsetId,
+          additionalFields: { mapAdvice: advice, mapTarget: code },
+        }) => {
+          const { title } =
+            codeSystems.find((set) => set.id === refsetId) || {};
+          return (
+            <dl key={internalId} className="mb-md-0 ml-md-5">
+              <dt>{title}</dt>
+              <dd className="mb-md-0" title={advice}>
+                {code ? code : advice}
+              </dd>
+            </dl>
+          );
+        },
+      )}
     </div>
   );
 };
