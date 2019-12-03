@@ -2,7 +2,7 @@
 
 ## Server requirements
 
-We've installed it on Ubuntu 18.04 server with 4 vCPUs, 8GB RAM and 160GB SSD. For comparison, this is a \$40 per month server on Digital Ocean.
+We've installed it on Ubuntu 18.04 server with 4 vCPUs, 8GB RAM and 160GB SSD. This is a \$40 per month server on Digital Ocean.
 
 ## Server setup
 
@@ -13,7 +13,7 @@ The Snowstorm server contains the Elasticsearch database, the Snowstorm runtime 
 - Ubuntu 18.04.3 LTS
 - Java 11.0.4
 - Apache Maven 3.6.0
-- Elasticsearch 6.8.3
+- Elasticsearch 6.8.3 (Important! This is _not_ the latest version! Do not use Eliasticsearch 7!)
 - Snowstorm 4.5.1
 - Nginx 1.14.0
 
@@ -29,23 +29,34 @@ mvn clean package
 
 ### Optional install
 
-We installed http://tomcat.apache.org/native-doc/ as Snowstorm was suggesting it on startup, but it's not necessary. Suggest to get everything running first.
+We installed http://tomcat.apache.org/native-doc/ as well, as Snowstorm was suggesting it on startup, but it's not necessary. Suggest to get everything running first and consult someone who knows their Java about whether this is a good idea or not...
 
 ## Configuration
 
 /etc/elasticsearch/elasticsearch.yml:
 
 ```
-# A lower number is probably fine, but we don't know how low it can be
-search.max_open_scroll_context: 100000
+# Elasticsearch will complain about this setting being too low. Not sure if it's necessary to change it,
+# but you can set it to 100000 to get rid of the warnings.
+# search.max_open_scroll_context: 100000
 ```
 
 /etc/elasticsearch/jvm.options:
 
 ```
+# Memory limits for Elasticsearch, very important to set these so it has enough memory.
 -Xms4g
 -Xmx4g
 ```
+
+This is the nginx config for the domain where Snowstorm is accessible.
+
+Very much up to your requirements, but this is what it does:
+
+- Caches requests (currently disabled)
+- Requires a password for all write requests (POST, PATCH/PUT etc)
+- Enable CORS
+- Use certbot and Let's encrypt for SSL in Nginx
 
 /etc/nginx/sites-available/snowstorm.rundberg.no
 
