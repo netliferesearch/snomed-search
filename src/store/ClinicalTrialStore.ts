@@ -1,21 +1,20 @@
 import { handleResponse } from "../api";
+import { clinicalTrialsUrl } from "../config";
 
 interface ITrial {
   id: string;
-  title: string;
-  summary: string;
+  tittel: string;
+  sammendrag: string;
   status: string;
-  link: string;
-  conductedBy: string;
+  lenke: string;
+  utfort_av: string;
 }
 
 type Trials = Array<Readonly<ITrial>>;
 
 export const fetchClinicalTrials = (conceptId: string) => {
-  const url = new URL(
-    conceptId,
-    "https://functions-hnf2-1-02.int-hn.nhn.no/api/clinicaltrials/search/",
-  );
+  const url = new URL(clinicalTrialsUrl);
+  url.searchParams.append("sctid", conceptId);
   return fetch(url.toString()).then((response) =>
     handleResponse<Trials>(response),
   );

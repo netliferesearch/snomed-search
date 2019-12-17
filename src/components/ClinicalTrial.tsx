@@ -18,18 +18,26 @@ const ClinicalTrial = ({ conceptId }: ClinicalTrialProps) => {
   return (
     <div>
       <h3 className="mt-3">Clinical trials</h3>
-      {trials.map(({ id, title, summary, link, conductedBy }) => (
-        <div key={id}>
-          <h4>
-            <a href={link}>{title}</a>
-          </h4>
-          <p>{summary}</p>
-          <dl>
-            <dt>Ansvarlig</dt>
-            <dd>{conductedBy}</dd>
-          </dl>
-        </div>
-      ))}
+      {trials.map(
+        ({
+          id,
+          tittel: title,
+          sammendrag: summary,
+          lenke: link,
+          utfort_av: conductedBy,
+        }) => (
+          <div key={id}>
+            <h4>
+              <a href={link}>{title}</a>
+            </h4>
+            <p>{summary}</p>
+            <dl>
+              <dt>Ansvarlig</dt>
+              <dd>{conductedBy}</dd>
+            </dl>
+          </div>
+        ),
+      )}
     </div>
   );
 };
