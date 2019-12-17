@@ -6,7 +6,7 @@ export interface IBranch {
   containsContent: boolean;
 }
 
-type Branches = Array<Readonly<IBranch>>;
+type Branches = IBranch[];
 
 export const fetchBranches = () => {
   const url = new URL(`branches`, snowstormUrl);

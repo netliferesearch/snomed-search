@@ -9,7 +9,7 @@ interface IDescription {
 }
 
 interface ISynonymResult {
-  items: Array<Readonly<IDescription>>;
+  items: IDescription[];
 }
 
 export const fetchSynonyms = (branch: string, conceptId: string) => {
@@ -18,6 +18,6 @@ export const fetchSynonyms = (branch: string, conceptId: string) => {
   url.searchParams.set("offset", "0");
   url.searchParams.set("limit", limit);
   return fetch(url.toString(), apiOptions).then((response) =>
-    handleResponse<Readonly<ISynonymResult>>(response),
+    handleResponse<ISynonymResult>(response),
   );
 };

@@ -6,7 +6,7 @@ interface IHelsenorgePage {
   link: string;
 }
 
-type Pages = Array<Readonly<IHelsenorgePage>>;
+type Pages = IHelsenorgePage[];
 
 export const fetchPages = (conceptId: string) => {
   const url = new URL("http://localhost:51338/sokeside/snomed");

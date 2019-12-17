@@ -10,7 +10,7 @@ interface ITrial {
   utfort_av: string;
 }
 
-type Trials = Array<Readonly<ITrial>>;
+type Trials = ITrial[];
 
 export const fetchClinicalTrials = (conceptId: string) => {
   const url = new URL(clinicalTrialsUrl);

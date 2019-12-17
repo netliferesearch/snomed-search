@@ -8,7 +8,7 @@ type FormProps = {
   handleBranchChange: (event: ChangeEvent<HTMLSelectElement>) => void;
   handleReferenceSetChange: (event: ChangeEvent<HTMLSelectElement>) => void;
   handleQueryChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  branches: Array<Readonly<IBranch>>;
+  branches: IBranch[];
   referenceSet: string;
   query: string;
   scope: string;

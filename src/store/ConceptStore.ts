@@ -17,7 +17,7 @@ interface IDescription {
 
 export interface IConceptResult {
   totalElements: number;
-  items: Array<Readonly<IDescription>>;
+  items: IDescription[];
 }
 
 export const fetchConcepts = (
@@ -37,6 +37,6 @@ export const fetchConcepts = (
   url.searchParams.set("conceptRefset", referenceSet);
   url.searchParams.set("term", query);
   return fetch(url.toString(), apiOptions).then((response) =>
-    handleResponse<Readonly<IConceptResult>>(response),
+    handleResponse<IConceptResult>(response),
   );
 };

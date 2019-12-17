@@ -13,7 +13,7 @@ interface ICodeSystem {
 }
 
 interface ICodeSystemResult {
-  items: Array<Readonly<ICodeSystem>>;
+  items: ICodeSystem[];
 }
 
 export const fetchCodeSystems = (branch: string, conceptId: string) => {
@@ -26,6 +26,6 @@ export const fetchCodeSystems = (branch: string, conceptId: string) => {
   );
   url.searchParams.set("referencedComponentId", conceptId);
   return fetch(url.toString(), apiOptions).then((response) =>
-    handleResponse<Readonly<ICodeSystemResult>>(response),
+    handleResponse<ICodeSystemResult>(response),
   );
 };
