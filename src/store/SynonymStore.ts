@@ -1,5 +1,5 @@
-import { apiOptions, handleResponse, snowstormUrl } from "../api";
-import { limit } from "../config";
+import { apiOptions, handleResponse } from "../api";
+import { limit, snowstormUrl } from "../config";
 
 interface IDescription {
   term: string;

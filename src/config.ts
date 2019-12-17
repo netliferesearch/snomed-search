@@ -1,4 +1,12 @@
+export const snowstormUrl = "https://snowstorm.rundberg.no";
+
+export const clinicalTrialsUrl =
+  "https://functions-hnf2-1-02.int-hn.nhn.no/api/v1/kliniskestudier";
+
+export const episerverUrl = "http://localhost:51338/sokeside/snomed";
+
 export const defaultBranch = "MAIN/SNOMEDCT-NO-EXTENDED";
+
 export const codeSystemBranch = "MAIN/ICPC2";
 
 export const codeSystems = [

@@ -1,5 +1,5 @@
-import { apiOptions, snowstormUrl, handleResponse } from "../api";
-import { codeSystems, limit } from "../config";
+import { apiOptions, handleResponse } from "../api";
+import { codeSystems, limit, snowstormUrl } from "../config";
 
 interface IFields {
   mapAdvice: string;

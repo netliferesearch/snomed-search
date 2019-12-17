@@ -1,4 +1,5 @@
-import { apiOptions, snowstormUrl, handleResponse } from "../api";
+import { apiOptions, handleResponse } from "../api";
+import { snowstormUrl } from "../config";
 
 export interface IBranch {
   path: string;
