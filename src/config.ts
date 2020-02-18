@@ -45,6 +45,14 @@ export const referenceSets = [
     id: "1271000202107",
     title: "Råd for god helse",
   },
+  {
+    id: "1291000202106",
+    title: "Infeksjonssykdommer følsomme for antibiotika",
+  },
+  {
+    id: "1311000202107",
+    title: "Virkestoff med antibakteriell eller antimykotisk effekt",
+  },
 ];
 
 export const limit = "10";
