@@ -8,7 +8,7 @@ import Error from "../components/Error";
 import Form from "../components/Form";
 import Header from "../components/Header";
 import Loading from "../components/Loading";
-import { defaultBranch } from "../config";
+import { defaultBranch, referenceSets } from "../config";
 import { fetchBranches, fetchConcepts, IConceptResult } from "../store";
 
 type SearchProps = {
@@ -66,10 +66,15 @@ const Search = ({ scope }: SearchProps) => {
   }, [branch, branchRequest, setBranch]);
 
   useEffect(() => {
+    const { id } = referenceSets.find((set) => set.title === scope);
+    setReferenceSet(id);
     if (scope === "disorder") {
-      setReferenceSet("1091000202103");
     } else if (scope === "audience") {
       setReferenceSet("1031000202104");
+    } else if (scope === "symptom") {
+      setReferenceSet("1051000202108");
+    } else if (scope === "treatment") {
+      setReferenceSet("1021000202101");
     } else {
       setReferenceSet("");
     }

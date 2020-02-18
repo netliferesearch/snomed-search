@@ -33,6 +33,18 @@ export const referenceSets = [
     id: "1091000202103",
     title: "Sykdommer",
   },
+  {
+    id: "1021000202101",
+    title: "Behandlinger",
+  },
+  {
+    id: "1051000202108",
+    title: "Symptomer/plager",
+  },
+  {
+    id: "1271000202107",
+    title: "Råd for god helse",
+  },
 ];
 
 export const limit = "10";

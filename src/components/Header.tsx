@@ -22,16 +22,6 @@ const Header = ({ scope }: HeaderProps) => {
                 All
               </Link>
             </li>
-            <li className={itemClassNames("disorder")}>
-              <Link className="nav-link" to="/?scope=disorder">
-                Disorder
-              </Link>
-            </li>
-            <li className={itemClassNames("audience")}>
-              <Link className="nav-link" to="/?scope=audience">
-                Audience
-              </Link>
-            </li>
             <li className={itemClassNames("trial")}>
               <Link className="nav-link" to="/?scope=trial">
                 Clinical Trials
