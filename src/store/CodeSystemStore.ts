@@ -16,16 +16,16 @@ interface ICodeSystemResult {
   items: ICodeSystem[];
 }
 
-export const fetchCodeSystems = (branch: string, conceptId: string) => {
-  const url = new URL(`browser/${branch}/members`, snowstormUrl);
-  url.searchParams.set("limit", limit);
-  url.searchParams.set("active", "true");
-  url.searchParams.set(
-    "referenceSet",
-    codeSystems.map(({ id }) => id).join(" OR "),
+export const fetchCodeSystems = (conceptId: string) =>
+  Promise.all(
+    codeSystems.map(({ id, branch }) => {
+      const url = new URL(`browser/${branch}/members`, snowstormUrl);
+      url.searchParams.set("limit", limit);
+      url.searchParams.set("active", "true");
+      url.searchParams.set("referenceSet", id);
+      url.searchParams.set("referencedComponentId", conceptId);
+      return fetch(url.toString(), apiOptions).then((response) =>
+        handleResponse<ICodeSystemResult>(response),
+      );
+    }),
   );
-  url.searchParams.set("referencedComponentId", conceptId);
-  return fetch(url.toString(), apiOptions).then((response) =>
-    handleResponse<ICodeSystemResult>(response),
-  );
-};

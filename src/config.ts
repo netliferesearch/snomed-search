@@ -7,16 +7,21 @@ export const episerverUrl = "http://localhost:51338/sokeside/snomed";
 
 export const defaultBranch = "MAIN/SNOMEDCT-NO-EXTENDED";
 
-export const codeSystemBranch = "MAIN/ICPC2";
-
 export const codeSystems = [
   {
+    branch: "MAIN/ICPC2",
     id: "450993002",
     title: "ICPC-2",
   },
   {
+    branch: "MAIN",
     id: "447562003",
     title: "ICD-10",
+  },
+  {
+    branch: "MAIN/TEST-MAP",
+    id: "1681000202107",
+    title: "ATC",
   },
 ];
 
