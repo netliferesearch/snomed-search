@@ -66,7 +66,7 @@ const Search = ({ scope }: SearchProps) => {
   }, [branch, branchRequest, setBranch]);
 
   useEffect(() => {
-    const { id } = referenceSets.find((set) => set.title === scope);
+    const { id } = referenceSets.find((set) => set.title === scope) || {};
     setReferenceSet(id);
     if (scope === "disorder") {
     } else if (scope === "audience") {
