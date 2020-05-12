@@ -21,6 +21,7 @@ We saw improved request throughput after downloading and compiling from source c
 
 ```
 wget https://github.com/IHTSDO/snowstorm/archive/4.5.1.zip
+unzip 4.5.1.zip
 cd snowstorm-4.5.1
 mvn clean package
 ```
