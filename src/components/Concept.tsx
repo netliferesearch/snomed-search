@@ -8,6 +8,7 @@ import Loading from "./Loading";
 import Synonym from "./Synonym";
 
 type ConceptProps = {
+  host: string;
   branch: string;
   preferredTerm: string;
   fullySpecifiedName: string;
@@ -16,13 +17,14 @@ type ConceptProps = {
 };
 
 const Concept = ({
+  host,
   branch,
   preferredTerm,
   fullySpecifiedName,
   conceptId,
   scope,
 }: ConceptProps) => {
-  const request = useAsync(fetchCodeSystems, [conceptId]);
+  const request = useAsync(fetchCodeSystems, [host, conceptId]);
 
   const codeSystemResultList = request.result || [];
 
@@ -31,6 +33,7 @@ const Concept = ({
       <div>
         <h2>{preferredTerm}</h2>
         <Synonym
+          host={host}
           branch={branch}
           conceptId={conceptId}
           preferredTerm={preferredTerm}

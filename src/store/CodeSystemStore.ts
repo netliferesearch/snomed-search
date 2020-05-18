@@ -1,5 +1,5 @@
 import { apiOptions, handleResponse } from "../api";
-import { codeSystems, limit, snowstormUrl } from "../config";
+import { codeSystems, limit } from "../config";
 
 interface IFields {
   mapAdvice: string;
@@ -16,10 +16,10 @@ interface ICodeSystemResult {
   items: ICodeSystem[];
 }
 
-export const fetchCodeSystems = (conceptId: string) =>
+export const fetchCodeSystems = (host: string, conceptId: string) =>
   Promise.all(
     codeSystems.map(({ id, branch }) => {
-      const url = new URL(`browser/${branch}/members`, snowstormUrl);
+      const url = new URL(`browser/${branch}/members`, host);
       url.searchParams.set("limit", limit);
       url.searchParams.set("active", "true");
       url.searchParams.set("referenceSet", id);

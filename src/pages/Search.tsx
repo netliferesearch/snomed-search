@@ -8,7 +8,7 @@ import Error from "../components/Error";
 import Form from "../components/Form";
 import Header from "../components/Header";
 import Loading from "../components/Loading";
-import { defaultBranch, referenceSets } from "../config";
+import { defaultBranch, referenceSets, hosts } from "../config";
 import { fetchBranches, fetchConcepts, IConceptResult } from "../store";
 
 type SearchProps = {
@@ -18,6 +18,7 @@ type SearchProps = {
 const useSearch = () => {
   // Handle the input text state
   const [query, setQuery] = useQueryParam("q", StringParam);
+  const [host, setHost] = useQueryParam("h", StringParam);
   const [branch, setBranch] = useQueryParam("b", StringParam);
   const [referenceSet, setReferenceSet] = useQueryParam("rs", StringParam);
 
@@ -25,19 +26,21 @@ const useSearch = () => {
   const debouncedSearch = useConstant(() => debounce(fetchConcepts, 500));
 
   const searchRequest = useAsync(async () => {
-    if (query && branch) {
-      return debouncedSearch(query, branch, referenceSet || "");
+    if (host && branch && query) {
+      return debouncedSearch(host, branch, query, referenceSet || "");
     }
     return ({} as any) as Readonly<IConceptResult>;
   }, [query, branch, referenceSet]); // Ensure a new request is made everytime the text changes (even if it's debounced)
 
   // Return everything needed for the hook consumer
   return {
+    host,
     branch,
     query,
     referenceSet,
     searchRequest,
     setBranch,
+    setHost,
     setQuery,
     setReferenceSet,
   };
@@ -47,13 +50,15 @@ const Search = ({ scope }: SearchProps) => {
   const {
     query,
     setQuery,
+    host,
     branch,
     referenceSet,
     setBranch,
+    setHost,
     searchRequest,
     setReferenceSet,
   } = useSearch();
-  const branchRequest = useAsync(fetchBranches, []);
+  const branchRequest = useAsync(fetchBranches, [host || hosts[0]]);
 
   useEffect(() => {
     if (branchRequest.result && !branch) {
@@ -80,10 +85,19 @@ const Search = ({ scope }: SearchProps) => {
     }
   }, [setReferenceSet, scope]);
 
+  useEffect(() => {
+    if (!host) {
+      setHost(hosts[0]);
+    }
+  }, [host, setHost]);
+
   const handleFormSubmit = (event: FormEvent) => {
     event.preventDefault();
   };
 
+  const handleHostChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    setHost(event.target.value);
+  };
   const handleBranchChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setBranch(event.target.value);
   };
@@ -108,9 +122,11 @@ const Search = ({ scope }: SearchProps) => {
           {!branchRequest.loading && !branchRequest.error && (
             <Form
               handleFormSubmit={handleFormSubmit}
+              handleHostChange={handleHostChange}
               handleBranchChange={handleBranchChange}
               handleReferenceSetChange={handleReferenceSetChange}
               handleQueryChange={handleQueryChange}
+              hosts={hosts}
               branches={branches}
               referenceSet={referenceSet || ""}
               query={query || ""}
@@ -143,6 +159,7 @@ const Search = ({ scope }: SearchProps) => {
               }) => (
                 <li key={conceptId} className="list-group-item mb-3">
                   <Concept
+                    host={host || hosts[0]}
                     branch={branch || ""}
                     preferredTerm={preferredTerm}
                     fullySpecifiedName={fullySpecifiedName}

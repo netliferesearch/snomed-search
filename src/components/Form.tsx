@@ -5,9 +5,11 @@ import { IBranch } from "../store";
 
 type FormProps = {
   handleFormSubmit: (event: FormEvent<HTMLFormElement>) => void;
+  handleHostChange: (event: ChangeEvent<HTMLSelectElement>) => void;
   handleBranchChange: (event: ChangeEvent<HTMLSelectElement>) => void;
   handleReferenceSetChange: (event: ChangeEvent<HTMLSelectElement>) => void;
   handleQueryChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  hosts: string[];
   branches: IBranch[];
   referenceSet: string;
   query: string;
@@ -16,20 +18,40 @@ type FormProps = {
 
 const Form = ({
   handleFormSubmit,
+  handleHostChange,
   handleBranchChange,
   handleReferenceSetChange,
   handleQueryChange,
+  hosts,
   branches,
   scope,
   referenceSet,
   query,
 }: FormProps) => {
   const [branch] = useQueryParam("b", StringParam);
+  const [host] = useQueryParam("h", StringParam);
   return (
     <form onSubmit={handleFormSubmit}>
       <div className="form-row">
         {!scope && (
           <>
+            <div className="col-12">
+              <div className="form-group">
+                <label htmlFor="host">Host</label>
+                <select
+                  id="host"
+                  className="form-control"
+                  value={host}
+                  onChange={handleHostChange}
+                >
+                  {hosts.map((hostname) => (
+                    <option value={hostname} key={hostname}>
+                      {hostname}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
             <div className="col-md-4">
               <div className="form-group mb-md-0">
                 <label htmlFor="branch">Branch</label>

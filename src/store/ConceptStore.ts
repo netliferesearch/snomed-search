@@ -1,5 +1,5 @@
 import { apiOptions, handleResponse } from "../api";
-import { limit, snowstormUrl } from "../config";
+import { limit } from "../config";
 
 interface ITerm {
   term: string;
@@ -21,11 +21,12 @@ export interface IConceptResult {
 }
 
 export const fetchConcepts = (
-  query: string,
+  host: string,
   branch: string,
+  query: string,
   referenceSet: string,
 ) => {
-  const url = new URL(`browser/${branch}/descriptions`, snowstormUrl);
+  const url = new URL(`browser/${branch}/descriptions`, host);
   url.searchParams.set("limit", limit);
   url.searchParams.set("active", "true");
   url.searchParams.set("groupByConcept", "true");

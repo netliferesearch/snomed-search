@@ -4,13 +4,14 @@ import { languages } from "../config";
 import { fetchSynonyms } from "../store";
 
 type SynonymProps = {
+  host: string;
   branch: string;
   preferredTerm: string;
   conceptId: string;
 };
 
-const Synonym = ({ branch, preferredTerm, conceptId }: SynonymProps) => {
-  const request = useAsync(fetchSynonyms, [branch, conceptId]);
+const Synonym = ({ host, branch, preferredTerm, conceptId }: SynonymProps) => {
+  const request = useAsync(fetchSynonyms, [host, branch, conceptId]);
 
   const { items: synonyms = [] } = request.result || {};
 

@@ -1,5 +1,4 @@
 import { apiOptions, handleResponse } from "../api";
-import { snowstormUrl } from "../config";
 
 export interface IBranch {
   path: string;
@@ -8,8 +7,8 @@ export interface IBranch {
 
 type Branches = IBranch[];
 
-export const fetchBranches = () => {
-  const url = new URL(`branches`, snowstormUrl);
+export const fetchBranches = (host: string) => {
+  const url = new URL(`branches`, host);
   return fetch(url.toString(), apiOptions)
     .then((response) => handleResponse<Branches>(response))
     .then((branches: Branches) =>
