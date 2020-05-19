@@ -34,19 +34,19 @@ export const referenceSets = [
     title: "[Not specified]",
   },
   {
-    id: "1031000202104",
+    id: "1981000202104",
     title: "Målgruppe",
   },
   {
-    id: "1091000202103",
+    id: "1991000202102",
     title: "Sykdommer",
   },
   {
-    id: "1021000202101",
+    id: "1971000202101",
     title: "Behandlinger",
   },
   {
-    id: "1051000202108",
+    id: "2001000202104",
     title: "Symptomer/plager",
   },
   {
