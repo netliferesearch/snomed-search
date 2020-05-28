@@ -22,8 +22,8 @@ export const codeSystems = [
     title: "ICD-10",
   },
   {
-    branch: "MAIN/TEST-MAP",
-    id: "1681000202107",
+    branch: "MAIN/SNOMEDCT-NO-2",
+    id: "1234567890",
     title: "ATC",
   },
 ];
