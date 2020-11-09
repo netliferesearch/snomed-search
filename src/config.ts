@@ -23,7 +23,7 @@ export const codeSystems = [
   },
   {
     branch: "MAIN/SNOMEDCT-NO-2",
-    id: "1234567890",
+    id: "2041000202101",
     title: "ATC",
   },
 ];
