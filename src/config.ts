@@ -22,7 +22,7 @@ export const codeSystems = [
     title: "ICD-10",
   },
   {
-    branch: "MAIN/SNOMEDCT-NO-2",
+    branch: "MAIN/MAP",
     id: "2041000202101",
     title: "ATC",
   },
