@@ -9,7 +9,7 @@ export const apiOptions: RequestInit = {
   method: "GET",
 };
 
-export const handleResponse = <T>(response: Response) =>
+export const handleResponse = <T>(response: Response): Promise<T> =>
   response.ok
     ? (response.json() as Promise<T>)
     : Promise.reject(new Error("Failed to load data from server"));

@@ -3,12 +3,13 @@ import React, { ChangeEvent, FormEvent, useEffect } from "react";
 import { useAsync } from "react-async-hook";
 import useConstant from "use-constant";
 import { StringParam, useQueryParam } from "use-query-params";
+
 import Concept from "../components/Concept";
 import Error from "../components/Error";
 import Form from "../components/Form";
 import Header from "../components/Header";
 import Loading from "../components/Loading";
-import { defaultBranch, referenceSets, hosts } from "../config";
+import { defaultBranch, hosts, referenceSets } from "../config";
 import { fetchBranches, fetchConcepts, IConceptResult } from "../store";
 
 type SearchProps = {
@@ -29,7 +30,7 @@ const useSearch = () => {
     if (host && branch && query) {
       return debouncedSearch(host, branch, query, referenceSet || "");
     }
-    return ({} as any) as Readonly<IConceptResult>;
+    return ({} as unknown) as Readonly<IConceptResult>;
   }, [query, branch, referenceSet]); // Ensure a new request is made everytime the text changes (even if it's debounced)
 
   // Return everything needed for the hook consumer
@@ -46,7 +47,7 @@ const useSearch = () => {
   };
 };
 
-const Search = ({ scope }: SearchProps) => {
+const Search: React.FunctionComponent<SearchProps> = ({ scope }) => {
   const {
     query,
     setQuery,
@@ -73,8 +74,7 @@ const Search = ({ scope }: SearchProps) => {
   useEffect(() => {
     const { id } = referenceSets.find((set) => set.title === scope) || {};
     setReferenceSet(id);
-    if (scope === "disorder") {
-    } else if (scope === "audience") {
+    if (scope === "audience") {
       setReferenceSet("1031000202104");
     } else if (scope === "symptom") {
       setReferenceSet("1051000202108");
@@ -167,7 +167,7 @@ const Search = ({ scope }: SearchProps) => {
                     scope={scope}
                   />
                 </li>
-              ),
+              )
             )}
           </ul>
         </div>

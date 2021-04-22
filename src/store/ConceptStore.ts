@@ -24,8 +24,8 @@ export const fetchConcepts = (
   host: string,
   branch: string,
   query: string,
-  referenceSet: string,
-) => {
+  referenceSet: string
+): Promise<IConceptResult> => {
   const url = new URL(`browser/${branch}/descriptions`, host);
   url.searchParams.set("limit", limit);
   url.searchParams.set("active", "true");
@@ -38,6 +38,6 @@ export const fetchConcepts = (
   url.searchParams.set("conceptRefset", referenceSet);
   url.searchParams.set("term", query);
   return fetch(url.toString(), apiOptions).then((response) =>
-    handleResponse<IConceptResult>(response),
+    handleResponse<IConceptResult>(response)
   );
 };

@@ -15,13 +15,13 @@ interface ISynonymResult {
 export const fetchSynonyms = (
   host: string,
   branch: string,
-  conceptId: string,
-) => {
+  conceptId: string
+): Promise<ISynonymResult> => {
   const url = new URL(`${branch}/descriptions`, host);
   url.searchParams.set("concept", conceptId);
   url.searchParams.set("offset", "0");
   url.searchParams.set("limit", limit);
   return fetch(url.toString(), apiOptions).then((response) =>
-    handleResponse<ISynonymResult>(response),
+    handleResponse<ISynonymResult>(response)
   );
 };

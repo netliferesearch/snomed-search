@@ -1,5 +1,6 @@
 import React from "react";
 import { useAsync } from "react-async-hook";
+
 import { languages } from "../config";
 import { fetchSynonyms } from "../store";
 
@@ -10,7 +11,12 @@ type SynonymProps = {
   conceptId: string;
 };
 
-const Synonym = ({ host, branch, preferredTerm, conceptId }: SynonymProps) => {
+const Synonym: React.FunctionComponent<SynonymProps> = ({
+  host,
+  branch,
+  preferredTerm,
+  conceptId,
+}) => {
   const request = useAsync(fetchSynonyms, [host, branch, conceptId]);
 
   const { items: synonyms = [] } = request.result || {};

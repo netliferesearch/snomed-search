@@ -1,12 +1,15 @@
 import React from "react";
 import { useAsync } from "react-async-hook";
+
 import { fetchClinicalTrials } from "../store";
 
 type ClinicalTrialProps = {
   conceptId: string;
 };
 
-const ClinicalTrial = ({ conceptId }: ClinicalTrialProps) => {
+const ClinicalTrial: React.FunctionComponent<ClinicalTrialProps> = ({
+  conceptId,
+}) => {
   const request = useAsync(fetchClinicalTrials, [conceptId]);
 
   const trials = request.result || [];
@@ -36,7 +39,7 @@ const ClinicalTrial = ({ conceptId }: ClinicalTrialProps) => {
               <dd>{conductedBy}</dd>
             </dl>
           </div>
-        ),
+        )
       )}
     </div>
   );

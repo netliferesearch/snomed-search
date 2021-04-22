@@ -1,5 +1,6 @@
 import React, { ChangeEvent, FormEvent } from "react";
 import { StringParam, useQueryParam } from "use-query-params";
+
 import { referenceSets } from "../config";
 import { IBranch } from "../store";
 
@@ -16,7 +17,7 @@ type FormProps = {
   scope: string;
 };
 
-const Form = ({
+const Form: React.FunctionComponent<FormProps> = ({
   handleFormSubmit,
   handleHostChange,
   handleBranchChange,
@@ -27,7 +28,7 @@ const Form = ({
   scope,
   referenceSet,
   query,
-}: FormProps) => {
+}) => {
   const [branch] = useQueryParam("b", StringParam);
   const [host] = useQueryParam("h", StringParam);
   return (
@@ -41,7 +42,7 @@ const Form = ({
                 <select
                   id="host"
                   className="form-control"
-                  value={host}
+                  value={host || ""}
                   onChange={handleHostChange}
                 >
                   {hosts.map((hostname) => (
@@ -58,7 +59,7 @@ const Form = ({
                 <select
                   id="branch"
                   className="form-control"
-                  value={branch}
+                  value={branch || ""}
                   onChange={handleBranchChange}
                 >
                   {branches.map(({ path }) => (

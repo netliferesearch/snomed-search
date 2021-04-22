@@ -16,7 +16,10 @@ interface ICodeSystemResult {
   items: ICodeSystem[];
 }
 
-export const fetchCodeSystems = (host: string, conceptId: string) =>
+export const fetchCodeSystems = (
+  host: string,
+  conceptId: string
+): Promise<ICodeSystemResult[]> =>
   Promise.all(
     codeSystems.map(({ id, branch }) => {
       const url = new URL(`browser/${branch}/members`, host);
@@ -25,7 +28,7 @@ export const fetchCodeSystems = (host: string, conceptId: string) =>
       url.searchParams.set("referenceSet", id);
       url.searchParams.set("referencedComponentId", conceptId);
       return fetch(url.toString(), apiOptions).then((response) =>
-        handleResponse<ICodeSystemResult>(response),
+        handleResponse<ICodeSystemResult>(response)
       );
-    }),
+    })
   );

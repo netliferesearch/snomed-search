@@ -8,10 +8,10 @@ interface IHelsenorgePage {
 
 type Pages = IHelsenorgePage[];
 
-export const fetchPages = (conceptId: string) => {
+export const fetchPages = (conceptId: string): Promise<Pages> => {
   const url = new URL("http://localhost:51338/sokeside/snomed");
   url.searchParams.set("id", conceptId);
   return fetch(url.toString(), apiOptions).then((response) =>
-    handleResponse<Pages>(response),
+    handleResponse<Pages>(response)
   );
 };

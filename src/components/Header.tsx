@@ -5,7 +5,7 @@ type HeaderProps = {
   scope: string;
 };
 
-const Header = ({ scope }: HeaderProps) => {
+const Header: React.FunctionComponent<HeaderProps> = ({ scope }) => {
   const itemClassNames = (link: string) => {
     if (link === scope) {
       return "nav-item active";

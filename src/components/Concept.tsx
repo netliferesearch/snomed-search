@@ -1,5 +1,6 @@
 import React from "react";
 import { useAsync } from "react-async-hook";
+
 import { codeSystems } from "../config";
 import { fetchCodeSystems } from "../store";
 import ClinicalTrial from "./ClinicalTrial";
@@ -16,14 +17,14 @@ type ConceptProps = {
   scope: string;
 };
 
-const Concept = ({
+const Concept: React.FunctionComponent<ConceptProps> = ({
   host,
   branch,
   preferredTerm,
   fullySpecifiedName,
   conceptId,
   scope,
-}: ConceptProps) => {
+}) => {
   const request = useAsync(fetchCodeSystems, [host, conceptId]);
 
   const codeSystemResultList = request.result || [];
@@ -64,8 +65,8 @@ const Concept = ({
                 </dd>
               </dl>
             );
-          },
-        ),
+          }
+        )
       )}
     </div>
   );

@@ -1,12 +1,15 @@
 import React from "react";
 import { useAsync } from "react-async-hook";
+
 import { fetchPages } from "../store";
 
 type HelsenorgeProps = {
   conceptId: string;
 };
 
-const Helsenorge = ({ conceptId }: HelsenorgeProps) => {
+const Helsenorge: React.FunctionComponent<HelsenorgeProps> = ({
+  conceptId,
+}) => {
   const request = useAsync(fetchPages, [conceptId]);
   const items = request.result || [];
 

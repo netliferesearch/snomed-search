@@ -7,11 +7,11 @@ export interface IBranch {
 
 type Branches = IBranch[];
 
-export const fetchBranches = (host: string) => {
+export const fetchBranches = (host: string): Promise<IBranch[]> => {
   const url = new URL(`branches`, host);
   return fetch(url.toString(), apiOptions)
     .then((response) => handleResponse<Branches>(response))
     .then((branches: Branches) =>
-      branches.filter(({ containsContent }) => containsContent),
+      branches.filter(({ containsContent }) => containsContent)
     );
 };

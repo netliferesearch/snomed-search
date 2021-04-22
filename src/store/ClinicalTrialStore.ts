@@ -12,10 +12,10 @@ interface ITrial {
 
 type Trials = ITrial[];
 
-export const fetchClinicalTrials = (conceptId: string) => {
+export const fetchClinicalTrials = (conceptId: string): Promise<ITrial[]> => {
   const url = new URL(clinicalTrialsUrl);
   url.searchParams.append("sctid", conceptId);
   return fetch(url.toString()).then((response) =>
-    handleResponse<Trials>(response),
+    handleResponse<Trials>(response)
   );
 };
