@@ -1,19 +1,12 @@
 module.exports = {
   root: true,
-  parser: "@typescript-eslint/parser",
-  plugins: ["jest", "simple-import-sort", "import", "@typescript-eslint"],
-  env: {
-    es6: true,
-    node: true,
-    jest: true,
-  },
+  plugins: ["import", "simple-import-sort"],
   extends: [
-    "eslint:recommended",
-    "plugin:jest/recommended",
+    "react-app",
+    "react-app/jest",
     "plugin:import/errors",
     "plugin:import/warnings",
     "plugin:import/typescript",
-    "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended",
   ],
   rules: {
