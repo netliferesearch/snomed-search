@@ -1,43 +1,52 @@
-import { apiOptions, handleResponse } from "../api";
-import { limit } from "../config";
+import { SnowstormConfig } from "../config";
+import { LIMIT } from "../constants";
+import { createHeaders, handleResponse } from "../utils/api";
 
-interface ITerm {
+interface Term {
   term: string;
 }
 
-interface IConcept {
+interface Concept {
   conceptId: string;
-  fsn: Readonly<ITerm>;
-  pt: Readonly<ITerm>;
+  fsn: Readonly<Term>;
+  pt: Readonly<Term>;
 }
 
-interface IDescription {
-  concept: Readonly<IConcept>;
+interface Description {
+  concept: Readonly<Concept>;
 }
 
-export interface IConceptResult {
+export interface ConceptResponse {
   totalElements: number;
-  items: IDescription[];
+  items: Description[];
 }
 
-export const fetchConcepts = (
-  host: string,
+export const fetchConcepts = async (
+  hostConfig: SnowstormConfig,
   branch: string,
   query: string,
-  referenceSet: string,
-) => {
-  const url = new URL(`browser/${branch}/descriptions`, host);
+  referenceSet = "",
+  offset = "0",
+  limit = LIMIT
+): Promise<ConceptResponse> => {
+  const url = new URL(`browser/${branch}/descriptions`, hostConfig.hostname);
+  url.searchParams.set("offset", offset);
   url.searchParams.set("limit", limit);
   url.searchParams.set("active", "true");
   url.searchParams.set("groupByConcept", "true");
-  url.searchParams.set("language", "no");
-  url.searchParams.append("language", "nb");
-  url.searchParams.append("language", "nn");
-  url.searchParams.append("language", "en");
+  if (hostConfig.languages) {
+    url.searchParams.set("language", hostConfig.languages[0]);
+    hostConfig.languages
+      .slice(1)
+      .forEach((language) => url.searchParams.append("language", language));
+  }
   url.searchParams.set("conceptActive", "true");
   url.searchParams.set("conceptRefset", referenceSet);
   url.searchParams.set("term", query);
-  return fetch(url.toString(), apiOptions).then((response) =>
-    handleResponse<IConceptResult>(response),
-  );
+  const response = await fetch(url.toString(), {
+    method: "GET",
+    headers: createHeaders(hostConfig.languages),
+  });
+
+  return await handleResponse<ConceptResponse>(response);
 };

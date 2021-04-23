@@ -1,0 +1,11 @@
+{
+  "form.branch": "Branch",
+  "form.host": "Host",
+  "form.referenceset": "Reference set",
+  "form.search": "Search",
+  "navigation.all": "All",
+  "results.hitWithCount_plural": "{{count}} hits",
+  "results.hitWithCount": "{{count}} hit",
+  "snomedct": "Snomed CT",
+  "status.loading": "Loading..."
+}

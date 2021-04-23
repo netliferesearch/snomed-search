@@ -3,34 +3,36 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@types/jest": "24.0.19",
-    "@types/lodash": "^4.14.144",
-    "@types/node": "12.7.12",
-    "@types/react": "16.9.7",
-    "@types/react-dom": "16.9.2",
-    "@types/react-router-dom": "^5.1.0",
     "awesome-debounce-promise": "^2.1.0",
+    "classnames": "^2.3.1",
+    "i18next": "^20.2.1",
     "lodash.debounce": "^4.0.8",
-    "react": "^16.10.2",
-    "react-async-hook": "^3.6.1",
-    "react-dom": "^16.10.2",
-    "react-router-dom": "^5.1.2",
-    "react-scripts": "3.2.0",
-    "tslint": "^5.20.0",
-    "tslint-react": "^4.1.0",
-    "typescript": "3.6.4",
-    "use-constant": "^1.0.0",
-    "use-query-params": "^0.4.3"
+    "query-string": "^7.0.0",
+    "react": "^17.0.2",
+    "react-async-hook": "^3.6.2",
+    "react-dom": "^17.0.2",
+    "react-i18next": "^11.8.13",
+    "react-router-dom": "^5.2.0",
+    "use-constant": "^1.1.0",
+    "use-query-params": "^1.2.2"
   },
   "scripts": {
+    "commit": "cz",
     "start": "react-scripts start",
+    "prebuild": "npm-run-all clean validate",
+    "clean": "rimraf build",
     "build": "react-scripts build",
     "deploy": "netlify deploy --prod",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
+    "test": "react-scripts test --watchAll=false",
+    "test:watch": "react-scripts test --watchAll=true",
+    "eject": "react-scripts eject",
+    "prepare": "husky install",
+    "validate": "npm-run-all style:js type-check test",
+    "style:js": "cross-env NODE_ENV=production eslint src/**/*.{js,jsx,ts,tsx}",
+    "prettier": "prettier --check src/**/*.{js,jsx,ts,tsx,css,scss}",
+    "prettier:fix": "prettier --write src/**/*.{js,jsx,ts,tsx,css,scss}",
+    "pretype-check": "tsc -v",
+    "type-check": "tsc --noEmit"
   },
   "browserslist": {
     "production": [
@@ -44,5 +46,55 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@commitlint/cli": "^12.1.1",
+    "@commitlint/config-conventional": "^12.1.1",
+    "@testing-library/dom": "^7.30.4",
+    "@testing-library/jest-dom": "^5.12.0",
+    "@testing-library/react": "^11.2.6",
+    "@testing-library/user-event": "^13.1.5",
+    "@types/jest": "26.0.22",
+    "@types/lodash": "^4.14.168",
+    "@types/node": "14.14.41",
+    "@types/react": "17.0.3",
+    "@types/react-dom": "17.0.3",
+    "@types/react-router-dom": "^5.1.7",
+    "commitizen": "^4.2.3",
+    "cross-env": "^7.0.3",
+    "eslint": "^7.24.0",
+    "eslint-config-prettier": "^8.2.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jest": "^24.3.5",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "eslint-plugin-testing-library": "^4.1.1",
+    "husky": "^6.0.0",
+    "lint-staged": "^10.5.4",
+    "msw": "^0.28.2",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.2.1",
+    "react-scripts": "4.0.3",
+    "typescript": "4.2.4"
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "yarn": ">=1.0.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": "eslint --cache --fix",
+    "*.{js,jsx,ts,tsx,css,scss,md}": "prettier --write"
+  },
+  "msw": {
+    "workerDirectory": "public"
+  }
 }

@@ -1,17 +1,22 @@
-import { apiOptions, handleResponse } from "../api";
+import { SnowstormConfig } from "../config";
+import { createHeaders, handleResponse } from "../utils/api";
 
-export interface IBranch {
+export interface Branch {
   path: string;
   containsContent: boolean;
 }
 
-type Branches = IBranch[];
+type BranchResponse = Branch[];
 
-export const fetchBranches = (host: string) => {
-  const url = new URL(`branches`, host);
-  return fetch(url.toString(), apiOptions)
-    .then((response) => handleResponse<Branches>(response))
-    .then((branches: Branches) =>
-      branches.filter(({ containsContent }) => containsContent),
-    );
+export const fetchBranches = async (
+  hostConfig: SnowstormConfig
+): Promise<Branch[]> => {
+  const url = new URL("branches", hostConfig.hostname);
+  const response = await fetch(url.toString(), {
+    method: "GET",
+    headers: createHeaders(hostConfig.languages),
+  });
+  const branchList = await handleResponse<BranchResponse>(response);
+
+  return branchList.filter(({ containsContent }) => containsContent);
 };
