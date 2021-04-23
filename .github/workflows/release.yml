@@ -57,6 +57,7 @@ jobs:
 
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v1.1
+        if: ${{ steps.changelog.outputs.skipped == 'false' }}
         with:
           publish-dir: "./build"
           production-branch: master
