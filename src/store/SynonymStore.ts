@@ -13,7 +13,7 @@ interface SynonymResponse {
   items: Description[];
 }
 
-export const fetchSynonyms = (
+export const fetchSynonyms = async (
   hostConfig: SnowstormConfig,
   branch: string,
   conceptId: string,
@@ -24,8 +24,10 @@ export const fetchSynonyms = (
   url.searchParams.set("concept", conceptId);
   url.searchParams.set("offset", offset);
   url.searchParams.set("limit", limit);
-  return fetch(url.toString(), {
+  const response = await fetch(url.toString(), {
     method: "GET",
     headers: createHeaders(hostConfig.languages),
-  }).then((response) => handleResponse<SynonymResponse>(response));
+  });
+
+  return await handleResponse<SynonymResponse>(response);
 };

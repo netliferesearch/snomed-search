@@ -113,7 +113,7 @@ const Search: React.FunctionComponent = () => {
               handleBranchChange={handleBranchChange}
               handleReferenceSetChange={handleReferenceSetChange}
               handleQueryChange={handleQueryChange}
-              hosts={hostnames}
+              hostnames={hostnames}
               referenceSets={hostConfig.referenceSets}
               branches={branches}
               referenceSet={referenceSet}

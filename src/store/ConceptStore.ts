@@ -21,7 +21,7 @@ export interface ConceptResponse {
   items: Description[];
 }
 
-export const fetchConcepts = (
+export const fetchConcepts = async (
   hostConfig: SnowstormConfig,
   branch: string,
   query: string,
@@ -43,8 +43,10 @@ export const fetchConcepts = (
   url.searchParams.set("conceptActive", "true");
   url.searchParams.set("conceptRefset", referenceSet);
   url.searchParams.set("term", query);
-  return fetch(url.toString(), {
+  const response = await fetch(url.toString(), {
     method: "GET",
     headers: createHeaders(hostConfig.languages),
-  }).then((response) => handleResponse<ConceptResponse>(response));
+  });
+
+  return await handleResponse<ConceptResponse>(response);
 };

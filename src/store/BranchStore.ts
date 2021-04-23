@@ -8,16 +8,15 @@ export interface Branch {
 
 type BranchResponse = Branch[];
 
-export const fetchBranches = (
+export const fetchBranches = async (
   hostConfig: SnowstormConfig
 ): Promise<Branch[]> => {
-  const url = new URL(`branches`, hostConfig.hostname);
-  return fetch(url.toString(), {
+  const url = new URL("branches", hostConfig.hostname);
+  const response = await fetch(url.toString(), {
     method: "GET",
     headers: createHeaders(hostConfig.languages),
-  })
-    .then((response) => handleResponse<BranchResponse>(response))
-    .then((branchList: BranchResponse) =>
-      branchList.filter(({ containsContent }) => containsContent)
-    );
+  });
+  const branchList = await handleResponse<BranchResponse>(response);
+
+  return branchList.filter(({ containsContent }) => containsContent);
 };

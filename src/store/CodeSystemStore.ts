@@ -23,18 +23,21 @@ export const fetchCodeSystems = (
 ): Promise<CodeSystemResponse[]> => {
   if (hostConfig.codeSystems) {
     return Promise.all(
-      hostConfig.codeSystems.map(({ id, branch }) => {
+      hostConfig.codeSystems.map(async ({ id, branch }) => {
         const url = new URL(`browser/${branch}/members`, hostConfig.hostname);
         url.searchParams.set("limit", limit);
         url.searchParams.set("active", "true");
         url.searchParams.set("referenceSet", id);
         url.searchParams.set("referencedComponentId", conceptId);
-        return fetch(url.toString(), {
+        const response = await fetch(url.toString(), {
           method: "GET",
           headers: createHeaders(hostConfig.languages),
-        }).then((response) => handleResponse<CodeSystemResponse>(response));
+        });
+
+        return await handleResponse<CodeSystemResponse>(response);
       })
     );
   }
+
   return Promise.reject("Host configuration must include codesystems");
 };

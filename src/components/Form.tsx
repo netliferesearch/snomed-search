@@ -10,7 +10,7 @@ interface FormProps {
   handleBranchChange: (event: ChangeEvent<HTMLSelectElement>) => void;
   handleReferenceSetChange: (event: ChangeEvent<HTMLSelectElement>) => void;
   handleQueryChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  hosts: string[];
+  hostnames: string[];
   branches: Branch[];
   referenceSet: string;
   query: string;
@@ -25,7 +25,7 @@ const Form: React.FunctionComponent<FormProps> = ({
   handleBranchChange,
   handleReferenceSetChange,
   handleQueryChange,
-  hosts,
+  hostnames,
   branches,
   referenceSet,
   query,
@@ -48,7 +48,7 @@ const Form: React.FunctionComponent<FormProps> = ({
                 value={hostname}
                 onChange={handleHostChange}
               >
-                {hosts.map((hostname) => (
+                {hostnames.map((hostname) => (
                   <option value={hostname} key={hostname}>
                     {hostname}
                   </option>
