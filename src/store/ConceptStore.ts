@@ -6,14 +6,14 @@ interface Term {
   term: string;
 }
 
-interface Concept {
+export interface Concept {
   conceptId: string;
-  fsn: Readonly<Term>;
-  pt: Readonly<Term>;
+  fsn: Term;
+  pt: Term;
 }
 
 interface Description {
-  concept: Readonly<Concept>;
+  concept: Concept;
 }
 
 export interface ConceptResponse {

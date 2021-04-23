@@ -9,7 +9,7 @@ interface Fields {
 interface CodeSystem {
   internalId: string;
   refsetId: string;
-  additionalFields: Readonly<Fields>;
+  additionalFields: Fields;
 }
 
 interface CodeSystemResponse {

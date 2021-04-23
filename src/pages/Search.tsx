@@ -31,7 +31,7 @@ const useSearch = (config: SnomedSearchConfig) => {
     if (hostname && branch && query) {
       return debouncedSearch(hostConfig, branch, query, referenceSet);
     }
-    return ({} as unknown) as Readonly<ConceptResponse>;
+    return ({} as unknown) as ConceptResponse;
   }, [query, branch, referenceSet]); // Ensure a new request is made everytime the text changes (even if it's debounced)
 
   // Return everything needed for the hook consumer
@@ -122,27 +122,17 @@ const Search: React.FunctionComponent = () => {
           {searchRequest.loading && <Loading size={LoadingSize.Large} />}
           {searchRequest.error && <Error>{searchRequest.error.message}</Error>}
           {!searchRequest.loading && <Hits totalElements={totalElements} />}
-          <ul className="list-group">
-            {items.map(
-              ({
-                concept: {
-                  conceptId,
-                  fsn: { term: fullySpecifiedName },
-                  pt: { term: preferredTerm },
-                },
-              }) => (
-                <li key={conceptId} className="list-group-item mb-3">
-                  <Concept
-                    hostConfig={hostConfig}
-                    branch={branch}
-                    preferredTerm={preferredTerm}
-                    fullySpecifiedName={fullySpecifiedName}
-                    conceptId={conceptId}
-                  />
-                </li>
-              )
-            )}
-          </ul>
+          <ol className="list-unstyled">
+            {items.map(({ concept }) => (
+              <li key={concept.conceptId} className="card p-3 mb-3">
+                <Concept
+                  hostConfig={hostConfig}
+                  branch={branch}
+                  concept={concept}
+                />
+              </li>
+            ))}
+          </ol>
         </div>
       </div>
     </div>

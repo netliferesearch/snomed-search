@@ -8,7 +8,7 @@ interface HitsProps {
 const Hits: React.FunctionComponent<HitsProps> = ({ totalElements }) => {
   const { t } = useTranslation();
   return (
-    <p className="mb-1">
+    <p className="mb-3">
       {t("results.hitWithCount", { count: totalElements })}
     </p>
   );
