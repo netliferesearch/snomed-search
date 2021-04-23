@@ -9,6 +9,7 @@ import Concept from "../components/Concept";
 import Error from "../components/Error";
 import Form from "../components/Form";
 import Header from "../components/Header";
+import Hits from "../components/HIts";
 import Loading, { LoadingSize } from "../components/Loading";
 import config, { SnomedSearchConfig } from "../config";
 import { DEBOUNCE_WAIT_MS, QUERY_PARAMS_CONFIG } from "../constants";
@@ -122,11 +123,7 @@ const Search: React.FunctionComponent = () => {
         <div className="col">
           {searchRequest.loading && <Loading size={LoadingSize.Large} />}
           {searchRequest.error && <Error>{searchRequest.error.message}</Error>}
-          {totalElements > 0 && (
-            <p className="mb-1">
-              {t("results.hitWithCount", { count: totalElements })}
-            </p>
-          )}
+          {!searchRequest.loading && <Hits totalElements={totalElements} />}
           <ul className="list-group">
             {items.map(
               ({
