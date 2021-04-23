@@ -17,7 +17,7 @@
   "scripts": {
     "commit": "cz",
     "start": "react-scripts start",
-    "prebuild": "npm-run-all clean",
+    "prebuild": "npm-run-all clean validate",
     "clean": "rimraf build",
     "build": "react-scripts build",
     "deploy": "netlify deploy --prod",
