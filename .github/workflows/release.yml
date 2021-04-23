@@ -55,9 +55,20 @@ jobs:
           release_name: ${{ steps.changelog.outputs.tag }}
           body: ${{ steps.changelog.outputs.clean_changelog }}
 
-      - name: Trigger deploy to production
-        uses: fjogeleit/http-request-action@v1.8.0
-        if: ${{ steps.changelog.outputs.skipped == 'false' }}
+      - name: Deploy to Netlify
+        uses: nwtgck/actions-netlify@v1.1
         with:
-          url: ${{ secrets.NETLIFY_DEPLOY_URL }}
-          method: POST
+          publish-dir: "./build"
+          production-branch: master
+          production-deploy: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: "Deploy from GitHub Actions"
+          enable-pull-request-comment: false
+          enable-commit-comment: false
+          overwrites-pull-request-comment: false
+          overwrites-pull-request-comment: false
+          netlify-config-path: ./netlify.toml
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        timeout-minutes: 1
