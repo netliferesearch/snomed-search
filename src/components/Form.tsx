@@ -81,6 +81,7 @@ const Form: React.FunctionComponent<FormProps> = ({
                 value={referenceSet}
                 onChange={handleInputChange}
               >
+                <option value="">{t("form.notselected")}</option>
                 {referenceSets.map(({ id, title }) => (
                   <option value={id} key={id}>
                     {title}

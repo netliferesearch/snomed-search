@@ -51,10 +51,6 @@ const config: SnomedSearchConfig = {
       ],
       referenceSets: [
         {
-          id: "",
-          title: "[Not specified]",
-        },
-        {
           id: "1981000202104",
           title: "Målgruppe",
         },
