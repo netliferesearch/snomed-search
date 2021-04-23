@@ -6,10 +6,9 @@ import { Branch } from "../store";
 
 interface FormProps {
   handleFormSubmit: (event: FormEvent<HTMLFormElement>) => void;
-  handleHostChange: (event: ChangeEvent<HTMLSelectElement>) => void;
-  handleBranchChange: (event: ChangeEvent<HTMLSelectElement>) => void;
-  handleReferenceSetChange: (event: ChangeEvent<HTMLSelectElement>) => void;
-  handleQueryChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  handleInputChange: (
+    event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => void;
   hostnames: string[];
   branches: Branch[];
   referenceSet: string;
@@ -21,10 +20,7 @@ interface FormProps {
 
 const Form: React.FunctionComponent<FormProps> = ({
   handleFormSubmit,
-  handleHostChange,
-  handleBranchChange,
-  handleReferenceSetChange,
-  handleQueryChange,
+  handleInputChange,
   hostnames,
   branches,
   referenceSet,
@@ -44,9 +40,10 @@ const Form: React.FunctionComponent<FormProps> = ({
               <label htmlFor="host">{t("form.host")}</label>
               <select
                 id="host"
+                name="h"
                 className="form-control"
                 value={hostname}
-                onChange={handleHostChange}
+                onChange={handleInputChange}
               >
                 {hostnames.map((hostname) => (
                   <option value={hostname} key={hostname}>
@@ -61,9 +58,10 @@ const Form: React.FunctionComponent<FormProps> = ({
               <label htmlFor="branch">{t("form.branch")}</label>
               <select
                 id="branch"
+                name="b"
                 className="form-control"
                 value={branch}
-                onChange={handleBranchChange}
+                onChange={handleInputChange}
               >
                 {branches.map(({ path }) => (
                   <option value={path} key={path}>
@@ -79,9 +77,10 @@ const Form: React.FunctionComponent<FormProps> = ({
                 <label htmlFor="referenceSet">{t("form.referenceset")}</label>
                 <select
                   id="referenceSet"
+                  name="rs"
                   className="form-control"
                   value={referenceSet}
-                  onChange={handleReferenceSetChange}
+                  onChange={handleInputChange}
                 >
                   {referenceSets.map(({ id, title }) => (
                     <option value={id} key={id}>
@@ -98,11 +97,12 @@ const Form: React.FunctionComponent<FormProps> = ({
             <label htmlFor="query">{t("form.search")}</label>
             <input
               id="query"
+              name="q"
               className="form-control"
               type="text"
               value={query}
               autoComplete="off"
-              onChange={handleQueryChange}
+              onChange={handleInputChange}
             />
           </div>
         </div>

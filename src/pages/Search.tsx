@@ -81,19 +81,16 @@ const Search: React.FunctionComponent = () => {
     event.preventDefault();
   };
 
-  const handleHostChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    setQueryParams({ h: event.target.value });
-  };
-  const handleBranchChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    setQueryParams({ b: event.target.value });
-  };
+  const handleInputChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
 
-  const handleReferenceSetChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    setQueryParams({ rs: event.target.value });
-  };
-
-  const handleQueryChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setQueryParams({ q: event.target.value });
+    setQueryParams({
+      [name]: value,
+    });
   };
 
   const branches = branchRequest.result || [];
@@ -109,10 +106,7 @@ const Search: React.FunctionComponent = () => {
           {!branchRequest.loading && !branchRequest.error && (
             <Form
               handleFormSubmit={handleFormSubmit}
-              handleHostChange={handleHostChange}
-              handleBranchChange={handleBranchChange}
-              handleReferenceSetChange={handleReferenceSetChange}
-              handleQueryChange={handleQueryChange}
+              handleInputChange={handleInputChange}
               hostnames={hostnames}
               referenceSets={hostConfig.referenceSets}
               branches={branches}
