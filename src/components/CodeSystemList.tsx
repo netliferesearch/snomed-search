@@ -3,7 +3,7 @@ import { useAsync } from "react-async-hook";
 
 import { SnowstormConfig } from "../config";
 import { fetchCodeSystems } from "../store";
-import Loading from "./Loading";
+import Loading, { LoadingSize } from "./Loading";
 
 interface CodeSystemProps {
   hostConfig: SnowstormConfig;
@@ -19,7 +19,7 @@ const CodeSystemList: React.FunctionComponent<CodeSystemProps> = ({
 
   return (
     <>
-      {request.loading && <Loading />}
+      {request.loading && <Loading size={LoadingSize.Medium} />}
       {codeSystemResultList.map((codeSystem) =>
         codeSystem.items.map(
           ({

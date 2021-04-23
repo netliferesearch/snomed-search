@@ -9,7 +9,7 @@ import Concept from "../components/Concept";
 import Error from "../components/Error";
 import Form from "../components/Form";
 import Header from "../components/Header";
-import Loading from "../components/Loading";
+import Loading, { LoadingSize } from "../components/Loading";
 import config, { SnomedSearchConfig } from "../config";
 import { DEBOUNCE_WAIT_MS, QUERY_PARAMS_CONFIG } from "../constants";
 import { ConceptResponse, fetchBranches, fetchConcepts } from "../store";
@@ -101,7 +101,7 @@ const Search: React.FunctionComponent = () => {
     <div className="container">
       <Header />
       <div className="row mb-5">
-        <div className="col-9 col-md-10">
+        <div className="col">
           {branchRequest.error && <Error>{branchRequest.error.message}</Error>}
           {!branchRequest.loading && !branchRequest.error && (
             <Form
@@ -117,14 +117,10 @@ const Search: React.FunctionComponent = () => {
             />
           )}
         </div>
-        <div className="col-3 col-md-2">
-          <div className="d-flex h-100 align-items-center justify-content-center">
-            {searchRequest.loading && <Loading />}
-          </div>
-        </div>
       </div>
       <div className="row">
         <div className="col">
+          {searchRequest.loading && <Loading size={LoadingSize.Large} />}
           {searchRequest.error && <Error>{searchRequest.error.message}</Error>}
           {totalElements > 0 && (
             <p className="mb-1">

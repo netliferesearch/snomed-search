@@ -4,6 +4,7 @@ import { useAsync } from "react-async-hook";
 import { SnowstormConfig } from "../config";
 import { SNOWSTORM_SYNONYM_TYPE } from "../constants";
 import { fetchSynonyms } from "../store";
+import Loading, { LoadingSize } from "./Loading";
 
 interface SynonymProps {
   hostConfig: SnowstormConfig;
@@ -24,6 +25,7 @@ const SynonymList: React.FunctionComponent<SynonymProps> = ({
 
   return (
     <>
+      {request.loading && <Loading size={LoadingSize.Small} />}
       {synonyms
         .filter(({ type }) => type === SNOWSTORM_SYNONYM_TYPE)
         .filter(
