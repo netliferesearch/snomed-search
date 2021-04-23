@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "awesome-debounce-promise": "^2.1.0",
+    "bootstrap": "^4.6.0",
     "classnames": "^2.3.1",
     "i18next": "^20.2.1",
     "lodash.debounce": "^4.0.8",

@@ -1,7 +1,6 @@
 import debounce from "awesome-debounce-promise";
 import React, { ChangeEvent, FormEvent, useEffect } from "react";
 import { useAsync } from "react-async-hook";
-import { useTranslation } from "react-i18next";
 import useConstant from "use-constant";
 import { useQueryParams } from "use-query-params";
 
@@ -48,7 +47,6 @@ const useSearch = (config: SnomedSearchConfig) => {
 };
 
 const Search: React.FunctionComponent = () => {
-  const { t } = useTranslation();
   const {
     hostname,
     branch,
