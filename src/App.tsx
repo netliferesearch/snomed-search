@@ -1,3 +1,5 @@
+import "./i18n/config";
+
 import React from "react";
 
 import Search from "./pages/Search";

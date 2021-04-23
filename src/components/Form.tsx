@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FormEvent } from "react";
-import { StringParam, useQueryParam } from "use-query-params";
+import { useTranslation } from "react-i18next";
 
 import { ReferenceSet } from "../config";
 import { Branch } from "../store";
@@ -15,6 +15,8 @@ interface FormProps {
   referenceSet: string;
   query: string;
   referenceSets?: ReferenceSet[];
+  hostname: string;
+  branch: string;
 }
 
 const Form: React.FunctionComponent<FormProps> = ({
@@ -28,9 +30,10 @@ const Form: React.FunctionComponent<FormProps> = ({
   referenceSet,
   query,
   referenceSets,
+  hostname,
+  branch,
 }) => {
-  const [branch] = useQueryParam("b", StringParam);
-  const [host] = useQueryParam("h", StringParam);
+  const { t } = useTranslation();
 
   return (
     <form onSubmit={handleFormSubmit}>
@@ -38,11 +41,11 @@ const Form: React.FunctionComponent<FormProps> = ({
         <>
           <div className="col-12">
             <div className="form-group">
-              <label htmlFor="host">Host</label>
+              <label htmlFor="host">{t("form.host")}</label>
               <select
                 id="host"
                 className="form-control"
-                value={host || ""}
+                value={hostname}
                 onChange={handleHostChange}
               >
                 {hosts.map((hostname) => (
@@ -55,11 +58,11 @@ const Form: React.FunctionComponent<FormProps> = ({
           </div>
           <div className="col-md-4">
             <div className="form-group mb-md-0">
-              <label htmlFor="branch">Branch</label>
+              <label htmlFor="branch">{t("form.branch")}</label>
               <select
                 id="branch"
                 className="form-control"
-                value={branch || ""}
+                value={branch}
                 onChange={handleBranchChange}
               >
                 {branches.map(({ path }) => (
@@ -73,7 +76,7 @@ const Form: React.FunctionComponent<FormProps> = ({
           {referenceSets && (
             <div className="col-md-4">
               <div className="form-group mb-md-0">
-                <label htmlFor="referenceSet">Reference set</label>
+                <label htmlFor="referenceSet">{t("form.referenceset")}</label>
                 <select
                   id="referenceSet"
                   className="form-control"
@@ -92,7 +95,7 @@ const Form: React.FunctionComponent<FormProps> = ({
         </>
         <div className="col">
           <div className="form-group mb-md-0">
-            <label htmlFor="query">Search</label>
+            <label htmlFor="query">{t("form.search")}</label>
             <input
               id="query"
               className="form-control"

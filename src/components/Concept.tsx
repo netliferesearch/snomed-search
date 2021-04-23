@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 import { SnowstormConfig } from "../config";
 import CodeSystemList from "./CodeSystemList";
@@ -19,6 +20,8 @@ const Concept: React.FunctionComponent<ConceptProps> = ({
   fullySpecifiedName,
   conceptId,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <div className="d-md-flex justify-content-between">
       <div>
@@ -32,7 +35,7 @@ const Concept: React.FunctionComponent<ConceptProps> = ({
         <p className="mb-md-0">{fullySpecifiedName}</p>
       </div>
       <dl className="mb-md-0 ml-md-5">
-        <dt>Snomed CT</dt>
+        <dt>{t("snomedct")}</dt>
         <dd className="mb-md-0">{conceptId}</dd>
       </dl>
       {hostConfig.codeSystems && (

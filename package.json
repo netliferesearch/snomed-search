@@ -5,11 +5,13 @@
   "dependencies": {
     "awesome-debounce-promise": "^2.1.0",
     "classnames": "^2.3.1",
+    "i18next": "^20.2.1",
     "lodash.debounce": "^4.0.8",
     "query-string": "^7.0.0",
     "react": "^17.0.2",
     "react-async-hook": "^3.6.2",
     "react-dom": "^17.0.2",
+    "react-i18next": "^11.8.13",
     "react-router-dom": "^5.2.0",
     "use-constant": "^1.1.0",
     "use-query-params": "^1.2.2"

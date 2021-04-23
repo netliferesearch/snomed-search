@@ -1,8 +1,9 @@
 import debounce from "awesome-debounce-promise";
 import React, { ChangeEvent, FormEvent, useEffect } from "react";
 import { useAsync } from "react-async-hook";
+import { useTranslation } from "react-i18next";
 import useConstant from "use-constant";
-import { StringParam, useQueryParams, withDefault } from "use-query-params";
+import { useQueryParams } from "use-query-params";
 
 import Concept from "../components/Concept";
 import Error from "../components/Error";
@@ -10,17 +11,12 @@ import Form from "../components/Form";
 import Header from "../components/Header";
 import Loading from "../components/Loading";
 import config, { SnomedSearchConfig } from "../config";
-import { DEBOUNCE_WAIT_MS } from "../constants";
+import { DEBOUNCE_WAIT_MS, QUERY_PARAMS_CONFIG } from "../constants";
 import { ConceptResponse, fetchBranches, fetchConcepts } from "../store";
 
 const useSearch = (config: SnomedSearchConfig) => {
   // Handle the input text state
-  const [queryParams, setQueryParams] = useQueryParams({
-    q: withDefault(StringParam, ""),
-    h: StringParam,
-    b: withDefault(StringParam, ""),
-    rs: withDefault(StringParam, ""),
-  });
+  const [queryParams, setQueryParams] = useQueryParams(QUERY_PARAMS_CONFIG);
   const { q: query, h: hostname, b: branch, rs: referenceSet } = queryParams;
 
   const hostConfig =
@@ -51,6 +47,7 @@ const useSearch = (config: SnomedSearchConfig) => {
 };
 
 const Search: React.FunctionComponent = () => {
+  const { t } = useTranslation();
   const {
     hostname,
     branch,
@@ -72,7 +69,7 @@ const Search: React.FunctionComponent = () => {
         setQueryParams({ b: path });
       }
     }
-  }, [branch, branchRequest, hostConfig?.defaultBranch]);
+  }, [branch, branchRequest, hostConfig?.defaultBranch, setQueryParams]);
 
   useEffect(() => {
     if (!hostname) {
@@ -121,6 +118,8 @@ const Search: React.FunctionComponent = () => {
               branches={branches}
               referenceSet={referenceSet}
               query={query}
+              hostname={hostname}
+              branch={branch}
             />
           )}
         </div>
@@ -134,9 +133,9 @@ const Search: React.FunctionComponent = () => {
         <div className="col">
           {searchRequest.error && <Error>{searchRequest.error.message}</Error>}
           {totalElements > 0 && (
-            <p className="mb-1">{`${totalElements} ${
-              totalElements > 1 ? "hits" : "hit"
-            }`}</p>
+            <p className="mb-1">
+              {t("results.hitWithCount", { count: totalElements })}
+            </p>
           )}
           <ul className="list-group">
             {items.map(

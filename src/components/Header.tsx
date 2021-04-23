@@ -1,7 +1,10 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 const Header: React.FunctionComponent = () => {
+  const { t } = useTranslation();
+
   return (
     <header className="row">
       <div className="col">
@@ -9,7 +12,7 @@ const Header: React.FunctionComponent = () => {
           <ul className="navbar-nav mr-auto">
             <li className="nav-item">
               <Link className="nav-link" to="/">
-                All
+                {t("navigation.all")}
               </Link>
             </li>
           </ul>
