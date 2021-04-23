@@ -1,34 +1,40 @@
-import { apiOptions, handleResponse } from "../api";
-import { codeSystems, limit } from "../config";
+import { SnowstormConfig } from "../config";
+import { createHeaders, handleResponse } from "../utils/api";
 
-interface IFields {
+interface Fields {
   mapAdvice: string;
   mapTarget: string;
 }
 
-interface ICodeSystem {
+interface CodeSystem {
   internalId: string;
   refsetId: string;
-  additionalFields: Readonly<IFields>;
+  additionalFields: Readonly<Fields>;
 }
 
-interface ICodeSystemResult {
-  items: ICodeSystem[];
+interface CodeSystemResponse {
+  items: CodeSystem[];
 }
 
 export const fetchCodeSystems = (
-  host: string,
-  conceptId: string
-): Promise<ICodeSystemResult[]> =>
-  Promise.all(
-    codeSystems.map(({ id, branch }) => {
-      const url = new URL(`browser/${branch}/members`, host);
-      url.searchParams.set("limit", limit);
-      url.searchParams.set("active", "true");
-      url.searchParams.set("referenceSet", id);
-      url.searchParams.set("referencedComponentId", conceptId);
-      return fetch(url.toString(), apiOptions).then((response) =>
-        handleResponse<ICodeSystemResult>(response)
-      );
-    })
-  );
+  hostConfig: SnowstormConfig,
+  conceptId: string,
+  limit = "10"
+): Promise<CodeSystemResponse[]> => {
+  if (hostConfig.codeSystems) {
+    return Promise.all(
+      hostConfig.codeSystems.map(({ id, branch }) => {
+        const url = new URL(`browser/${branch}/members`, hostConfig.hostname);
+        url.searchParams.set("limit", limit);
+        url.searchParams.set("active", "true");
+        url.searchParams.set("referenceSet", id);
+        url.searchParams.set("referencedComponentId", conceptId);
+        return fetch(url.toString(), {
+          method: "GET",
+          headers: createHeaders(hostConfig.languages),
+        }).then((response) => handleResponse<CodeSystemResponse>(response));
+      })
+    );
+  }
+  return Promise.reject("Host configuration must include codesystems");
+};

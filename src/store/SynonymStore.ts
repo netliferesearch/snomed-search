@@ -1,27 +1,31 @@
-import { apiOptions, handleResponse } from "../api";
-import { limit } from "../config";
+import { Language, SnowstormConfig } from "../config";
+import { LIMIT } from "../constants";
+import { createHeaders, handleResponse } from "../utils/api";
 
-interface IDescription {
+interface Description {
   term: string;
   type: string;
-  lang: string;
+  lang: Language;
   descriptionId: string;
 }
 
-interface ISynonymResult {
-  items: IDescription[];
+interface SynonymResponse {
+  items: Description[];
 }
 
 export const fetchSynonyms = (
-  host: string,
+  hostConfig: SnowstormConfig,
   branch: string,
-  conceptId: string
-): Promise<ISynonymResult> => {
-  const url = new URL(`${branch}/descriptions`, host);
+  conceptId: string,
+  offset = "0",
+  limit = LIMIT
+): Promise<SynonymResponse> => {
+  const url = new URL(`${branch}/descriptions`, hostConfig.hostname);
   url.searchParams.set("concept", conceptId);
-  url.searchParams.set("offset", "0");
+  url.searchParams.set("offset", offset);
   url.searchParams.set("limit", limit);
-  return fetch(url.toString(), apiOptions).then((response) =>
-    handleResponse<ISynonymResult>(response)
-  );
+  return fetch(url.toString(), {
+    method: "GET",
+    headers: createHeaders(hostConfig.languages),
+  }).then((response) => handleResponse<SynonymResponse>(response));
 };

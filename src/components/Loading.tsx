@@ -1,9 +1,13 @@
-import "./Loading.css";
-
+import classnames from "classnames";
 import React from "react";
 
+import styles from "./Loading.module.css";
+
 const Loading: React.FunctionComponent = () => (
-  <div className="spinner-border loading text-secondary" role="status">
+  <div
+    className={classnames("spinner-border", styles.loading, "text-secondary")}
+    role="status"
+  >
     <span className="sr-only">Loading...</span>
   </div>
 );
