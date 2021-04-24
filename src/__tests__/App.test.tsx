@@ -46,13 +46,16 @@ describe("Given that the Search component should be rendered", () => {
 
       const refsetSelect = screen.getByLabelText("Reference set");
       expect(refsetSelect).toBeVisible();
+      userEvent.selectOptions(refsetSelect, "1991000202102");
 
       const searchInput = screen.getByLabelText("Search");
       expect(searchInput).toBeVisible();
 
       userEvent.type(searchInput, "Skjoldbruskkjertelkreft");
 
-      const results = await screen.findByLabelText("Results");
+      const results = await screen.findByLabelText(
+        'Results in refset "Sykdommer"'
+      );
 
       const hits = within(results).getByText("1 hit");
       expect(hits).toBeVisible();
