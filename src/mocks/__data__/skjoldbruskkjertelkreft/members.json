@@ -1,0 +1,35 @@
+{
+  "items": [
+    {
+      "active": true,
+      "released": true,
+      "releasedEffectiveTime": 20191021,
+      "memberId": "df1774e3-5fc9-40ee-ae24-46f42c7f37df",
+      "moduleId": "51000202101",
+      "refsetId": "1991000202102",
+      "referencedComponentId": "363478007",
+      "additionalFields": {},
+      "referencedComponent": {
+        "conceptId": "363478007",
+        "active": true,
+        "definitionStatus": "FULLY_DEFINED",
+        "moduleId": "900000000000207008",
+        "fsn": {
+          "term": "Malignant tumor of thyroid gland (disorder)",
+          "lang": "en"
+        },
+        "pt": {
+          "term": "Skjoldbruskkjertelkreft",
+          "lang": "nb"
+        },
+        "id": "363478007"
+      },
+      "effectiveTime": "20191021"
+    }
+  ],
+  "total": 1,
+  "limit": 50,
+  "offset": 0,
+  "searchAfter": "W10=",
+  "searchAfterArray": []
+}

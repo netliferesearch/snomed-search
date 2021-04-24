@@ -117,4 +117,45 @@ describe("Given that the Search component should be rendered", () => {
       // expect(preferredTerm).toBeVisible();
     });
   });
+
+  describe("When you want to remove a concept to a refset", () => {
+    it("Then the concept can be found and removed", async () => {
+      render(
+        <Wrapper>
+          <App />
+        </Wrapper>
+      );
+
+      const refsetSelect = await screen.findByLabelText("Reference set");
+
+      userEvent.selectOptions(refsetSelect, "1991000202102");
+
+      const searchInput = screen.getByLabelText("Search");
+      userEvent.clear(searchInput);
+      userEvent.type(searchInput, "Skjoldbruskkjertelkreft");
+
+      const refSetresults = await screen.findByLabelText(
+        'Results in refset "Sykdommer"'
+      );
+      within(refSetresults).getByText("1 hit");
+
+      const preferredTerm = within(refSetresults).getByLabelText(
+        "Skjoldbruskkjertelkreft"
+      );
+
+      const removeButton = within(preferredTerm).getByRole("button", {
+        name: "Remove from refset",
+      });
+
+      userEvent.click(removeButton);
+
+      // TODO: Sjekk at konseptet er fjernet fra refsetet
+      // await within(refSetresults).findByText("0 hits");
+
+      // const suggestions = await screen.findByLabelText("Suggestions");
+
+      // const suggestion = within(suggestions).getByLabelText("Skjoldbruskkjertelkreft");
+      // expect(suggestion).toBeVisible();
+    });
+  });
 });
