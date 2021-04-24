@@ -41,7 +41,7 @@ const CodeSystemList: React.FunctionComponent<CodeSystemProps> = ({
             return (
               <div
                 className={classNames(
-                  "col-12 flex-lg-grow-1",
+                  "col-12 col-sm-6 flex-lg-grow-1",
                   styles.definition
                 )}
                 key={internalId}

@@ -33,7 +33,12 @@ const Concept: React.FunctionComponent<ConceptProps> = ({
         />
         <p>{concept.fsn.term}</p>
       </div>
-      <div className={classNames("col-12 flex-lg-grow-1", styles.definition)}>
+      <div
+        className={classNames(
+          "col-12 col-sm-6 flex-lg-grow-1",
+          styles.definition
+        )}
+      >
         <dl>
           <dt>{t("snomedct")}</dt>
           <dd>{concept.conceptId}</dd>
