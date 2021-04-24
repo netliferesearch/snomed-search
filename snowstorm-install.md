@@ -86,6 +86,7 @@ map $http_origin $cors_cred {
     "https://snowstorm.rundberg.no" "true";
     "https://snomed-search.netlify.app" "true";
 }
+
 map $http_origin $cors_methods {
     default "GET, OPTIONS, HEAD";
     "~(^|^http:\/\/)(localhost$|localhost:[0-9]{1,4}$)" "GET, POST, DELETE, PUT, OPTIONS, HEAD";
