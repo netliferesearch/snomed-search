@@ -8,9 +8,9 @@ interface HitsProps {
 const Hits: React.FunctionComponent<HitsProps> = ({ totalElements }) => {
   const { t } = useTranslation();
   return (
-    <p className="mb-3">
+    <h1 className="h5 mt-5 mb-3">
       {t("results.hitWithCount", { count: totalElements })}
-    </p>
+    </h1>
   );
 };
 

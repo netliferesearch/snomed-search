@@ -14,7 +14,12 @@ export const createHeaders = (
   };
 };
 
-export const handleResponse = <T>(response: Response): Promise<T> =>
+export const handleJsonResponse = <T>(response: Response): Promise<T> =>
   response.ok
     ? (response.json() as Promise<T>)
+    : Promise.reject(new Error("Failed to load data from server"));
+
+export const handleTextResponse = (response: Response): Promise<string> =>
+  response.ok
+    ? response.text()
     : Promise.reject(new Error("Failed to load data from server"));

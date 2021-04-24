@@ -8,16 +8,27 @@ import CodeSystemList from "./CodeSystemList";
 import styles from "./Definition.module.scss";
 import SynonymList from "./SynonymList";
 
+export enum ButtonVariant {
+  Primary,
+  Danger,
+}
+
 interface ConceptProps {
   hostConfig: SnowstormConfig;
   branch: string;
   concept: ConceptInterface;
+  handle?: (conceptId: string) => void;
+  buttonText?: string;
+  buttonVariant?: ButtonVariant;
 }
 
 const Concept: React.FunctionComponent<ConceptProps> = ({
   hostConfig,
   branch,
   concept,
+  handle,
+  buttonText,
+  buttonVariant = ButtonVariant.Primary,
 }) => {
   const { t } = useTranslation();
 
@@ -46,6 +57,19 @@ const Concept: React.FunctionComponent<ConceptProps> = ({
       </div>
       {hostConfig.codeSystems && (
         <CodeSystemList hostConfig={hostConfig} conceptId={concept.conceptId} />
+      )}
+      {handle && buttonText && (
+        <div className="col-12">
+          <button
+            onClick={() => handle(concept.conceptId)}
+            className={classNames("btn", {
+              "btn-outline-primary": buttonVariant === ButtonVariant.Primary,
+              "btn-outline-danger": buttonVariant === ButtonVariant.Danger,
+            })}
+          >
+            {buttonText}
+          </button>
+        </div>
       )}
     </div>
   );

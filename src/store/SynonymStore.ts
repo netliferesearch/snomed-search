@@ -1,6 +1,6 @@
 import { SnowstormConfig } from "../config";
 import { Language, LIMIT } from "../constants";
-import { createHeaders, handleResponse } from "../utils/api";
+import { createHeaders, handleJsonResponse } from "../utils/api";
 
 interface Description {
   term: string;
@@ -29,5 +29,5 @@ export const fetchSynonyms = async (
     headers: createHeaders(hostConfig.languages),
   });
 
-  return await handleResponse<SynonymResponse>(response);
+  return await handleJsonResponse<SynonymResponse>(response);
 };

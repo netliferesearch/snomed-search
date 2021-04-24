@@ -1,16 +1,12 @@
 import "./styles/app.scss";
 
 import ReactDOM from "react-dom";
-import { BrowserRouter as Router, Route } from "react-router-dom";
-import { QueryParamProvider } from "use-query-params";
 
-import App from "./App";
+import App, { Wrapper } from "./App";
 
 ReactDOM.render(
-  <Router>
-    <QueryParamProvider ReactRouterRoute={Route}>
-      <App />
-    </QueryParamProvider>
-  </Router>,
+  <Wrapper>
+    <App />
+  </Wrapper>,
   document.getElementById("root")
 );

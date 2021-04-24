@@ -21,11 +21,16 @@ const Loading: React.FunctionComponent<LoadingProps> = ({
 
   return (
     <div
-      className={classnames("spinner-border", "text-secondary", {
-        [styles["loading--sm"]]: size === LoadingSize.Small,
-        [styles["loading--md"]]: size === LoadingSize.Medium,
-        [styles["loading--lg"]]: size === LoadingSize.Large,
-      })}
+      className={classnames(
+        "spinner-border",
+        "text-secondary",
+        styles.loading,
+        {
+          [styles["loading--sm"]]: size === LoadingSize.Small,
+          [styles["loading--md"]]: size === LoadingSize.Medium,
+          [styles["loading--lg"]]: size === LoadingSize.Large,
+        }
+      )}
       role="status"
     >
       <span className="sr-only">{t("status.loading")}</span>

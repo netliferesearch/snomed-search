@@ -1,4 +1,5 @@
 export type Styles = {
+  loading: string;
   "loading--lg": string;
   "loading--md": string;
   "loading--sm": string;

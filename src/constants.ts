@@ -4,15 +4,14 @@ export enum Language {
   Bokmål = "nb",
   Nynorsk = "nn",
   Norsk = "no",
-  EnglishUs = "en-US",
-  EnglishGb = "en-GB",
+  English = "en",
 }
 
 export const LIMIT = "10";
 
 export const ACCEPT_LANGUAGE_SEPARATOR = ";";
 
-export const DEFAULT_LANGUAGE = Language.EnglishUs;
+export const DEFAULT_LANGUAGE = Language.English;
 
 export const SNOWSTORM_SYNONYM_TYPE = "SYNONYM";
 

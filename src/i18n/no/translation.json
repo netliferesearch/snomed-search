@@ -1,0 +1,17 @@
+{
+  "form.branch": "Branch",
+  "form.host": "Server",
+  "form.referenceset": "Refset",
+  "form.notselected": "Ikke valgt",
+  "form.search": "Søk",
+  "navigation.all": "Hjem",
+  "results.hitWithCount_plural": "{{count}} treff",
+  "results.hitWithCount": "{{count}} treff",
+  "results.label": "Resultater",
+  "results.suggestionsLabel": "Forslag",
+  "results.refsetLabel": "Resultater i refset \"{{title}}\"",
+  "snomedct": "Snomed CT",
+  "status.loading": "Laster...",
+  "button.add": "Legg til i refset",
+  "button.remove": "Fjern fra refset"
+}

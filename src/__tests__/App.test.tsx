@@ -1,9 +1,7 @@
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { BrowserRouter as Router, Route } from "react-router-dom";
-import { QueryParamProvider } from "use-query-params";
 
-import App from "../App";
+import App, { Wrapper } from "../App";
 
 jest.mock("../config", () => ({
   __esModule: true,
@@ -21,8 +19,8 @@ jest.mock("../config", () => ({
         ],
         referenceSets: [
           {
-            id: "1981000202104",
-            title: "Målgruppe",
+            id: "1991000202102",
+            title: "Sykdommer",
           },
         ],
         languages: ["nb", "nn", "no"],
@@ -35,11 +33,9 @@ describe("Given that the Search component should be rendered", () => {
   describe("When you search for a concept", () => {
     it("Then the search result contains info about the concept", async () => {
       render(
-        <Router>
-          <QueryParamProvider ReactRouterRoute={Route}>
-            <App />
-          </QueryParamProvider>
-        </Router>
+        <Wrapper>
+          <App />
+        </Wrapper>
       );
 
       const hostSelect = await screen.findByLabelText("Host");
@@ -56,10 +52,12 @@ describe("Given that the Search component should be rendered", () => {
 
       userEvent.type(searchInput, "Skjoldbruskkjertelkreft");
 
-      const hits = await screen.findByText("1 hit");
+      const results = await screen.findByLabelText("Results");
+
+      const hits = within(results).getByText("1 hit");
       expect(hits).toBeVisible();
 
-      const preferredTerm = await screen.findByLabelText(
+      const preferredTerm = within(results).getByLabelText(
         "Skjoldbruskkjertelkreft"
       );
       expect(preferredTerm).toBeVisible();
@@ -79,6 +77,40 @@ describe("Given that the Search component should be rendered", () => {
 
       const icpc2 = await within(preferredTerm).findByText("T71");
       expect(icpc2).toBeVisible();
+    });
+  });
+
+  describe("When you want to add a concept to a refset", () => {
+    it("Then the concept can be found and added", async () => {
+      render(
+        <Wrapper>
+          <App />
+        </Wrapper>
+      );
+
+      const refsetSelect = await screen.findByLabelText("Reference set");
+
+      userEvent.selectOptions(refsetSelect, "1991000202102");
+
+      const searchInput = screen.getByLabelText("Search");
+      userEvent.type(searchInput, "Halsbrann");
+
+      const refSetresults = await screen.findByLabelText(
+        'Results in refset "Sykdommer"'
+      );
+      within(refSetresults).getByText("0 hits");
+
+      const results = await screen.findByLabelText("Suggestions");
+      within(results).getByText("1 hit");
+
+      const preferredTerm = within(results).getByLabelText("Halsbrann");
+      const addButton = within(preferredTerm).getByRole("button", {
+        name: "Add to reference set",
+      });
+
+      userEvent.click(addButton);
+
+      // TODO: Sjekk at konseptet er lagt til refsetet
     });
   });
 });

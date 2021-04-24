@@ -1,5 +1,5 @@
 import { SnowstormConfig } from "../config";
-import { createHeaders, handleResponse } from "../utils/api";
+import { createHeaders, handleJsonResponse } from "../utils/api";
 
 export interface Branch {
   path: string;
@@ -16,7 +16,7 @@ export const fetchBranches = async (
     method: "GET",
     headers: createHeaders(hostConfig.languages),
   });
-  const branchList = await handleResponse<BranchResponse>(response);
+  const branchList = await handleJsonResponse<BranchResponse>(response);
 
   return branchList.filter(({ containsContent }) => containsContent);
 };

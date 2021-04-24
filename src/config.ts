@@ -74,7 +74,12 @@ const config: SnomedSearchConfig = {
           title: "Virkestoff med antibakteriell eller antimykotisk effekt",
         },
       ],
-      languages: [Language.Bokmål, Language.Nynorsk, Language.Norsk],
+      languages: [
+        Language.Bokmål,
+        Language.Nynorsk,
+        Language.Norsk,
+        Language.English,
+      ],
     },
     { hostname: "https://snowstorm.test.nhn.no" },
   ],
