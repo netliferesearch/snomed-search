@@ -47,5 +47,11 @@ const handlers = [
       return res(ctx.json({ items: [] }));
     }
   ),
+  rest.post(
+    "https://snowstorm.rundberg.no/MAIN/members",
+    async (req, res, ctx) => {
+      return res(ctx.json({}));
+    }
+  ),
 ];
 export { handlers };

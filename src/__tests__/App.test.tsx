@@ -93,6 +93,7 @@ describe("Given that the Search component should be rendered", () => {
       userEvent.selectOptions(refsetSelect, "1991000202102");
 
       const searchInput = screen.getByLabelText("Search");
+      userEvent.clear(searchInput);
       userEvent.type(searchInput, "Halsbrann");
 
       const refSetresults = await screen.findByLabelText(
@@ -100,17 +101,20 @@ describe("Given that the Search component should be rendered", () => {
       );
       within(refSetresults).getByText("0 hits");
 
-      const results = await screen.findByLabelText("Suggestions");
-      within(results).getByText("1 hit");
+      const suggestions = await screen.findByLabelText("Suggestions");
 
-      const preferredTerm = within(results).getByLabelText("Halsbrann");
-      const addButton = within(preferredTerm).getByRole("button", {
-        name: "Add to reference set",
+      const suggestion = within(suggestions).getByLabelText("Halsbrann");
+      const addButton = within(suggestion).getByRole("button", {
+        name: "Add to refset",
       });
 
       userEvent.click(addButton);
 
       // TODO: Sjekk at konseptet er lagt til refsetet
+      // await within(refSetresults).findByText("1 hit");
+
+      // const preferredTerm = within(refSetresults).getByLabelText("Halsbrann");
+      // expect(preferredTerm).toBeVisible();
     });
   });
 });
