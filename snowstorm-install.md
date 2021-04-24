@@ -74,7 +74,7 @@ proxy_cache_path        /var/cache/nginx levels=1:2 keys_zone=snowstorm:10m max_
                         inactive=60m use_temp_path=off;
 
 map $http_origin $cors_origin_header {
-    default "";
+    default "*";
     "~(^|^http:\/\/)(localhost$|localhost:[0-9]{1,4}$)" "$http_origin";
     "https://snowstorm.rundberg.no" "$http_origin";
     "https://snomed-search.netlify.app" "$http_origin";
@@ -85,6 +85,12 @@ map $http_origin $cors_cred {
     "~(^|^http:\/\/)(localhost$|localhost:[0-9]{1,4}$)" "true";
     "https://snowstorm.rundberg.no" "true";
     "https://snomed-search.netlify.app" "true";
+}
+map $http_origin $cors_methods {
+    default "GET, OPTIONS, HEAD";
+    "~(^|^http:\/\/)(localhost$|localhost:[0-9]{1,4}$)" "GET, POST, DELETE, PUT, OPTIONS, HEAD";
+    "https://snowstorm.rundberg.no" "GET, POST, DELETE, PUT, OPTIONS, HEAD";
+    "https://snomed-search.netlify.app" "GET, POST, DELETE, PUT, OPTIONS, HEAD";
 }
 
 server {
@@ -97,13 +103,13 @@ server {
                 auth_basic_user_file /etc/nginx/.htpasswd;
         }
 
-        add_header Access-Control-Allow-Origin $cors_origin_header always;
-        add_header Access-Control-Allow-Credentials $cors_cred;
-        add_header "Access-Control-Allow-Methods" "GET, POST, DELETE, PUT, OPTIONS, HEAD";
+        add_header "Access-Control-Allow-Origin" $cors_origin_header always;
+        add_header "Access-Control-Allow-Credentials" $cors_cred always;
+        add_header "Access-Control-Allow-Methods" $cors_methods always;
         add_header "Access-Control-Allow-Headers" "Authorization, Origin, X-Requested-With, Content-Type, Accept";
 
         if ($request_method = 'OPTIONS' ) {
-        return 204 no-content;
+            return 204 no-content;
         }
 
         # Enable or disable the cache by uncommenting/commenting the next line
