@@ -32,7 +32,7 @@ const Form: React.FunctionComponent<FormProps> = ({
   const { t } = useTranslation();
 
   return (
-    <form onSubmit={handleFormSubmit}>
+    <form onSubmit={handleFormSubmit} role="search">
       <div className="form-row">
         <div className="col-lg-6 col-xxl-3">
           <div className="form-group">
@@ -53,7 +53,7 @@ const Form: React.FunctionComponent<FormProps> = ({
           </div>
         </div>
         <div className="col-lg-6 col-xxl-3">
-          <div className="form-group mb-md-0">
+          <div className="form-group">
             <label htmlFor="branch">{t("form.branch")}</label>
             <select
               id="branch"
@@ -72,7 +72,7 @@ const Form: React.FunctionComponent<FormProps> = ({
         </div>
         {referenceSets && (
           <div className="col-lg-6 col-xxl-3">
-            <div className="form-group mb-md-0">
+            <div className="form-group">
               <label htmlFor="referenceSet">{t("form.referenceset")}</label>
               <select
                 id="referenceSet"
@@ -92,7 +92,7 @@ const Form: React.FunctionComponent<FormProps> = ({
           </div>
         )}
         <div className="col-lg-6 col-xxl-3">
-          <div className="form-group mb-md-0">
+          <div className="form-group">
             <label htmlFor="query">{t("form.search")}</label>
             <input
               id="query"

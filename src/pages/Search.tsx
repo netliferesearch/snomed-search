@@ -124,7 +124,11 @@ const Search: React.FunctionComponent = () => {
           {!searchRequest.loading && <Hits totalElements={totalElements} />}
           <ol className="list-unstyled">
             {items.map(({ concept }) => (
-              <li key={concept.conceptId} className="card p-3 mb-3">
+              <li
+                key={concept.conceptId}
+                className="card p-3 mb-3"
+                aria-labelledby={concept.conceptId}
+              >
                 <Concept
                   hostConfig={hostConfig}
                   branch={branch}

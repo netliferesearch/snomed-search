@@ -1,8 +1,10 @@
+import classNames from "classnames";
 import React from "react";
 import { useAsync } from "react-async-hook";
 
 import { SnowstormConfig } from "../config";
 import { fetchCodeSystems } from "../store";
+import styles from "./Definition.module.scss";
 import Loading, { LoadingSize } from "./Loading";
 
 interface CodeSystemProps {
@@ -19,7 +21,11 @@ const CodeSystemList: React.FunctionComponent<CodeSystemProps> = ({
 
   return (
     <>
-      {request.loading && <Loading size={LoadingSize.Medium} />}
+      {request.loading && (
+        <div className="col">
+          <Loading size={LoadingSize.Medium} />
+        </div>
+      )}
       {codeSystemResultList.map((codeSystem) =>
         codeSystem.items.map(
           ({
@@ -33,12 +39,18 @@ const CodeSystemList: React.FunctionComponent<CodeSystemProps> = ({
               throw new Error(`Missing title for codesystem "${refsetId}"`);
             }
             return (
-              <dl key={internalId} className="mb-md-0 ml-md-5">
-                <dt>{title}</dt>
-                <dd className="mb-md-0" title={advice}>
-                  {code ? code : advice}
-                </dd>
-              </dl>
+              <div
+                className={classNames(
+                  "col-12 flex-lg-grow-1",
+                  styles.definition
+                )}
+                key={internalId}
+              >
+                <dl>
+                  <dt>{title}</dt>
+                  <dd title={advice}>{code ? code : advice}</dd>
+                </dl>
+              </div>
             );
           }
         )

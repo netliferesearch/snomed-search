@@ -1,6 +1,12 @@
 import { StringParam, withDefault } from "use-query-params";
 
-import { Language } from "./config";
+export enum Language {
+  Bokmål = "nb",
+  Nynorsk = "nn",
+  Norsk = "no",
+  EnglishUs = "en-US",
+  EnglishGb = "en-GB",
+}
 
 export const LIMIT = "10";
 

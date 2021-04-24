@@ -1,0 +1,131 @@
+{
+  "items": [
+    {
+      "active": true,
+      "released": true,
+      "releasedEffectiveTime": 20191025,
+      "descriptionId": "12531000202118",
+      "term": "Skjoldbruskkjertelkreft",
+      "conceptId": "363478007",
+      "moduleId": "51000202101",
+      "typeId": "900000000000013009",
+      "acceptabilityMap": {
+        "1091000202103": "PREFERRED"
+      },
+      "type": "SYNONYM",
+      "caseSignificance": "CASE_INSENSITIVE",
+      "lang": "nb",
+      "effectiveTime": "20191025"
+    },
+    {
+      "active": true,
+      "released": true,
+      "releasedEffectiveTime": 20191025,
+      "descriptionId": "12541000202112",
+      "term": "Kreft i skjoldbruskkjertelen",
+      "conceptId": "363478007",
+      "moduleId": "51000202101",
+      "typeId": "900000000000013009",
+      "acceptabilityMap": {
+        "1091000202103": "ACCEPTABLE"
+      },
+      "type": "SYNONYM",
+      "caseSignificance": "CASE_INSENSITIVE",
+      "lang": "nb",
+      "effectiveTime": "20191025"
+    },
+    {
+      "active": true,
+      "released": true,
+      "releasedEffectiveTime": 20170731,
+      "descriptionId": "755307011",
+      "term": "Malignant tumor of thyroid gland (disorder)",
+      "conceptId": "363478007",
+      "moduleId": "900000000000207008",
+      "typeId": "900000000000003001",
+      "acceptabilityMap": {
+        "900000000000509007": "PREFERRED",
+        "900000000000508004": "PREFERRED"
+      },
+      "type": "FSN",
+      "caseSignificance": "CASE_INSENSITIVE",
+      "lang": "en",
+      "effectiveTime": "20170731"
+    },
+    {
+      "active": true,
+      "released": true,
+      "releasedEffectiveTime": 20170731,
+      "descriptionId": "482742018",
+      "term": "Malignant tumor of thyroid gland",
+      "conceptId": "363478007",
+      "moduleId": "900000000000207008",
+      "typeId": "900000000000013009",
+      "acceptabilityMap": {
+        "900000000000509007": "PREFERRED"
+      },
+      "type": "SYNONYM",
+      "caseSignificance": "CASE_INSENSITIVE",
+      "lang": "en",
+      "effectiveTime": "20170731"
+    },
+    {
+      "active": true,
+      "released": true,
+      "releasedEffectiveTime": 20170731,
+      "descriptionId": "482743011",
+      "term": "Malignant tumour of thyroid gland",
+      "conceptId": "363478007",
+      "moduleId": "900000000000207008",
+      "typeId": "900000000000013009",
+      "acceptabilityMap": {
+        "900000000000508004": "PREFERRED"
+      },
+      "type": "SYNONYM",
+      "caseSignificance": "CASE_INSENSITIVE",
+      "lang": "en",
+      "effectiveTime": "20170731"
+    },
+    {
+      "active": true,
+      "released": true,
+      "releasedEffectiveTime": 20170731,
+      "descriptionId": "1228592014",
+      "term": "Thyroid cancer",
+      "conceptId": "363478007",
+      "moduleId": "900000000000207008",
+      "typeId": "900000000000013009",
+      "acceptabilityMap": {
+        "900000000000509007": "ACCEPTABLE",
+        "900000000000508004": "ACCEPTABLE"
+      },
+      "type": "SYNONYM",
+      "caseSignificance": "CASE_INSENSITIVE",
+      "lang": "en",
+      "effectiveTime": "20170731"
+    },
+    {
+      "active": true,
+      "released": true,
+      "releasedEffectiveTime": 20020731,
+      "descriptionId": "1228593016",
+      "term": "Thyroid Ca",
+      "conceptId": "363478007",
+      "moduleId": "900000000000207008",
+      "typeId": "900000000000013009",
+      "acceptabilityMap": {
+        "900000000000509007": "ACCEPTABLE",
+        "900000000000508004": "ACCEPTABLE"
+      },
+      "type": "SYNONYM",
+      "caseSignificance": "INITIAL_CHARACTER_CASE_INSENSITIVE",
+      "lang": "en",
+      "effectiveTime": "20020731"
+    }
+  ],
+  "total": 7,
+  "limit": 10,
+  "offset": 0,
+  "searchAfter": "W10=",
+  "searchAfterArray": []
+}

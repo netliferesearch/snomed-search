@@ -1,10 +1,5 @@
-export enum Language {
-  Bokmål = "nb",
-  Nynorsk = "nn",
-  Norsk = "no",
-  EnglishUs = "en-US",
-  EnglishGb = "en-GB",
-}
+import { Language } from "./constants";
+
 export interface ReferenceSet {
   id: string;
   title: string;

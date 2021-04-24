@@ -1,5 +1,5 @@
-import { Language, SnowstormConfig } from "../config";
-import { LIMIT } from "../constants";
+import { SnowstormConfig } from "../config";
+import { Language, LIMIT } from "../constants";
 import { createHeaders, handleResponse } from "../utils/api";
 
 interface Description {
