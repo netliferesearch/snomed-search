@@ -90,7 +90,7 @@ const Search: React.FunctionComponent = () => {
         setQueryParams({ b: path });
       }
     }
-  }, [branch, branchRequest, hostConfig?.defaultBranch, setQueryParams]);
+  }, [branch, branchRequest, hostConfig, setQueryParams]);
 
   useEffect(() => {
     if (!hostname) {
@@ -121,7 +121,7 @@ const Search: React.FunctionComponent = () => {
 
   const addToRefset = async (conceptId: string): Promise<void> => {
     await addRefsetMember(hostConfig, branch, conceptId, referenceSet);
-    window.location.reload();
+    await Promise.all([searchRequest.execute(), suggestionsRequest.execute()]);
   };
   const removeFromRefset = async (conceptId: string): Promise<void> => {
     const response = await getRefsetMembers(
@@ -135,7 +135,7 @@ const Search: React.FunctionComponent = () => {
         removeRefsetMember(hostConfig, branch, member.memberId)
       )
     );
-    window.location.reload();
+    await Promise.all([searchRequest.execute(), suggestionsRequest.execute()]);
   };
   const hideRefsetMember = (concept: ConceptInterface) =>
     !items.map((i) => i.concept.conceptId).includes(concept.conceptId);
