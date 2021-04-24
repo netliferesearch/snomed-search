@@ -21,7 +21,7 @@ export interface ConceptResponse {
   items: Description[];
 }
 
-export const fetchConcepts = async (
+const fetchConcepts = async (
   hostConfig: SnowstormConfig,
   branch: string,
   query: string,
@@ -50,3 +50,16 @@ export const fetchConcepts = async (
 
   return await handleJsonResponse<ConceptResponse>(response);
 };
+
+export const searchConcepts = async (
+  hostConfig: SnowstormConfig,
+  branch: string,
+  query: string,
+  referenceSet = "",
+  offset = "0",
+  limit = LIMIT
+): Promise<ConceptResponse[]> =>
+  Promise.all([
+    fetchConcepts(hostConfig, branch, query, referenceSet, offset, limit),
+    fetchConcepts(hostConfig, branch, query, "", offset, limit),
+  ]);

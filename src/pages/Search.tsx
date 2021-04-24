@@ -13,7 +13,7 @@ import Hits from "../components/HIts";
 import Loading, { LoadingSize } from "../components/Loading";
 import config, { SnomedSearchConfig } from "../config";
 import { DEBOUNCE_WAIT_MS, QUERY_PARAMS_CONFIG } from "../constants";
-import { ConceptResponse, fetchBranches, fetchConcepts } from "../store";
+import { ConceptResponse, fetchBranches, searchConcepts } from "../store";
 import { Concept as ConceptInterface } from "../store/ConceptStore";
 import {
   addRefsetMember,
@@ -31,26 +31,14 @@ const useSearch = (config: SnomedSearchConfig) => {
 
   // Debounce the original search async function
   const debouncedSearch = useConstant(() =>
-    debounce(fetchConcepts, DEBOUNCE_WAIT_MS)
+    debounce(searchConcepts, DEBOUNCE_WAIT_MS)
   );
 
   const searchRequest = useAsync(async () => {
     if (hostname && branch && query) {
       return debouncedSearch(hostConfig, branch, query, referenceSet);
     }
-    return ({} as unknown) as ConceptResponse;
-  }, [query, branch, referenceSet]); // Ensure a new request is made everytime the text changes (even if it's debounced)
-
-  // Debounce the original search async function
-  const debouncedSuggestionsSearch = useConstant(() =>
-    debounce(fetchConcepts, DEBOUNCE_WAIT_MS)
-  );
-
-  const suggestionsRequest = useAsync(async () => {
-    if (hostname && branch && query && referenceSet) {
-      return debouncedSuggestionsSearch(hostConfig, branch, query);
-    }
-    return ({} as unknown) as ConceptResponse;
+    return ([{}, {}] as unknown) as ConceptResponse[];
   }, [query, branch, referenceSet]); // Ensure a new request is made everytime the text changes (even if it's debounced)
 
   // Return everything needed for the hook consumer
@@ -59,7 +47,6 @@ const useSearch = (config: SnomedSearchConfig) => {
     branch,
     query,
     referenceSet,
-    suggestionsRequest,
     searchRequest,
     setQueryParams,
     hostConfig,
@@ -73,7 +60,6 @@ const Search: React.FunctionComponent = () => {
     branch,
     query,
     referenceSet,
-    suggestionsRequest,
     setQueryParams,
     searchRequest,
     hostConfig,
@@ -115,13 +101,14 @@ const Search: React.FunctionComponent = () => {
   };
 
   const branches = branchRequest.result || [];
-  const { totalElements = 0, items = [] } = searchRequest.result || {};
-  const { items: suggestions = [] } = suggestionsRequest.result || {};
+  const [refsetResult, suggestionsResult] = searchRequest.result || [];
+  const { totalElements = 0, items = [] } = refsetResult || {};
+  const { items: suggestions = [] } = suggestionsResult || {};
   const hostnames = config.hosts.map((h) => h.hostname);
 
   const addToRefset = async (conceptId: string): Promise<void> => {
     await addRefsetMember(hostConfig, branch, conceptId, referenceSet);
-    await Promise.all([searchRequest.execute(), suggestionsRequest.execute()]);
+    await searchRequest.execute();
   };
   const removeFromRefset = async (conceptId: string): Promise<void> => {
     const response = await getRefsetMembers(
@@ -135,7 +122,7 @@ const Search: React.FunctionComponent = () => {
         removeRefsetMember(hostConfig, branch, member.memberId)
       )
     );
-    await Promise.all([searchRequest.execute(), suggestionsRequest.execute()]);
+    await searchRequest.execute();
   };
   const hideRefsetMember = (concept: ConceptInterface) =>
     !items.map((i) => i.concept.conceptId).includes(concept.conceptId);
@@ -199,13 +186,7 @@ const Search: React.FunctionComponent = () => {
             </section>
           )}
 
-          {referenceSet && suggestionsRequest.loading && (
-            <Loading size={LoadingSize.Large} />
-          )}
-          {referenceSet && suggestionsRequest.error && (
-            <Error>{suggestionsRequest.error.message}</Error>
-          )}
-          {referenceSet && !suggestionsRequest.loading && (
+          {referenceSet && (
             <section aria-label={t("results.suggestionsLabel")}>
               <h1 className="h5 mt-5 mb-3">{t("results.suggestionsLabel")}</h1>
               <ol className="list-unstyled">
