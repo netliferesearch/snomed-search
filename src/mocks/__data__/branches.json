@@ -1,0 +1,35 @@
+[
+  {
+    "path": "MAIN",
+    "containsContent": true,
+    "locked": false,
+    "creation": "2020-07-03T13:32:12.383Z",
+    "base": "2020-07-03T13:32:12.383Z",
+    "head": "2020-07-03T14:04:55.324Z",
+    "creationTimestamp": 1593783132383,
+    "baseTimestamp": 1593783132383,
+    "headTimestamp": 1593785095324,
+    "versionsReplacedCounts": {
+      "Concept": 0,
+      "Description": 0,
+      "ReferenceSetType": 0,
+      "QueryConcept": 0,
+      "ReferenceSetMember": 0,
+      "Relationship": 0
+    }
+  },
+  {
+    "path": "MAIN/ICPC2",
+    "containsContent": true,
+    "locked": false,
+    "creation": "2020-07-03T16:43:00.613Z",
+    "base": "2020-07-03T14:04:55.324Z",
+    "head": "2020-07-03T16:44:50.515Z",
+    "creationTimestamp": 1593794580613,
+    "baseTimestamp": 1593785095324,
+    "headTimestamp": 1593794690515,
+    "versionsReplacedCounts": {
+      "ReferenceSetMember": 0
+    }
+  }
+]

@@ -1,45 +1,75 @@
+import classNames from "classnames";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
 import { SnowstormConfig } from "../config";
+import { Concept as ConceptInterface } from "../store/ConceptStore";
 import CodeSystemList from "./CodeSystemList";
+import styles from "./Definition.module.scss";
 import SynonymList from "./SynonymList";
+
+export enum ButtonVariant {
+  Primary,
+  Danger,
+}
 
 interface ConceptProps {
   hostConfig: SnowstormConfig;
   branch: string;
-  preferredTerm: string;
-  fullySpecifiedName: string;
-  conceptId: string;
+  concept: ConceptInterface;
+  handle?: (conceptId: string) => void;
+  buttonText?: string;
+  buttonVariant?: ButtonVariant;
 }
 
 const Concept: React.FunctionComponent<ConceptProps> = ({
   hostConfig,
   branch,
-  preferredTerm,
-  fullySpecifiedName,
-  conceptId,
+  concept,
+  handle,
+  buttonText,
+  buttonVariant = ButtonVariant.Primary,
 }) => {
   const { t } = useTranslation();
 
   return (
-    <div className="d-md-flex justify-content-between">
-      <div>
-        <h2>{preferredTerm}</h2>
+    <div className="row">
+      <div className="col-lg-6">
+        <h2 id={concept.conceptId}>{concept.pt.term}</h2>
         <SynonymList
           hostConfig={hostConfig}
           branch={branch}
-          conceptId={conceptId}
-          preferredTerm={preferredTerm}
+          conceptId={concept.conceptId}
+          preferredTerm={concept.pt.term}
         />
-        <p className="mb-md-0">{fullySpecifiedName}</p>
+        <p>{concept.fsn.term}</p>
       </div>
-      <dl className="mb-md-0 ml-md-5">
-        <dt>{t("snomedct")}</dt>
-        <dd className="mb-md-0">{conceptId}</dd>
-      </dl>
+      <div
+        className={classNames(
+          "col-12 col-sm-6 flex-lg-grow-1",
+          styles.definition
+        )}
+      >
+        <dl>
+          <dt>{t("snomedct")}</dt>
+          <dd>{concept.conceptId}</dd>
+        </dl>
+      </div>
       {hostConfig.codeSystems && (
-        <CodeSystemList hostConfig={hostConfig} conceptId={conceptId} />
+        <CodeSystemList hostConfig={hostConfig} conceptId={concept.conceptId} />
+      )}
+      {handle && buttonText && (
+        <div className="col-12">
+          <button
+            onClick={() => handle(concept.conceptId)}
+            className={classNames("btn", {
+              "btn-outline-primary": buttonVariant === ButtonVariant.Primary,
+              "btn-outline-danger": buttonVariant === ButtonVariant.Danger,
+            })}
+          >
+            {buttonText}
+          </button>
+        </div>
       )}
     </div>
   );

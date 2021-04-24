@@ -73,6 +73,20 @@ This is what it does:
 proxy_cache_path        /var/cache/nginx levels=1:2 keys_zone=snowstorm:10m max_size=10g
                         inactive=60m use_temp_path=off;
 
+map $http_origin $cors_origin_header {
+    default "";
+    "~(^|^http:\/\/)(localhost$|localhost:[0-9]{1,4}$)" "$http_origin";
+    "https://snowstorm.rundberg.no" "$http_origin";
+    "https://snomed-search.netlify.app" "$http_origin";
+}
+
+map $http_origin $cors_cred {
+    default "";
+    "~(^|^http:\/\/)(localhost$|localhost:[0-9]{1,4}$)" "true";
+    "https://snowstorm.rundberg.no" "true";
+    "https://snomed-search.netlify.app" "true";
+}
+
 server {
 
     server_name snowstorm.rundberg.no;
@@ -83,33 +97,15 @@ server {
                 auth_basic_user_file /etc/nginx/.htpasswd;
         }
 
-        if ($request_method = 'OPTIONS') {
-            add_header 'Access-Control-Allow-Origin' '*';
-            add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
-            #
-            # Custom headers and headers various browsers *should* be OK with but aren't
-            #
-            add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range';
-            #
-            # Tell client that this pre-flight info is valid for 20 days
-            #
-            add_header 'Access-Control-Max-Age' 1728000;
-            add_header 'Content-Type' 'text/plain; charset=utf-8';
-            add_header 'Content-Length' 0;
-            return 204;
+        add_header Access-Control-Allow-Origin $cors_origin_header always;
+        add_header Access-Control-Allow-Credentials $cors_cred;
+        add_header "Access-Control-Allow-Methods" "GET, POST, DELETE, PUT, OPTIONS, HEAD";
+        add_header "Access-Control-Allow-Headers" "Authorization, Origin, X-Requested-With, Content-Type, Accept";
+
+        if ($request_method = 'OPTIONS' ) {
+        return 204 no-content;
         }
-        if ($request_method = 'POST') {
-            add_header 'Access-Control-Allow-Origin' '*';
-            add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
-            add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range';
-            add_header 'Access-Control-Expose-Headers' 'Content-Length,Content-Range';
-        }
-        if ($request_method = 'GET') {
-            add_header 'Access-Control-Allow-Origin' '*';
-            add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
-            add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range';
-            add_header 'Access-Control-Expose-Headers' 'Content-Length,Content-Range';
-        }
+
         # Enable or disable the cache by uncommenting/commenting the next line
 #        proxy_cache                     snowstorm;
         add_header                      X-Cache-Status          $upstream_cache_status;

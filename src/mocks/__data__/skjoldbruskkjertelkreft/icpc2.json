@@ -1,0 +1,72 @@
+{
+  "memberCountsByReferenceSet": {
+    "450993002": 1
+  },
+  "referenceSets": {
+    "450993002": {
+      "conceptId": "450993002",
+      "active": true,
+      "definitionStatus": "PRIMITIVE",
+      "moduleId": "900000000000012004",
+      "effectiveTime": "20120731",
+      "fsn": {
+        "term": "International Classification of Primary Care, Second edition complex map reference set (foundation metadata concept)",
+        "lang": "en"
+      },
+      "pt": {
+        "term": "International Classification of Primary Care, Second edition complex map reference set",
+        "lang": "en"
+      },
+      "id": "450993002",
+      "referenceSetType": {
+        "conceptId": "447250001",
+        "active": true,
+        "definitionStatus": "PRIMITIVE",
+        "moduleId": "900000000000012004",
+        "effectiveTime": "20020131",
+        "fsn": {
+          "term": "Complex map type reference set (foundation metadata concept)",
+          "lang": "en"
+        },
+        "pt": {
+          "term": "Complex map type reference set",
+          "lang": "en"
+        },
+        "id": "447250001"
+      }
+    }
+  },
+  "totalPages": 1,
+  "totalElements": 1,
+  "last": true,
+  "size": 10,
+  "number": 0,
+  "first": true,
+  "numberOfElements": 1,
+  "items": [
+    {
+      "internalId": "sFSQFXMBtz7NvWho-svd",
+      "path": "MAIN/ICPC2",
+      "start": 1593794685656,
+      "active": true,
+      "effectiveTimeI": 20160131,
+      "released": true,
+      "releaseHash": "true|715152001|correlationId|447561005|mapAdvice|ALWAYS T71|mapCategoryId|447637006|mapGroup|1|mapPriority|1|mapRule|TRUE|mapTarget|T71",
+      "releasedEffectiveTime": 20160131,
+      "memberId": "2d3b485c-d582-5872-a6f9-89a153fc57da",
+      "moduleId": "715152001",
+      "refsetId": "450993002",
+      "referencedComponentId": "363478007",
+      "additionalFields": {
+        "mapCategoryId": "447637006",
+        "mapRule": "TRUE",
+        "mapAdvice": "ALWAYS T71",
+        "mapPriority": "1",
+        "mapGroup": "1",
+        "correlationId": "447561005",
+        "mapTarget": "T71"
+      },
+      "effectiveTime": "20160131"
+    }
+  ]
+}

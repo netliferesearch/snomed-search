@@ -4,8 +4,10 @@
   "private": true,
   "dependencies": {
     "awesome-debounce-promise": "^2.1.0",
+    "bootstrap": "^4.6.0",
     "classnames": "^2.3.1",
     "i18next": "^20.2.1",
+    "i18next-browser-languagedetector": "^6.1.0",
     "lodash.debounce": "^4.0.8",
     "query-string": "^7.0.0",
     "react": "^17.0.2",
@@ -19,7 +21,8 @@
   "scripts": {
     "commit": "cz",
     "start": "react-scripts start",
-    "prebuild": "npm-run-all clean validate",
+    "prebuild": "npm-run-all clean generate:tsdefinitions validate",
+    "generate:tsdefinitions": "tsm --nameFormat none --exportType default src",
     "clean": "rimraf build",
     "build": "react-scripts build",
     "deploy": "netlify deploy --prod",
@@ -71,9 +74,11 @@
     "husky": "^6.0.0",
     "lint-staged": "^10.5.4",
     "msw": "^0.28.2",
+    "node-sass": "^5.0.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.2.1",
     "react-scripts": "4.0.3",
+    "typed-scss-modules": "^4.1.1",
     "typescript": "4.2.4"
   },
   "engines": {

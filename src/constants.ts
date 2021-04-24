@@ -1,12 +1,17 @@
 import { StringParam, withDefault } from "use-query-params";
 
-import { Language } from "./config";
+export enum Language {
+  Bokmål = "nb",
+  Nynorsk = "nn",
+  Norsk = "no",
+  English = "en",
+}
 
 export const LIMIT = "10";
 
 export const ACCEPT_LANGUAGE_SEPARATOR = ";";
 
-export const DEFAULT_LANGUAGE = Language.EnglishUs;
+export const DEFAULT_LANGUAGE = Language.English;
 
 export const SNOWSTORM_SYNONYM_TYPE = "SYNONYM";
 

@@ -1,19 +1,19 @@
 import { SnowstormConfig } from "../config";
 import { LIMIT } from "../constants";
-import { createHeaders, handleResponse } from "../utils/api";
+import { createHeaders, handleJsonResponse } from "../utils/api";
 
 interface Term {
   term: string;
 }
 
-interface Concept {
+export interface Concept {
   conceptId: string;
-  fsn: Readonly<Term>;
-  pt: Readonly<Term>;
+  fsn: Term;
+  pt: Term;
 }
 
 interface Description {
-  concept: Readonly<Concept>;
+  concept: Concept;
 }
 
 export interface ConceptResponse {
@@ -48,5 +48,5 @@ export const fetchConcepts = async (
     headers: createHeaders(hostConfig.languages),
   });
 
-  return await handleResponse<ConceptResponse>(response);
+  return await handleJsonResponse<ConceptResponse>(response);
 };

@@ -1,10 +1,5 @@
-export enum Language {
-  Bokmål = "nb",
-  Nynorsk = "nn",
-  Norsk = "no",
-  EnglishUs = "en-US",
-  EnglishGb = "en-GB",
-}
+import { Language } from "./constants";
+
 export interface ReferenceSet {
   id: string;
   title: string;
@@ -51,10 +46,6 @@ const config: SnomedSearchConfig = {
       ],
       referenceSets: [
         {
-          id: "",
-          title: "[Not specified]",
-        },
-        {
           id: "1981000202104",
           title: "Målgruppe",
         },
@@ -83,7 +74,12 @@ const config: SnomedSearchConfig = {
           title: "Virkestoff med antibakteriell eller antimykotisk effekt",
         },
       ],
-      languages: [Language.Bokmål, Language.Nynorsk, Language.Norsk],
+      languages: [
+        Language.Bokmål,
+        Language.Nynorsk,
+        Language.Norsk,
+        Language.English,
+      ],
     },
     { hostname: "https://snowstorm.test.nhn.no" },
   ],

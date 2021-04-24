@@ -2,10 +2,16 @@
   "form.branch": "Branch",
   "form.host": "Host",
   "form.referenceset": "Reference set",
+  "form.notselected": "Not selected",
   "form.search": "Search",
   "navigation.all": "All",
   "results.hitWithCount_plural": "{{count}} hits",
   "results.hitWithCount": "{{count}} hit",
+  "results.label": "Results",
+  "results.suggestionsLabel": "Suggestions",
+  "results.refsetLabel": "Results in refset \"{{title}}\"",
   "snomedct": "Snomed CT",
-  "status.loading": "Loading..."
+  "status.loading": "Loading...",
+  "button.add": "Add to refset",
+  "button.remove": "Remove from refset"
 }

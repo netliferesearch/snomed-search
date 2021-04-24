@@ -1,5 +1,5 @@
 import { SnowstormConfig } from "../config";
-import { createHeaders, handleResponse } from "../utils/api";
+import { createHeaders, handleJsonResponse } from "../utils/api";
 
 interface Fields {
   mapAdvice: string;
@@ -9,7 +9,7 @@ interface Fields {
 interface CodeSystem {
   internalId: string;
   refsetId: string;
-  additionalFields: Readonly<Fields>;
+  additionalFields: Fields;
 }
 
 interface CodeSystemResponse {
@@ -34,7 +34,7 @@ export const fetchCodeSystems = (
           headers: createHeaders(hostConfig.languages),
         });
 
-        return await handleResponse<CodeSystemResponse>(response);
+        return await handleJsonResponse<CodeSystemResponse>(response);
       })
     );
   }

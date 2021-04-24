@@ -5,14 +5,21 @@ import { useTranslation } from "react-i18next";
 import useConstant from "use-constant";
 import { useQueryParams } from "use-query-params";
 
-import Concept from "../components/Concept";
+import Concept, { ButtonVariant } from "../components/Concept";
 import Error from "../components/Error";
 import Form from "../components/Form";
 import Header from "../components/Header";
-import Loading from "../components/Loading";
+import Hits from "../components/HIts";
+import Loading, { LoadingSize } from "../components/Loading";
 import config, { SnomedSearchConfig } from "../config";
 import { DEBOUNCE_WAIT_MS, QUERY_PARAMS_CONFIG } from "../constants";
 import { ConceptResponse, fetchBranches, fetchConcepts } from "../store";
+import { Concept as ConceptInterface } from "../store/ConceptStore";
+import {
+  addRefsetMember,
+  getRefsetMembers,
+  removeRefsetMember,
+} from "../store/RefsetStore";
 
 const useSearch = (config: SnomedSearchConfig) => {
   // Handle the input text state
@@ -31,7 +38,19 @@ const useSearch = (config: SnomedSearchConfig) => {
     if (hostname && branch && query) {
       return debouncedSearch(hostConfig, branch, query, referenceSet);
     }
-    return ({} as unknown) as Readonly<ConceptResponse>;
+    return ({} as unknown) as ConceptResponse;
+  }, [query, branch, referenceSet]); // Ensure a new request is made everytime the text changes (even if it's debounced)
+
+  // Debounce the original search async function
+  const debouncedSuggestionsSearch = useConstant(() =>
+    debounce(fetchConcepts, DEBOUNCE_WAIT_MS)
+  );
+
+  const suggestionsRequest = useAsync(async () => {
+    if (hostname && branch && query && referenceSet) {
+      return debouncedSuggestionsSearch(hostConfig, branch, query);
+    }
+    return ({} as unknown) as ConceptResponse;
   }, [query, branch, referenceSet]); // Ensure a new request is made everytime the text changes (even if it's debounced)
 
   // Return everything needed for the hook consumer
@@ -40,6 +59,7 @@ const useSearch = (config: SnomedSearchConfig) => {
     branch,
     query,
     referenceSet,
+    suggestionsRequest,
     searchRequest,
     setQueryParams,
     hostConfig,
@@ -53,6 +73,7 @@ const Search: React.FunctionComponent = () => {
     branch,
     query,
     referenceSet,
+    suggestionsRequest,
     setQueryParams,
     searchRequest,
     hostConfig,
@@ -69,7 +90,7 @@ const Search: React.FunctionComponent = () => {
         setQueryParams({ b: path });
       }
     }
-  }, [branch, branchRequest, hostConfig?.defaultBranch, setQueryParams]);
+  }, [branch, branchRequest, hostConfig, setQueryParams]);
 
   useEffect(() => {
     if (!hostname) {
@@ -95,13 +116,35 @@ const Search: React.FunctionComponent = () => {
 
   const branches = branchRequest.result || [];
   const { totalElements = 0, items = [] } = searchRequest.result || {};
+  const { items: suggestions = [] } = suggestionsRequest.result || {};
   const hostnames = config.hosts.map((h) => h.hostname);
+
+  const addToRefset = async (conceptId: string): Promise<void> => {
+    await addRefsetMember(hostConfig, branch, conceptId, referenceSet);
+    await Promise.all([searchRequest.execute(), suggestionsRequest.execute()]);
+  };
+  const removeFromRefset = async (conceptId: string): Promise<void> => {
+    const response = await getRefsetMembers(
+      hostConfig,
+      branch,
+      conceptId,
+      referenceSet
+    );
+    await Promise.all(
+      response.items.map((member) =>
+        removeRefsetMember(hostConfig, branch, member.memberId)
+      )
+    );
+    await Promise.all([searchRequest.execute(), suggestionsRequest.execute()]);
+  };
+  const hideRefsetMember = (concept: ConceptInterface) =>
+    !items.map((i) => i.concept.conceptId).includes(concept.conceptId);
 
   return (
     <div className="container">
       <Header />
       <div className="row mb-5">
-        <div className="col-9 col-md-10">
+        <div className="col">
           {branchRequest.error && <Error>{branchRequest.error.message}</Error>}
           {!branchRequest.loading && !branchRequest.error && (
             <Form
@@ -117,41 +160,75 @@ const Search: React.FunctionComponent = () => {
             />
           )}
         </div>
-        <div className="col-3 col-md-2">
-          <div className="d-flex h-100 align-items-center justify-content-center">
-            {searchRequest.loading && <Loading />}
-          </div>
-        </div>
       </div>
       <div className="row">
         <div className="col">
+          {searchRequest.loading && <Loading size={LoadingSize.Large} />}
           {searchRequest.error && <Error>{searchRequest.error.message}</Error>}
-          {totalElements > 0 && (
-            <p className="mb-1">
-              {t("results.hitWithCount", { count: totalElements })}
-            </p>
+          {!searchRequest.loading && (
+            <section
+              aria-label={
+                referenceSet
+                  ? t("results.refsetLabel", {
+                      title: hostConfig.referenceSets?.find(
+                        (r) => r.id === referenceSet
+                      )?.title,
+                    })
+                  : t("results.label")
+              }
+            >
+              <Hits totalElements={totalElements} />
+              <ol className="list-unstyled">
+                {items.map(({ concept }) => (
+                  <li
+                    key={concept.conceptId}
+                    className="card p-3 mb-3"
+                    aria-labelledby={concept.conceptId}
+                  >
+                    <Concept
+                      hostConfig={hostConfig}
+                      branch={branch}
+                      concept={concept}
+                      handle={referenceSet ? removeFromRefset : undefined}
+                      buttonText={t("button.remove")}
+                      buttonVariant={ButtonVariant.Danger}
+                    />
+                  </li>
+                ))}
+              </ol>
+            </section>
           )}
-          <ul className="list-group">
-            {items.map(
-              ({
-                concept: {
-                  conceptId,
-                  fsn: { term: fullySpecifiedName },
-                  pt: { term: preferredTerm },
-                },
-              }) => (
-                <li key={conceptId} className="list-group-item mb-3">
-                  <Concept
-                    hostConfig={hostConfig}
-                    branch={branch}
-                    preferredTerm={preferredTerm}
-                    fullySpecifiedName={fullySpecifiedName}
-                    conceptId={conceptId}
-                  />
-                </li>
-              )
-            )}
-          </ul>
+
+          {referenceSet && suggestionsRequest.loading && (
+            <Loading size={LoadingSize.Large} />
+          )}
+          {referenceSet && suggestionsRequest.error && (
+            <Error>{suggestionsRequest.error.message}</Error>
+          )}
+          {referenceSet && !suggestionsRequest.loading && (
+            <section aria-label={t("results.suggestionsLabel")}>
+              <h1 className="h5 mt-5 mb-3">{t("results.suggestionsLabel")}</h1>
+              <ol className="list-unstyled">
+                {suggestions
+                  .filter(({ concept }) => hideRefsetMember(concept))
+                  .map(({ concept }) => (
+                    <li
+                      key={concept.conceptId}
+                      className="card p-3 mb-3"
+                      aria-labelledby={concept.conceptId}
+                    >
+                      <Concept
+                        hostConfig={hostConfig}
+                        branch={branch}
+                        concept={concept}
+                        handle={referenceSet ? addToRefset : undefined}
+                        buttonText={t("button.add")}
+                      />
+                    </li>
+                  ))}
+              </ol>
+            </section>
+          )}
         </div>
       </div>
     </div>

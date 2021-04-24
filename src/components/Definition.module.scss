@@ -1,0 +1,8 @@
+@import "../styles/app.scss";
+@import "~bootstrap/scss/mixins/breakpoints";
+
+.definition {
+  @include media-breakpoint-up(lg) {
+    flex-basis: 0;
+  }
+}

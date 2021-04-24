@@ -32,68 +32,67 @@ const Form: React.FunctionComponent<FormProps> = ({
   const { t } = useTranslation();
 
   return (
-    <form onSubmit={handleFormSubmit}>
+    <form onSubmit={handleFormSubmit} role="search">
       <div className="form-row">
-        <>
-          <div className="col-12">
+        <div className="col-lg-6 col-xxl-3">
+          <div className="form-group">
+            <label htmlFor="host">{t("form.host")}</label>
+            <select
+              id="host"
+              name="h"
+              className="form-control"
+              value={hostname}
+              onChange={handleInputChange}
+            >
+              {hostnames.map((hostname) => (
+                <option value={hostname} key={hostname}>
+                  {hostname}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+        <div className="col-lg-6 col-xxl-3">
+          <div className="form-group">
+            <label htmlFor="branch">{t("form.branch")}</label>
+            <select
+              id="branch"
+              name="b"
+              className="form-control"
+              value={branch}
+              onChange={handleInputChange}
+            >
+              {branches.map(({ path }) => (
+                <option value={path} key={path}>
+                  {path}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+        {referenceSets && (
+          <div className="col-lg-6 col-xxl-3">
             <div className="form-group">
-              <label htmlFor="host">{t("form.host")}</label>
+              <label htmlFor="referenceSet">{t("form.referenceset")}</label>
               <select
-                id="host"
-                name="h"
+                id="referenceSet"
+                name="rs"
                 className="form-control"
-                value={hostname}
+                value={referenceSet}
                 onChange={handleInputChange}
               >
-                {hostnames.map((hostname) => (
-                  <option value={hostname} key={hostname}>
-                    {hostname}
+                <option value="">{t("form.notselected")}</option>
+                {referenceSets.map(({ id, title }) => (
+                  <option value={id} key={id}>
+                    {title}
                   </option>
                 ))}
               </select>
             </div>
           </div>
-          <div className="col-md-4">
-            <div className="form-group mb-md-0">
-              <label htmlFor="branch">{t("form.branch")}</label>
-              <select
-                id="branch"
-                name="b"
-                className="form-control"
-                value={branch}
-                onChange={handleInputChange}
-              >
-                {branches.map(({ path }) => (
-                  <option value={path} key={path}>
-                    {path}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-          {referenceSets && (
-            <div className="col-md-4">
-              <div className="form-group mb-md-0">
-                <label htmlFor="referenceSet">{t("form.referenceset")}</label>
-                <select
-                  id="referenceSet"
-                  name="rs"
-                  className="form-control"
-                  value={referenceSet}
-                  onChange={handleInputChange}
-                >
-                  {referenceSets.map(({ id, title }) => (
-                    <option value={id} key={id}>
-                      {title}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-          )}
-        </>
-        <div className="col">
-          <div className="form-group mb-md-0">
+        )}
+        <div className="col-lg-6 col-xxl-3">
+          <div className="form-group">
             <label htmlFor="query">{t("form.search")}</label>
             <input
               id="query"

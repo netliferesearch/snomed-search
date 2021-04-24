@@ -1,0 +1,114 @@
+{
+  "buckets": {
+    "module": {
+      "51000202101": 1
+    },
+    "semanticTags": {
+      "disorder": 1
+    },
+    "language": {
+      "nb": 1
+    },
+    "membership": {
+      "447562003": 1,
+      "733073007": 1,
+      "900000000000497000": 1,
+      "1991000202102": 1
+    }
+  },
+  "languageNames": {
+    "nb": "norwegian bokmål"
+  },
+  "bucketConcepts": {
+    "447562003": {
+      "conceptId": "447562003",
+      "active": true,
+      "definitionStatus": "PRIMITIVE",
+      "moduleId": "900000000000012004",
+      "fsn": {
+        "term": "ICD-10 complex map reference set (foundation metadata concept)",
+        "lang": "en"
+      },
+      "pt": {
+        "term": "ICD-10 complex map reference set",
+        "lang": "en"
+      },
+      "id": "447562003"
+    },
+    "733073007": {
+      "conceptId": "733073007",
+      "active": true,
+      "definitionStatus": "PRIMITIVE",
+      "moduleId": "900000000000012004",
+      "fsn": {
+        "term": "OWL axiom reference set (foundation metadata concept)",
+        "lang": "en"
+      },
+      "pt": {
+        "term": "OWL axiom reference set",
+        "lang": "en"
+      },
+      "id": "733073007"
+    },
+    "900000000000497000": {
+      "conceptId": "900000000000497000",
+      "active": true,
+      "definitionStatus": "PRIMITIVE",
+      "moduleId": "900000000000012004",
+      "fsn": {
+        "term": "CTV3 simple map reference set (foundation metadata concept)",
+        "lang": "en"
+      },
+      "pt": {
+        "term": "CTV3 simple map",
+        "lang": "en"
+      },
+      "id": "900000000000497000"
+    },
+    "51000202101": {
+      "conceptId": "51000202101",
+      "active": true,
+      "definitionStatus": "PRIMITIVE",
+      "moduleId": "51000202101",
+      "fsn": {
+        "term": "Norwegian module (core metadata concept)",
+        "lang": "en"
+      },
+      "pt": {
+        "term": "Norwegian module",
+        "lang": "no"
+      },
+      "id": "51000202101"
+    }
+  },
+  "totalPages": 1,
+  "totalElements": 1,
+  "last": true,
+  "size": 10,
+  "number": 0,
+  "first": true,
+  "numberOfElements": 1,
+  "items": [
+    {
+      "term": "Skjoldbruskkjertelkreft",
+      "active": true,
+      "languageCode": "nb",
+      "module": "51000202101",
+      "concept": {
+        "conceptId": "363478007",
+        "active": true,
+        "definitionStatus": "FULLY_DEFINED",
+        "moduleId": "900000000000207008",
+        "fsn": {
+          "term": "Malignant tumor of thyroid gland (disorder)",
+          "lang": "en"
+        },
+        "pt": {
+          "term": "Skjoldbruskkjertelkreft",
+          "lang": "nb"
+        },
+        "id": "363478007"
+      }
+    }
+  ]
+}
