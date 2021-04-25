@@ -5,7 +5,8 @@ import { useTranslation } from "react-i18next";
 import useConstant from "use-constant";
 import { useQueryParams } from "use-query-params";
 
-import Concept, { ButtonVariant } from "../components/Concept";
+import { ButtonVariant } from "../components/Button";
+import Concept from "../components/Concept";
 import Error from "../components/Error";
 import Form from "../components/Form";
 import Header from "../components/Header";

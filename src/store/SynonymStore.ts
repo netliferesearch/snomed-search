@@ -2,7 +2,7 @@ import { SnowstormConfig } from "../config";
 import { Language, LIMIT } from "../constants";
 import { createHeaders, handleJsonResponse } from "../utils/api";
 
-interface Description {
+export interface Synonym {
   term: string;
   type: string;
   lang: Language;
@@ -10,7 +10,7 @@ interface Description {
 }
 
 interface SynonymResponse {
-  items: Description[];
+  items: Synonym[];
 }
 
 export const fetchSynonyms = async (

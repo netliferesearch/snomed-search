@@ -33,24 +33,20 @@ const CodeSystemList: React.FunctionComponent<CodeSystemProps> = ({
             refsetId,
             additionalFields: { mapAdvice: advice, mapTarget: code },
           }) => {
-            const { title } =
+            const { title = "" } =
               hostConfig.codeSystems?.find((set) => set.id === refsetId) ?? {};
-            if (!title) {
-              throw new Error(`Missing title for codesystem "${refsetId}"`);
-            }
+
             return (
-              <div
+              <dl
                 className={classNames(
                   "col-12 col-sm-6 flex-lg-grow-1",
                   styles.definition
                 )}
                 key={internalId}
               >
-                <dl>
-                  <dt>{title}</dt>
-                  <dd title={advice}>{code ? code : advice}</dd>
-                </dl>
-              </div>
+                <dt>{title}</dt>
+                <dd title={advice}>{code ? code : advice}</dd>
+              </dl>
             );
           }
         )

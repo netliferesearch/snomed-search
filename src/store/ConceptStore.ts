@@ -2,7 +2,7 @@ import { SnowstormConfig } from "../config";
 import { LIMIT } from "../constants";
 import { createHeaders, handleJsonResponse } from "../utils/api";
 
-interface Term {
+export interface Term {
   term: string;
 }
 
@@ -12,7 +12,7 @@ export interface Concept {
   pt: Term;
 }
 
-interface Description {
+export interface Description {
   concept: Concept;
 }
 

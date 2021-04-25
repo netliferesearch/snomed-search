@@ -4,14 +4,10 @@ import { useTranslation } from "react-i18next";
 
 import { SnowstormConfig } from "../config";
 import { Concept as ConceptInterface } from "../store/ConceptStore";
+import Button, { ButtonVariant } from "./Button";
 import CodeSystemList from "./CodeSystemList";
 import styles from "./Definition.module.scss";
 import SynonymList from "./SynonymList";
-
-export enum ButtonVariant {
-  Primary,
-  Danger,
-}
 
 interface ConceptProps {
   hostConfig: SnowstormConfig;
@@ -49,31 +45,27 @@ const Concept: React.FunctionComponent<ConceptProps> = ({
           preferredTerm={concept.pt.term}
         />
       </div>
-      <div
+
+      <dl
         className={classNames(
           "col-12 col-sm-6 flex-lg-grow-1",
           styles.definition
         )}
       >
-        <dl>
-          <dt>{t("snomedct")}</dt>
-          <dd>{concept.conceptId}</dd>
-        </dl>
-      </div>
+        <dt>{t("snomedct")}</dt>
+        <dd>{concept.conceptId}</dd>
+      </dl>
       {hostConfig.codeSystems && (
         <CodeSystemList hostConfig={hostConfig} conceptId={concept.conceptId} />
       )}
       {handle && buttonText && (
         <div className="col-12">
-          <button
+          <Button
             onClick={() => handle(concept.conceptId)}
-            className={classNames("btn", {
-              "btn-outline-primary": buttonVariant === ButtonVariant.Primary,
-              "btn-outline-danger": buttonVariant === ButtonVariant.Danger,
-            })}
+            variant={buttonVariant}
           >
             {buttonText}
-          </button>
+          </Button>
         </div>
       )}
     </div>
