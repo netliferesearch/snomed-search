@@ -7,80 +7,101 @@ import icpc2 from "./__data__/skjoldbruskkjertelkreft/icpc2.json";
 import members from "./__data__/skjoldbruskkjertelkreft/members.json";
 import synonyms from "./__data__/skjoldbruskkjertelkreft/synonyms.json";
 
-let skjoldbruskkjertelkreftIsDeleted = false;
-let halsbrannIsAdded = false;
+export enum Concepts {
+  Halsbrann = "16331000",
+  Skjoldbruskkjertelkreft = "363478007",
+}
 
 const handlers = [
-  rest.get("https://snowstorm.rundberg.no/branches", async (req, res, ctx) => {
+  /**
+   * Get branch list
+   */
+  rest.get("https://snowstorm.rundberg.no/branches", (req, res, ctx) => {
     return res(ctx.json(branches));
   }),
+
+  /**
+   * Search for concepts
+   */
   rest.get(
     "https://snowstorm.rundberg.no/browser/MAIN/descriptions",
-    async (req, res, ctx) => {
-      if (
-        req.url.searchParams.get("term") === "Halsbrann" &&
-        req.url.searchParams.get("conceptRefset") === "1991000202102" &&
-        halsbrannIsAdded
-      ) {
+    (req, res, ctx) => {
+      if (req.url.searchParams.get("term") === "Halsbrann") {
         return res(ctx.json(halsbrannDescriptions));
       } else if (
-        req.url.searchParams.get("term") === "Halsbrann" &&
-        req.url.searchParams.get("conceptRefset") === "" &&
-        !halsbrannIsAdded
-      ) {
-        return res(ctx.json(halsbrannDescriptions));
-      } else if (
-        req.url.searchParams.get("term") === "Skjoldbruskkjertelkreft" &&
-        req.url.searchParams.get("conceptRefset") === "1991000202102" &&
-        !skjoldbruskkjertelkreftIsDeleted
-      ) {
-        return res(ctx.json(descriptions));
-      } else if (
-        req.url.searchParams.get("term") === "Skjoldbruskkjertelkreft" &&
-        req.url.searchParams.get("conceptRefset") === "" &&
-        skjoldbruskkjertelkreftIsDeleted
+        req.url.searchParams.get("term") === "Skjoldbruskkjertelkreft"
       ) {
         return res(ctx.json(descriptions));
       }
 
-      return res(ctx.json({ items: [] }));
+      return;
     }
   ),
+
+  /**
+   * Search for synonyms
+   */
   rest.get(
     "https://snowstorm.rundberg.no/MAIN/descriptions",
-    async (req, res, ctx) => {
-      if (req.url.searchParams.get("concept") === "363478007") {
+    (req, res, ctx) => {
+      if (
+        req.url.searchParams.get("concept") === Concepts.Skjoldbruskkjertelkreft
+      ) {
         return res(ctx.json(synonyms));
+      } else if (req.url.searchParams.get("concept") === Concepts.Halsbrann) {
+        return res(ctx.json({ items: [] }));
       }
-      return res(ctx.json({ items: [] }));
+
+      return;
     }
   ),
+
+  /**
+   * Search codesystems (eg. ICPC2)
+   */
   rest.get(
     "https://snowstorm.rundberg.no/browser/MAIN/ICPC2/members",
-    async (req, res, ctx) => {
-      if (req.url.searchParams.get("referencedComponentId") === "363478007") {
+    (req, res, ctx) => {
+      if (
+        req.url.searchParams.get("referencedComponentId") ===
+        Concepts.Skjoldbruskkjertelkreft
+      ) {
         return res(ctx.json(icpc2));
+      } else if (
+        req.url.searchParams.get("referencedComponentId") === Concepts.Halsbrann
+      ) {
+        return res(ctx.json({ items: [] }));
       }
-      return res(ctx.json({ items: [] }));
+      return;
     }
   ),
-  rest.post(
-    "https://snowstorm.rundberg.no/MAIN/members",
-    async (req, res, ctx) => {
-      halsbrannIsAdded = true;
-      return res(ctx.json({}));
-    }
-  ),
-  rest.get(
-    "https://snowstorm.rundberg.no/MAIN/members",
-    async (req, res, ctx) => {
+
+  /**
+   * Search refset
+   */
+  rest.get("https://snowstorm.rundberg.no/MAIN/members", (req, res, ctx) => {
+    if (
+      req.url.searchParams.get("referencedComponentId") ===
+      Concepts.Skjoldbruskkjertelkreft
+    ) {
       return res(ctx.json(members));
     }
-  ),
+    return;
+  }),
+
+  /**
+   * Add concept to refset
+   */
+  rest.post("https://snowstorm.rundberg.no/MAIN/members", (req, res, ctx) => {
+    return res(ctx.json({}));
+  }),
+
+  /**
+   * Remove concept from refset
+   */
   rest.delete(
-    "https://snowstorm.rundberg.no/MAIN/members/df1774e3-5fc9-40ee-ae24-46f42c7f37df",
-    async (req, res, ctx) => {
-      skjoldbruskkjertelkreftIsDeleted = true;
+    "https://snowstorm.rundberg.no/MAIN/members/:memberId",
+    (req, res, ctx) => {
       return res(ctx.text(""));
     }
   ),

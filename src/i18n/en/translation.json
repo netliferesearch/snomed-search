@@ -10,6 +10,7 @@
   "results.label": "Results",
   "results.suggestionsLabel": "Suggestions",
   "results.refsetLabel": "Results in refset \"{{title}}\"",
+  "results.synonyms": "Synonyms",
   "snomedct": "Snomed CT",
   "status.loading": "Loading...",
   "button.add": "Add to refset",

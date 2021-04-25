@@ -34,7 +34,7 @@ export const fetchCodeSystems = (
           headers: createHeaders(hostConfig.languages),
         });
 
-        return await handleJsonResponse<CodeSystemResponse>(response);
+        return handleJsonResponse<CodeSystemResponse>(response);
       })
     );
   }

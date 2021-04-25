@@ -29,5 +29,5 @@ export const fetchSynonyms = async (
     headers: createHeaders(hostConfig.languages),
   });
 
-  return await handleJsonResponse<SynonymResponse>(response);
+  return handleJsonResponse<SynonymResponse>(response);
 };

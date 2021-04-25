@@ -1,14 +1,23 @@
-import { render, screen, within } from "@testing-library/react";
+import {
+  render,
+  screen,
+  waitForElementToBeRemoved,
+  within,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { rest } from "msw";
 
 import App, { Wrapper } from "../App";
+import halsbrannDescriptions from "../mocks/__data__/halsbrann/descriptions.json";
+import descriptions from "../mocks/__data__/skjoldbruskkjertelkreft/descriptions.json";
+import { server } from "../mocks/server";
 
 jest.mock("../config", () => ({
   __esModule: true,
   default: {
     hosts: [
       {
-        hostname: "https://snowstorm.rundberg.no/branches",
+        hostname: "https://snowstorm.rundberg.no",
         defaultBranch: "MAIN",
         codeSystems: [
           {
@@ -73,10 +82,13 @@ describe("Given that the Search component should be rendered", () => {
       const snomedCt = within(preferredTerm).getByText("363478007");
       expect(snomedCt).toBeVisible();
 
-      const synonym = await within(preferredTerm).findByText(
+      const synonymList = await within(preferredTerm).findByLabelText(
+        "Synonyms"
+      );
+      const firstSynonym = await within(synonymList).findByText(
         "Kreft i skjoldbruskkjertelen"
       );
-      expect(synonym).toBeVisible();
+      expect(firstSynonym).toBeVisible();
 
       const icpc2 = await within(preferredTerm).findByText("T71");
       expect(icpc2).toBeVisible();
@@ -95,6 +107,21 @@ describe("Given that the Search component should be rendered", () => {
 
       userEvent.selectOptions(refsetSelect, "1991000202102");
 
+      server.use(
+        rest.get(
+          "https://snowstorm.rundberg.no/browser/MAIN/descriptions",
+          (req, res, ctx) => {
+            // Return empty list for refset query
+            if (req.url.searchParams.get("conceptRefset") === "1991000202102") {
+              return res(ctx.json({ items: [] }));
+            }
+
+            // Include "Halsbrann" in suggestions
+            return res(ctx.json(halsbrannDescriptions));
+          }
+        )
+      );
+
       const searchInput = screen.getByLabelText("Search");
       userEvent.clear(searchInput);
       userEvent.type(searchInput, "Halsbrann");
@@ -111,13 +138,36 @@ describe("Given that the Search component should be rendered", () => {
         name: "Add to refset",
       });
 
+      server.use(
+        rest.get(
+          "https://snowstorm.rundberg.no/browser/MAIN/descriptions",
+          (req, res, ctx) => {
+            // Include "Halsbrann" in refset
+            if (req.url.searchParams.get("conceptRefset") === "1991000202102") {
+              return res(ctx.json(halsbrannDescriptions));
+            }
+            // Return empty list for refset query
+
+            return res(ctx.json({ items: [] }));
+          }
+        )
+      );
       userEvent.click(addButton);
+      await waitForElementToBeRemoved(addButton);
 
-      // TODO: Sjekk at konseptet er lagt til refsetet
-      // await within(refSetresults).findByText("1 hit");
+      const updatedRefsetResult = await screen.findByLabelText(
+        'Results in refset "Sykdommer"'
+      );
+      within(updatedRefsetResult).getByText("1 hit");
 
-      // const preferredTerm = within(refSetresults).getByLabelText("Halsbrann");
-      // expect(preferredTerm).toBeVisible();
+      const preferredTerm = within(updatedRefsetResult).getByLabelText(
+        "Halsbrann"
+      );
+      expect(preferredTerm).toBeVisible();
+
+      within(preferredTerm).getByRole("button", {
+        name: "Remove from refset",
+      });
     });
   });
 
@@ -150,15 +200,39 @@ describe("Given that the Search component should be rendered", () => {
         name: "Remove from refset",
       });
 
+      server.use(
+        rest.get(
+          "https://snowstorm.rundberg.no/browser/MAIN/descriptions",
+          (req, res, ctx) => {
+            // Return empty list for refset query
+            if (req.url.searchParams.get("conceptRefset") === "1991000202102") {
+              return res(ctx.json({ items: [] }));
+            }
+            // Include "Skjoldbruskkjertelkreft" in suggestions
+            return res(ctx.json(descriptions));
+          }
+        )
+      );
+
       userEvent.click(removeButton);
 
-      // TODO: Sjekk at konseptet er fjernet fra refsetet
-      // await within(refSetresults).findByText("0 hits");
+      await waitForElementToBeRemoved(removeButton);
 
-      // const suggestions = await screen.findByLabelText("Suggestions");
+      const updatedRefsetResult = await screen.findByLabelText(
+        'Results in refset "Sykdommer"'
+      );
+      within(updatedRefsetResult).getByText("0 hits");
 
-      // const suggestion = within(suggestions).getByLabelText("Skjoldbruskkjertelkreft");
-      // expect(suggestion).toBeVisible();
+      const suggestions = await screen.findByLabelText("Suggestions");
+
+      const suggestion = within(suggestions).getByLabelText(
+        "Skjoldbruskkjertelkreft"
+      );
+      expect(suggestion).toBeVisible();
+
+      within(suggestion).getByRole("button", {
+        name: "Add to refset",
+      });
     });
   });
 });

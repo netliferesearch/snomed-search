@@ -48,7 +48,7 @@ const fetchConcepts = async (
     headers: createHeaders(hostConfig.languages),
   });
 
-  return await handleJsonResponse<ConceptResponse>(response);
+  return handleJsonResponse<ConceptResponse>(response);
 };
 
 export const searchConcepts = async (

@@ -9,7 +9,6 @@ import Concept, { ButtonVariant } from "../components/Concept";
 import Error from "../components/Error";
 import Form from "../components/Form";
 import Header from "../components/Header";
-import Hits from "../components/HIts";
 import Loading, { LoadingSize } from "../components/Loading";
 import config, { SnomedSearchConfig } from "../config";
 import { DEBOUNCE_WAIT_MS, QUERY_PARAMS_CONFIG } from "../constants";
@@ -103,7 +102,8 @@ const Search: React.FunctionComponent = () => {
   const branches = branchRequest.result || [];
   const [refsetResult, suggestionsResult] = searchRequest.result || [];
   const { totalElements = 0, items = [] } = refsetResult || {};
-  const { items: suggestions = [] } = suggestionsResult || {};
+  const { totalElements: totalSuggestions = 0, items: suggestions = [] } =
+    suggestionsResult || {};
   const hostnames = config.hosts.map((h) => h.hostname);
 
   const addToRefset = async (conceptId: string): Promise<void> => {
@@ -152,25 +152,26 @@ const Search: React.FunctionComponent = () => {
         <div className="col">
           {searchRequest.loading && <Loading size={LoadingSize.Large} />}
           {searchRequest.error && <Error>{searchRequest.error.message}</Error>}
-          {!searchRequest.loading && (
-            <section
-              aria-label={
-                referenceSet
+          {query && !searchRequest.loading && (
+            <section aria-labelledby="results">
+              <h1 className="h5 mt-5" id="results">
+                {referenceSet
                   ? t("results.refsetLabel", {
                       title: hostConfig.referenceSets?.find(
                         (r) => r.id === referenceSet
                       )?.title,
                     })
-                  : t("results.label")
-              }
-            >
-              <Hits totalElements={totalElements} />
+                  : t("results.label")}
+              </h1>
+              <p aria-live="polite">
+                {t("results.hitWithCount", { count: totalElements })}
+              </p>
               <ol className="list-unstyled">
                 {items.map(({ concept }) => (
                   <li
                     key={concept.conceptId}
                     className="card p-3 mb-3"
-                    aria-labelledby={concept.conceptId}
+                    aria-labelledby={`${concept.conceptId}-pt`}
                   >
                     <Concept
                       hostConfig={hostConfig}
@@ -186,9 +187,14 @@ const Search: React.FunctionComponent = () => {
             </section>
           )}
 
-          {referenceSet && (
-            <section aria-label={t("results.suggestionsLabel")}>
-              <h1 className="h5 mt-5 mb-3">{t("results.suggestionsLabel")}</h1>
+          {referenceSet && query && !searchRequest.loading && (
+            <section aria-labelledby="suggestions">
+              <h1 className="h5 mt-5" id="suggestions">
+                {t("results.suggestionsLabel")}
+              </h1>
+              <p aria-live="polite">
+                {t("results.hitWithCount", { count: totalSuggestions })}
+              </p>
               <ol className="list-unstyled">
                 {suggestions
                   .filter(({ concept }) => hideRefsetMember(concept))
@@ -196,7 +202,7 @@ const Search: React.FunctionComponent = () => {
                     <li
                       key={concept.conceptId}
                       className="card p-3 mb-3"
-                      aria-labelledby={concept.conceptId}
+                      aria-labelledby={`${concept.conceptId}-pt`}
                     >
                       <Concept
                         hostConfig={hostConfig}

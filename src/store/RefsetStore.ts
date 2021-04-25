@@ -28,7 +28,7 @@ export const addRefsetMember = async (
     headers: createHeaders(hostConfig.languages),
   });
 
-  return await handleJsonResponse<AddResponse>(response);
+  return handleJsonResponse<AddResponse>(response);
 };
 
 export interface Member {
@@ -55,7 +55,7 @@ export const getRefsetMembers = async (
     headers: createHeaders(hostConfig.languages),
   });
 
-  return await handleJsonResponse<RefsetMemberResponse>(response);
+  return handleJsonResponse<RefsetMemberResponse>(response);
 };
 
 export const removeRefsetMember = async (
@@ -71,5 +71,5 @@ export const removeRefsetMember = async (
     headers: createHeaders(hostConfig.languages),
   });
 
-  return await handleTextResponse(response);
+  return handleTextResponse(response);
 };

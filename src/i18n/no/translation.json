@@ -10,6 +10,7 @@
   "results.label": "Resultater",
   "results.suggestionsLabel": "Forslag",
   "results.refsetLabel": "Resultater i refset \"{{title}}\"",
+  "results.synonyms": "Synonymer",
   "snomedct": "Snomed CT",
   "status.loading": "Laster...",
   "button.add": "Legg til i refset",

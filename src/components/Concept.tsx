@@ -35,14 +35,19 @@ const Concept: React.FunctionComponent<ConceptProps> = ({
   return (
     <div className="row">
       <div className="col-lg-6">
-        <h2 id={concept.conceptId}>{concept.pt.term}</h2>
+        <h2
+          id={`${concept.conceptId}-pt`}
+          aria-describedby={`${concept.conceptId}-fsn`}
+        >
+          {concept.pt.term}
+        </h2>
+        <p id={`${concept.conceptId}-fsn`}>{concept.fsn.term}</p>
         <SynonymList
           hostConfig={hostConfig}
           branch={branch}
           conceptId={concept.conceptId}
           preferredTerm={concept.pt.term}
         />
-        <p>{concept.fsn.term}</p>
       </div>
       <div
         className={classNames(

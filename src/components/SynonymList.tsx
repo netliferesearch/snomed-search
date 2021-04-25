@@ -1,5 +1,6 @@
 import React from "react";
 import { useAsync } from "react-async-hook";
+import { useTranslation } from "react-i18next";
 
 import { SnowstormConfig } from "../config";
 import { SNOWSTORM_SYNONYM_TYPE } from "../constants";
@@ -19,12 +20,13 @@ const SynonymList: React.FunctionComponent<SynonymProps> = ({
   preferredTerm,
   conceptId,
 }) => {
+  const { t } = useTranslation();
   const request = useAsync(fetchSynonyms, [hostConfig, branch, conceptId]);
 
   const { items: synonyms = [] } = request.result || {};
 
   return (
-    <>
+    <ul aria-label={t("results.synonyms")} className="list-unstyled">
       {request.loading && <Loading size={LoadingSize.Small} />}
       {synonyms
         .filter(({ type }) => type === SNOWSTORM_SYNONYM_TYPE)
@@ -34,9 +36,11 @@ const SynonymList: React.FunctionComponent<SynonymProps> = ({
         )
         .filter(({ term }) => term !== preferredTerm)
         .map(({ term, descriptionId: id }) => (
-          <p key={id}>{term}</p>
+          <li key={id} className="mb-3">
+            {term}
+          </li>
         ))}
-    </>
+    </ul>
   );
 };
 
