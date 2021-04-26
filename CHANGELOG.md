@@ -1,3 +1,13 @@
+## [0.3.2](https://github.com/netliferesearch/snomed-search/compare/v0.3.1...v0.3.2) (2021-04-26)
+
+
+### Bug Fixes
+
+* remove uncessary call to refset members when no refset is chosen ([248d85f](https://github.com/netliferesearch/snomed-search/commit/248d85f7adeaf07c0725f3db60a244b7cc5d9cc0))
+* update header menu text ([eb8b556](https://github.com/netliferesearch/snomed-search/commit/eb8b556042a3044d532ab269e56b1f2efc0da6f5))
+
+
+
 ## [0.3.1](https://github.com/netliferesearch/snomed-search/compare/v0.3.0...v0.3.1) (2021-04-26)
 
 
