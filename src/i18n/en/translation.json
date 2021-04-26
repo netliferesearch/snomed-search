@@ -4,7 +4,7 @@
   "form.referenceset": "Reference set",
   "form.notselected": "Not selected",
   "form.search": "Search",
-  "navigation.all": "All",
+  "navigation.search": "Search",
   "results.hitWithCount_plural": "{{count}} hits",
   "results.hitWithCount": "{{count}} hit",
   "results.label": "Results",

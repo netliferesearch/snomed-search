@@ -12,7 +12,7 @@ describe("Given that the Header component should be rendered", () => {
         </Wrapper>
       );
 
-      const link = screen.getByRole("link", { name: "All" });
+      const link = screen.getByRole("link", { name: "Search" });
       expect(link).toBeVisible();
       expect(link).toHaveAttribute("href", "/");
     });

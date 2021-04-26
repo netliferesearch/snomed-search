@@ -12,7 +12,7 @@ const Header: React.FunctionComponent = () => {
           <ul className="navbar-nav mr-auto">
             <li className="nav-item">
               <Link className="nav-link" to="/">
-                {t("navigation.all")}
+                {t("navigation.search")}
               </Link>
             </li>
           </ul>

@@ -4,7 +4,7 @@
   "form.referenceset": "Refset",
   "form.notselected": "Ikke valgt",
   "form.search": "Søk",
-  "navigation.all": "Hjem",
+  "navigation.search": "Søk",
   "results.hitWithCount_plural": "{{count}} treff",
   "results.hitWithCount": "{{count}} treff",
   "results.label": "Resultater",
