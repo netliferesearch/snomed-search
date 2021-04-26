@@ -1,4 +1,5 @@
 import { SnowstormConfig } from "../config";
+import { Limit } from "../constants";
 import { createHeaders, handleJsonResponse } from "../utils/api";
 import { Concept } from ".";
 
@@ -20,7 +21,7 @@ interface CodeSystemResponse {
 export const fetchCodeSystems = (
   hostConfig: SnowstormConfig,
   conceptId: Concept["conceptId"],
-  limit = "10"
+  limit = Limit.Default
 ): Promise<CodeSystemResponse[]> => {
   if (hostConfig.codeSystems) {
     return Promise.all(
