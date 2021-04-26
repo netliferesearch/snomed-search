@@ -1,5 +1,5 @@
 import { SnowstormConfig } from "../config";
-import { Language, LIMIT } from "../constants";
+import { Language, Limit } from "../constants";
 import { createHeaders, handleJsonResponse } from "../utils/api";
 import { Branch, Concept } from ".";
 
@@ -19,7 +19,7 @@ export const fetchSynonyms = async (
   branch: Branch["path"],
   conceptId: Concept["conceptId"],
   offset = "0",
-  limit = LIMIT
+  limit = Limit.Default
 ): Promise<SynonymResponse> => {
   const url = new URL(`${branch}/descriptions`, hostConfig.hostname);
   url.searchParams.set("concept", conceptId);

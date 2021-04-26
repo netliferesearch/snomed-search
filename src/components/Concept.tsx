@@ -14,6 +14,7 @@ interface ConceptProps {
   hostConfig: SnowstormConfig;
   branch: Branch["path"];
   concept: ConceptInterface;
+  id: string;
   handleRefsetChange?: (conceptId: ConceptInterface["conceptId"]) => void;
   buttonText?: string;
   buttonVariant?: ButtonVariant;
@@ -23,6 +24,7 @@ const Concept: React.FunctionComponent<ConceptProps> = ({
   hostConfig,
   branch,
   concept,
+  id,
   handleRefsetChange,
   buttonText,
   buttonVariant = ButtonVariant.Primary,
@@ -32,13 +34,10 @@ const Concept: React.FunctionComponent<ConceptProps> = ({
   return (
     <div className="row">
       <div className="col-lg-6">
-        <h2
-          id={`${concept.conceptId}-pt`}
-          aria-describedby={`${concept.conceptId}-fsn`}
-        >
+        <h2 id={`${id}-pt`} aria-describedby={`${id}-fsn`}>
           {concept.pt.term}
         </h2>
-        <p id={`${concept.conceptId}-fsn`}>{concept.fsn.term}</p>
+        <p id={`${id}-fsn`}>{concept.fsn.term}</p>
         <SynonymList
           hostConfig={hostConfig}
           branch={branch}

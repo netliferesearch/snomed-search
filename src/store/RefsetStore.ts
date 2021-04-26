@@ -1,4 +1,5 @@
 import { ReferenceSet, SnowstormConfig } from "../config";
+import { Limit } from "../constants";
 import {
   createHeaders,
   handleJsonResponse,
@@ -27,7 +28,7 @@ export const addRefsetMember = async (
   conceptId: Concept["conceptId"],
   refsetId: ReferenceSet["id"]
 ): Promise<AddResponse> => {
-  const refsetMembers = await getRefsetMembers(
+  const refsetMembers = await fetchRefsetMembers(
     hostConfig,
     branch,
     conceptId,
@@ -55,8 +56,13 @@ export const addRefsetMember = async (
   return handleJsonResponse<AddResponse>(response);
 };
 
+interface ReferencedComponent extends Concept {
+  memberId: string;
+}
+
 export interface Member {
   memberId: string;
+  referencedComponent: ReferencedComponent;
 }
 
 export interface RefsetMemberResponse {
@@ -64,15 +70,19 @@ export interface RefsetMemberResponse {
   items: Member[];
 }
 
-export const getRefsetMembers = async (
+export const fetchRefsetMembers = async (
   hostConfig: SnowstormConfig,
   branch: string,
-  conceptId: string,
-  refsetId: string
+  conceptId?: string,
+  refsetId?: string,
+  offset = "0",
+  limit = Limit.Default
 ): Promise<RefsetMemberResponse> => {
   const url = new URL(`${branch}/members`, hostConfig.hostname);
-  url.searchParams.set("referencedComponentId", conceptId);
-  url.searchParams.set("referenceSet", refsetId);
+  conceptId && url.searchParams.set("referencedComponentId", conceptId);
+  refsetId && url.searchParams.set("referenceSet", refsetId);
+  url.searchParams.set("offset", offset);
+  url.searchParams.set("limit", limit);
 
   const response = await fetch(url.toString(), {
     method: "GET",

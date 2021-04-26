@@ -5,7 +5,7 @@ import { useQueryParams } from "use-query-params";
 
 import { SnomedSearchConfig } from "../config";
 import { DEBOUNCE_WAIT_MS, QUERY_PARAMS_CONFIG } from "../constants";
-import { ConceptResponse, searchConcepts } from "../store";
+import { searchConcepts, SearchResult } from "../store";
 
 const useSearch = (config: SnomedSearchConfig) => {
   // Handle the input text state
@@ -20,11 +20,11 @@ const useSearch = (config: SnomedSearchConfig) => {
     debounce(searchConcepts, DEBOUNCE_WAIT_MS)
   );
 
-  const searchRequest = useAsync(async () => {
-    if (hostname && branch && query) {
+  const searchRequest = useAsync(async (): Promise<SearchResult> => {
+    if (hostname && branch) {
       return debouncedSearch(hostConfig, branch, query, refsetId);
     }
-    return ([{}, {}] as unknown) as ConceptResponse[];
+    return ([{}, {}, {}] as unknown) as SearchResult;
   }, [query, branch, refsetId]); // Ensure a new request is made everytime the text changes (even if it's debounced)
 
   // Return everything needed for the hook consumer
