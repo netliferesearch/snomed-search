@@ -4,15 +4,15 @@ import { useTranslation } from "react-i18next";
 
 import { SnowstormConfig } from "../config";
 import { SNOWSTORM_SYNONYM_TYPE } from "../constants";
-import { fetchSynonyms, Synonym } from "../store";
+import { Branch, Concept, fetchSynonyms, Synonym, Term } from "../store";
 import Error from "./Error";
 import Loading, { LoadingSize } from "./Loading";
 
 interface SynonymProps {
   hostConfig: SnowstormConfig;
-  branch: string;
-  preferredTerm: string;
-  conceptId: string;
+  branch: Branch["path"];
+  preferredTerm: Term["term"];
+  conceptId: Concept["conceptId"];
 }
 
 const SynonymList: React.FunctionComponent<SynonymProps> = ({
@@ -41,15 +41,17 @@ const SynonymList: React.FunctionComponent<SynonymProps> = ({
     .filter(excludePreferredTerm);
 
   return (
-    <ul aria-label={t("results.synonyms")} className="list-unstyled">
+    <>
       {request.loading && <Loading size={LoadingSize.Small} />}
       {request.error && <Error>{t("error.fetchSynonyms")}</Error>}
-      {filtered.map(({ term, descriptionId }) => (
-        <li key={descriptionId} className="mb-3">
-          {term}
-        </li>
-      ))}
-    </ul>
+      <ul aria-label={t("results.synonyms")} className="list-unstyled">
+        {filtered.map(({ term, descriptionId }) => (
+          <li key={descriptionId} className="mb-3">
+            {term}
+          </li>
+        ))}
+      </ul>
+    </>
   );
 };
 

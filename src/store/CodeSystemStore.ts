@@ -1,5 +1,6 @@
 import { SnowstormConfig } from "../config";
 import { createHeaders, handleJsonResponse } from "../utils/api";
+import { Concept } from ".";
 
 interface Fields {
   mapAdvice: string;
@@ -18,7 +19,7 @@ interface CodeSystemResponse {
 
 export const fetchCodeSystems = (
   hostConfig: SnowstormConfig,
-  conceptId: string,
+  conceptId: Concept["conceptId"],
   limit = "10"
 ): Promise<CodeSystemResponse[]> => {
   if (hostConfig.codeSystems) {

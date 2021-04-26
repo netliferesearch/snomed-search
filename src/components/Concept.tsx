@@ -3,6 +3,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 import { SnowstormConfig } from "../config";
+import { Branch } from "../store";
 import { Concept as ConceptInterface } from "../store/ConceptStore";
 import Button, { ButtonVariant } from "./Button";
 import CodeSystemList from "./CodeSystemList";
@@ -11,9 +12,9 @@ import SynonymList from "./SynonymList";
 
 interface ConceptProps {
   hostConfig: SnowstormConfig;
-  branch: string;
+  branch: Branch["path"];
   concept: ConceptInterface;
-  handle?: (conceptId: string) => void;
+  handleRefsetChange?: (conceptId: ConceptInterface["conceptId"]) => void;
   buttonText?: string;
   buttonVariant?: ButtonVariant;
 }
@@ -22,7 +23,7 @@ const Concept: React.FunctionComponent<ConceptProps> = ({
   hostConfig,
   branch,
   concept,
-  handle,
+  handleRefsetChange,
   buttonText,
   buttonVariant = ButtonVariant.Primary,
 }) => {
@@ -58,10 +59,10 @@ const Concept: React.FunctionComponent<ConceptProps> = ({
       {hostConfig.codeSystems && (
         <CodeSystemList hostConfig={hostConfig} conceptId={concept.conceptId} />
       )}
-      {handle && buttonText && (
+      {handleRefsetChange && buttonText && (
         <div className="col-12">
           <Button
-            onClick={() => handle(concept.conceptId)}
+            onClick={() => handleRefsetChange(concept.conceptId)}
             variant={buttonVariant}
           >
             {buttonText}

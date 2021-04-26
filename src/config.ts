@@ -1,18 +1,20 @@
 import { Language } from "./constants";
+import { Branch } from "./store";
 
-export interface ReferenceSet {
+interface CodeSystem {
+  branch: Branch["path"];
   id: string;
   title: string;
 }
-export interface CodeSystem {
-  branch: string;
+
+export interface ReferenceSet {
   id: string;
   title: string;
 }
 
 export interface SnowstormConfig {
   hostname: string;
-  defaultBranch?: string;
+  defaultBranch?: CodeSystem["branch"];
   codeSystems?: CodeSystem[];
   referenceSets?: ReferenceSet[];
   languages?: Language[];

@@ -4,14 +4,14 @@ import { useAsync } from "react-async-hook";
 import { useTranslation } from "react-i18next";
 
 import { SnowstormConfig } from "../config";
-import { fetchCodeSystems } from "../store";
+import { Concept, fetchCodeSystems } from "../store";
 import styles from "./Definition.module.scss";
 import Error from "./Error";
 import Loading, { LoadingSize } from "./Loading";
 
 interface CodeSystemProps {
   hostConfig: SnowstormConfig;
-  conceptId: string;
+  conceptId: Concept["conceptId"];
 }
 
 const CodeSystemList: React.FunctionComponent<CodeSystemProps> = ({

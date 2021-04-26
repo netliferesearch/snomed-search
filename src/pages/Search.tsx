@@ -1,9 +1,6 @@
-import debounce from "awesome-debounce-promise";
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useAsync } from "react-async-hook";
 import { useTranslation } from "react-i18next";
-import useConstant from "use-constant";
-import { useQueryParams } from "use-query-params";
 
 import { ButtonVariant } from "../components/Button";
 import Concept from "../components/Concept";
@@ -11,9 +8,8 @@ import Error from "../components/Error";
 import Form from "../components/Form";
 import Header from "../components/Header";
 import Loading, { LoadingSize } from "../components/Loading";
-import config, { SnomedSearchConfig } from "../config";
-import { DEBOUNCE_WAIT_MS, QUERY_PARAMS_CONFIG } from "../constants";
-import { ConceptResponse, fetchBranches, searchConcepts } from "../store";
+import config from "../config";
+import { fetchBranches } from "../store";
 import { Concept as ConceptInterface } from "../store/ConceptStore";
 import {
   addRefsetMember,
@@ -21,38 +17,7 @@ import {
   RefsetContainsConceptError,
   removeRefsetMember,
 } from "../store/RefsetStore";
-
-const useSearch = (config: SnomedSearchConfig) => {
-  // Handle the input text state
-  const [queryParams, setQueryParams] = useQueryParams(QUERY_PARAMS_CONFIG);
-  const { q: query, h: hostname, b: branch, rs: referenceSet } = queryParams;
-
-  const hostConfig =
-    config.hosts.find((h) => h.hostname === hostname) || config.hosts[0];
-
-  // Debounce the original search async function
-  const debouncedSearch = useConstant(() =>
-    debounce(searchConcepts, DEBOUNCE_WAIT_MS)
-  );
-
-  const searchRequest = useAsync(async () => {
-    if (hostname && branch && query) {
-      return debouncedSearch(hostConfig, branch, query, referenceSet);
-    }
-    return ([{}, {}] as unknown) as ConceptResponse[];
-  }, [query, branch, referenceSet]); // Ensure a new request is made everytime the text changes (even if it's debounced)
-
-  // Return everything needed for the hook consumer
-  return {
-    hostname,
-    branch,
-    query,
-    referenceSet,
-    searchRequest,
-    setQueryParams,
-    hostConfig,
-  };
-};
+import useSearch from "../utils/use-search";
 
 const Search: React.FunctionComponent = () => {
   const { t } = useTranslation();
@@ -61,7 +26,7 @@ const Search: React.FunctionComponent = () => {
     hostname,
     branch,
     query,
-    referenceSet,
+    refsetId,
     setQueryParams,
     searchRequest,
     hostConfig,
@@ -111,7 +76,7 @@ const Search: React.FunctionComponent = () => {
 
   const addToRefset = async (conceptId: string): Promise<void> => {
     try {
-      await addRefsetMember(hostConfig, branch, conceptId, referenceSet);
+      await addRefsetMember(hostConfig, branch, conceptId, refsetId);
     } catch (error) {
       if (error instanceof RefsetContainsConceptError) {
         setError(t("error.refsetContainsConcept"));
@@ -127,7 +92,7 @@ const Search: React.FunctionComponent = () => {
         hostConfig,
         branch,
         conceptId,
-        referenceSet
+        refsetId
       );
       await Promise.all(
         response.items.map((member) =>
@@ -154,10 +119,10 @@ const Search: React.FunctionComponent = () => {
             <Form
               handleFormSubmit={handleFormSubmit}
               handleInputChange={handleInputChange}
-              hostnames={hostnames}
-              referenceSets={hostConfig.referenceSets}
-              branches={branches}
-              referenceSet={referenceSet}
+              hostnameList={hostnames}
+              refsetList={hostConfig.referenceSets}
+              branchList={branches}
+              refsetId={refsetId}
               query={query}
               hostname={hostname}
               branch={branch}
@@ -172,10 +137,10 @@ const Search: React.FunctionComponent = () => {
           {query && !searchRequest.loading && (
             <section aria-labelledby="results">
               <h1 className="h5 mt-5" id="results">
-                {referenceSet
+                {refsetId
                   ? t("results.refsetLabel", {
                       title: hostConfig.referenceSets?.find(
-                        (r) => r.id === referenceSet
+                        (r) => r.id === refsetId
                       )?.title,
                     })
                   : t("results.label")}
@@ -194,7 +159,9 @@ const Search: React.FunctionComponent = () => {
                       hostConfig={hostConfig}
                       branch={branch}
                       concept={concept}
-                      handle={referenceSet ? removeFromRefset : undefined}
+                      handleRefsetChange={
+                        refsetId ? removeFromRefset : undefined
+                      }
                       buttonText={t("button.remove")}
                       buttonVariant={ButtonVariant.Danger}
                     />
@@ -204,7 +171,7 @@ const Search: React.FunctionComponent = () => {
             </section>
           )}
 
-          {referenceSet && query && !searchRequest.loading && (
+          {refsetId && query && !searchRequest.loading && (
             <section aria-labelledby="suggestions">
               <h1 className="h5 mt-5" id="suggestions">
                 {t("results.suggestionsLabel")}
@@ -225,7 +192,7 @@ const Search: React.FunctionComponent = () => {
                         hostConfig={hostConfig}
                         branch={branch}
                         concept={concept}
-                        handle={referenceSet ? addToRefset : undefined}
+                        handleRefsetChange={refsetId ? addToRefset : undefined}
                         buttonText={t("button.add")}
                       />
                     </li>

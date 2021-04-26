@@ -19,20 +19,19 @@ const Loading: React.FunctionComponent<LoadingProps> = ({
 }) => {
   const { t } = useTranslation();
 
+  const loadingClassNameList = classnames(
+    "spinner-border",
+    "text-secondary",
+    styles.loading,
+    {
+      [styles["loading--sm"]]: size === LoadingSize.Small,
+      [styles["loading--md"]]: size === LoadingSize.Medium,
+      [styles["loading--lg"]]: size === LoadingSize.Large,
+    }
+  );
+
   return (
-    <div
-      className={classnames(
-        "spinner-border",
-        "text-secondary",
-        styles.loading,
-        {
-          [styles["loading--sm"]]: size === LoadingSize.Small,
-          [styles["loading--md"]]: size === LoadingSize.Medium,
-          [styles["loading--lg"]]: size === LoadingSize.Large,
-        }
-      )}
-      role="status"
-    >
+    <div className={loadingClassNameList} role="status">
       <span className="sr-only">{t("status.loading")}</span>
     </div>
   );

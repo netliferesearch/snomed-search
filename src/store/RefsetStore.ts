@@ -1,9 +1,10 @@
-import { SnowstormConfig } from "../config";
+import { ReferenceSet, SnowstormConfig } from "../config";
 import {
   createHeaders,
   handleJsonResponse,
   handleTextResponse,
 } from "../utils/api";
+import { Branch, Concept } from ".";
 
 export class RefsetContainsConceptError extends Error {
   constructor(...params: string[]) {
@@ -22,9 +23,9 @@ interface AddResponse {}
 
 export const addRefsetMember = async (
   hostConfig: SnowstormConfig,
-  branch: string,
-  conceptId: string,
-  refsetId: string
+  branch: Branch["path"],
+  conceptId: Concept["conceptId"],
+  refsetId: ReferenceSet["id"]
 ): Promise<AddResponse> => {
   const refsetMembers = await getRefsetMembers(
     hostConfig,

@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FormEvent } from "react";
 import { useTranslation } from "react-i18next";
 
-import { ReferenceSet } from "../config";
+import { ReferenceSet, SnowstormConfig } from "../config";
 import { Branch } from "../store";
 
 interface FormProps {
@@ -9,23 +9,23 @@ interface FormProps {
   handleInputChange: (
     event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => void;
-  hostnames: string[];
-  branches: Branch[];
-  referenceSet: string;
+  hostnameList: SnowstormConfig["hostname"][];
+  branchList: Branch[];
+  refsetId: ReferenceSet["id"];
   query: string;
-  referenceSets?: ReferenceSet[];
-  hostname: string;
-  branch: string;
+  refsetList?: ReferenceSet[];
+  hostname: SnowstormConfig["hostname"];
+  branch: Branch["path"];
 }
 
 const Form: React.FunctionComponent<FormProps> = ({
   handleFormSubmit,
   handleInputChange,
-  hostnames,
-  branches,
-  referenceSet,
+  hostnameList,
+  branchList,
+  refsetId,
   query,
-  referenceSets,
+  refsetList,
   hostname,
   branch,
 }) => {
@@ -44,7 +44,7 @@ const Form: React.FunctionComponent<FormProps> = ({
               value={hostname}
               onChange={handleInputChange}
             >
-              {hostnames.map((hostname) => (
+              {hostnameList.map((hostname) => (
                 <option value={hostname} key={hostname}>
                   {hostname}
                 </option>
@@ -62,7 +62,7 @@ const Form: React.FunctionComponent<FormProps> = ({
               value={branch}
               onChange={handleInputChange}
             >
-              {branches.map(({ path }) => (
+              {branchList.map(({ path }) => (
                 <option value={path} key={path}>
                   {path}
                 </option>
@@ -70,7 +70,7 @@ const Form: React.FunctionComponent<FormProps> = ({
             </select>
           </div>
         </div>
-        {referenceSets && (
+        {refsetList && (
           <div className="col-lg-6 col-xxl-3">
             <div className="form-group">
               <label htmlFor="referenceSet">{t("form.referenceset")}</label>
@@ -78,11 +78,11 @@ const Form: React.FunctionComponent<FormProps> = ({
                 id="referenceSet"
                 name="rs"
                 className="form-control"
-                value={referenceSet}
+                value={refsetId}
                 onChange={handleInputChange}
               >
                 <option value="">{t("form.notselected")}</option>
-                {referenceSets.map(({ id, title }) => (
+                {refsetList.map(({ id, title }) => (
                   <option value={id} key={id}>
                     {title}
                   </option>

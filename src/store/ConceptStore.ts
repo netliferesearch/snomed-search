@@ -1,6 +1,7 @@
 import { SnowstormConfig } from "../config";
 import { LIMIT } from "../constants";
 import { createHeaders, handleJsonResponse } from "../utils/api";
+import { Branch } from ".";
 
 export interface Term {
   term: string;
@@ -23,9 +24,9 @@ export interface ConceptResponse {
 
 const fetchConcepts = async (
   hostConfig: SnowstormConfig,
-  branch: string,
+  branch: Branch["path"],
   query: string,
-  referenceSet = "",
+  refsetId = "",
   offset = "0",
   limit = LIMIT
 ): Promise<ConceptResponse> => {
@@ -41,7 +42,7 @@ const fetchConcepts = async (
       .forEach((language) => url.searchParams.append("language", language));
   }
   url.searchParams.set("conceptActive", "true");
-  url.searchParams.set("conceptRefset", referenceSet);
+  url.searchParams.set("conceptRefset", refsetId);
   url.searchParams.set("term", query);
   const response = await fetch(url.toString(), {
     method: "GET",
