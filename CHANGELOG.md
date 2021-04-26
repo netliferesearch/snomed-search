@@ -1,3 +1,12 @@
+## [0.3.1](https://github.com/netliferesearch/snomed-search/compare/v0.3.0...v0.3.1) (2021-04-26)
+
+
+### Bug Fixes
+
+* filter out refset members without content ([7b87544](https://github.com/netliferesearch/snomed-search/commit/7b87544a254910717af43ec540e9c79611f3706e))
+
+
+
 # [0.3.0](https://github.com/netliferesearch/snomed-search/compare/v0.2.0...v0.3.0) (2021-04-26)
 
 
