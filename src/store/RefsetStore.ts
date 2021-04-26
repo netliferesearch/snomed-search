@@ -42,6 +42,7 @@ export const addRefsetMember = async (
 
   const data = {
     active: true,
+    moduleId: hostConfig.moduleId,
     referencedComponentId: conceptId,
     refsetId: refsetId,
   };

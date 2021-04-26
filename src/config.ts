@@ -15,6 +15,7 @@ export interface ReferenceSet {
 export interface SnowstormConfig {
   hostname: string;
   defaultBranch?: CodeSystem["branch"];
+  moduleId?: string;
   codeSystems?: CodeSystem[];
   referenceSets?: ReferenceSet[];
   languages?: Language[];
@@ -29,6 +30,7 @@ const config: SnomedSearchConfig = {
     {
       hostname: "https://snowstorm.rundberg.no",
       defaultBranch: "MAIN",
+      moduleId: "51000202101",
       codeSystems: [
         {
           branch: "MAIN",
