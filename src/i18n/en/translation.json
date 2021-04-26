@@ -14,5 +14,11 @@
   "snomedct": "Snomed CT",
   "status.loading": "Loading...",
   "button.add": "Add to refset",
-  "button.remove": "Remove from refset"
+  "button.remove": "Remove from refset",
+  "error.removeFromRefset": "Failed to remove concept from refset",
+  "error.addToRefset": "Failed to add concept to refset",
+  "error.fetchCodeSystems": "Failed to load code systems",
+  "error.fetchSynonyms": "Failed to load synonyms",
+  "error.fetchBranches": "Failed to load branches",
+  "error.fetchConcepts": "Failed to load concepts"
 }

@@ -1,10 +1,12 @@
 import classNames from "classnames";
 import React from "react";
 import { useAsync } from "react-async-hook";
+import { useTranslation } from "react-i18next";
 
 import { SnowstormConfig } from "../config";
 import { fetchCodeSystems } from "../store";
 import styles from "./Definition.module.scss";
+import Error from "./Error";
 import Loading, { LoadingSize } from "./Loading";
 
 interface CodeSystemProps {
@@ -16,6 +18,7 @@ const CodeSystemList: React.FunctionComponent<CodeSystemProps> = ({
   hostConfig,
   conceptId,
 }) => {
+  const { t } = useTranslation();
   const request = useAsync(fetchCodeSystems, [hostConfig, conceptId]);
   const codeSystemResultList = request.result || [];
 
@@ -26,6 +29,7 @@ const CodeSystemList: React.FunctionComponent<CodeSystemProps> = ({
           <Loading size={LoadingSize.Medium} />
         </div>
       )}
+      {request.error && <Error>{t("error.fetchCodeSystems")}</Error>}
       {codeSystemResultList.map((codeSystem) =>
         codeSystem.items.map(
           ({

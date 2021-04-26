@@ -234,5 +234,141 @@ describe("Given that the Search component should be rendered", () => {
         name: "Add to refset",
       });
     });
+
+    describe("When branches fail to load", () => {
+      it("Then an error message is displayed", async () => {
+        server.use(
+          rest.get(
+            "https://snowstorm.rundberg.no/branches",
+            (req, res, ctx) => {
+              return res(ctx.status(500));
+            }
+          )
+        );
+
+        render(
+          <Wrapper>
+            <App />
+          </Wrapper>
+        );
+
+        const error = await screen.findByRole("alert");
+        expect(error).toBeVisible();
+        expect(error).toHaveTextContent("Failed to load branches");
+      });
+    });
+
+    describe("When concepts fail to load", () => {
+      it("Then an error message is displayed", async () => {
+        server.use(
+          rest.get(
+            "https://snowstorm.rundberg.no/browser/MAIN/descriptions",
+            (req, res, ctx) => {
+              return res(ctx.status(500));
+            }
+          )
+        );
+
+        render(
+          <Wrapper>
+            <App />
+          </Wrapper>
+        );
+
+        const error = await screen.findByRole("alert");
+        expect(error).toBeVisible();
+        expect(error).toHaveTextContent("Failed to load concepts");
+      });
+    });
+
+    describe("When concept fails to be added to refset", () => {
+      it("Then an error message is displayed", async () => {
+        server.use(
+          rest.post(
+            "https://snowstorm.rundberg.no/MAIN/members",
+            (req, res, ctx) => {
+              return res(ctx.status(500));
+            }
+          )
+        );
+
+        server.use(
+          rest.get(
+            "https://snowstorm.rundberg.no/browser/MAIN/descriptions",
+            (req, res, ctx) => {
+              if (
+                req.url.searchParams.get("conceptRefset") === "1991000202102"
+              ) {
+                return res(ctx.json({ items: [] }));
+              }
+
+              return res(ctx.json(halsbrannDescriptions));
+            }
+          )
+        );
+
+        render(
+          <Wrapper>
+            <App />
+          </Wrapper>
+        );
+
+        const refsetSelect = await screen.findByLabelText("Reference set");
+
+        userEvent.selectOptions(refsetSelect, "1991000202102");
+
+        const searchInput = screen.getByLabelText("Search");
+        userEvent.clear(searchInput);
+        userEvent.type(searchInput, "Halsbrann");
+
+        const addButton = await screen.findByRole("button", {
+          name: "Add to refset",
+        });
+
+        userEvent.click(addButton);
+        await waitForElementToBeRemoved(addButton);
+
+        const error = await screen.findByRole("alert");
+        expect(error).toBeVisible();
+        expect(error).toHaveTextContent("Failed to add concept to refset");
+      });
+    });
+
+    describe("When concept fails to be removed from refset", () => {
+      it("Then an error message is displayed", async () => {
+        server.use(
+          rest.delete(
+            "https://snowstorm.rundberg.no/MAIN/members/:memberId",
+            (req, res, ctx) => {
+              return res(ctx.status(500));
+            }
+          )
+        );
+
+        render(
+          <Wrapper>
+            <App />
+          </Wrapper>
+        );
+
+        const refsetSelect = await screen.findByLabelText("Reference set");
+
+        userEvent.selectOptions(refsetSelect, "1991000202102");
+
+        const searchInput = screen.getByLabelText("Search");
+        userEvent.clear(searchInput);
+        userEvent.type(searchInput, "Skjoldbruskkjertelkreft");
+
+        const removeButton = await screen.findByRole("button", {
+          name: "Remove from refset",
+        });
+
+        userEvent.click(removeButton);
+
+        const error = await screen.findByRole("alert");
+        expect(error).toBeVisible();
+        expect(error).toHaveTextContent("Failed to remove concept from refset");
+      });
+    });
   });
 });

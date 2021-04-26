@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { SnowstormConfig } from "../config";
 import { SNOWSTORM_SYNONYM_TYPE } from "../constants";
 import { fetchSynonyms, Synonym } from "../store";
+import Error from "./Error";
 import Loading, { LoadingSize } from "./Loading";
 
 interface SynonymProps {
@@ -42,6 +43,7 @@ const SynonymList: React.FunctionComponent<SynonymProps> = ({
   return (
     <ul aria-label={t("results.synonyms")} className="list-unstyled">
       {request.loading && <Loading size={LoadingSize.Small} />}
+      {request.error && <Error>{t("error.fetchSynonyms")}</Error>}
       {filtered.map(({ term, descriptionId }) => (
         <li key={descriptionId} className="mb-3">
           {term}

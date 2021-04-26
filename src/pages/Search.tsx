@@ -1,5 +1,5 @@
 import debounce from "awesome-debounce-promise";
-import React, { ChangeEvent, FormEvent, useEffect } from "react";
+import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useAsync } from "react-async-hook";
 import { useTranslation } from "react-i18next";
 import useConstant from "use-constant";
@@ -55,6 +55,7 @@ const useSearch = (config: SnomedSearchConfig) => {
 
 const Search: React.FunctionComponent = () => {
   const { t } = useTranslation();
+  const [error, setError] = useState<string>();
   const {
     hostname,
     branch,
@@ -108,7 +109,12 @@ const Search: React.FunctionComponent = () => {
   const hostnames = config.hosts.map((h) => h.hostname);
 
   const addToRefset = async (conceptId: string): Promise<void> => {
-    await addRefsetMember(hostConfig, branch, conceptId, referenceSet);
+    try {
+      // TODO: Check first if conceptId is a member of the refset
+      await addRefsetMember(hostConfig, branch, conceptId, referenceSet);
+    } catch {
+      setError(t("error.addToRefset"));
+    }
     await searchRequest.execute();
   };
   const removeFromRefset = async (conceptId: string): Promise<void> => {
@@ -118,11 +124,16 @@ const Search: React.FunctionComponent = () => {
       conceptId,
       referenceSet
     );
-    await Promise.all(
-      response.items.map((member) =>
-        removeRefsetMember(hostConfig, branch, member.memberId)
-      )
-    );
+    try {
+      await Promise.all(
+        response.items.map((member) =>
+          removeRefsetMember(hostConfig, branch, member.memberId)
+        )
+      );
+    } catch {
+      setError(t("error.removeFromRefset"));
+    }
+
     await searchRequest.execute();
   };
   const hideRefsetMember = (concept: ConceptInterface) =>
@@ -133,7 +144,8 @@ const Search: React.FunctionComponent = () => {
       <Header />
       <div className="row mb-5">
         <div className="col">
-          {branchRequest.error && <Error>{branchRequest.error.message}</Error>}
+          {branchRequest.error && <Error>{t("error.fetchBranches")}</Error>}
+          {error && <Error>{error}</Error>}
           {!branchRequest.loading && !branchRequest.error && (
             <Form
               handleFormSubmit={handleFormSubmit}
@@ -152,7 +164,7 @@ const Search: React.FunctionComponent = () => {
       <div className="row">
         <div className="col">
           {searchRequest.loading && <Loading size={LoadingSize.Large} />}
-          {searchRequest.error && <Error>{searchRequest.error.message}</Error>}
+          {searchRequest.error && <Error>{t("error.fetchConcepts")}</Error>}
           {query && !searchRequest.loading && (
             <section aria-labelledby="results">
               <h1 className="h5 mt-5" id="results">
