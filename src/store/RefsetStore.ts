@@ -1,18 +1,42 @@
-import { SnowstormConfig } from "../config";
+import { ReferenceSet, SnowstormConfig } from "../config";
 import {
   createHeaders,
   handleJsonResponse,
   handleTextResponse,
 } from "../utils/api";
+import { Branch, Concept } from ".";
+
+export class RefsetContainsConceptError extends Error {
+  constructor(...params: string[]) {
+    // Pass remaining arguments (including vendor specific ones) to parent constructor
+    super(...params);
+    Object.setPrototypeOf(this, new.target.prototype); // restore prototype chain
+    // Maintains proper stack trace for where our error was thrown (only available on V8)
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, RefsetContainsConceptError);
+    }
+    this.name = "RefsetContainsConceptError";
+  }
+}
 
 interface AddResponse {}
 
 export const addRefsetMember = async (
   hostConfig: SnowstormConfig,
-  branch: string,
-  conceptId: string,
-  refsetId: string
+  branch: Branch["path"],
+  conceptId: Concept["conceptId"],
+  refsetId: ReferenceSet["id"]
 ): Promise<AddResponse> => {
+  const refsetMembers = await getRefsetMembers(
+    hostConfig,
+    branch,
+    conceptId,
+    refsetId
+  );
+  if (refsetMembers.total > 0) {
+    throw new RefsetContainsConceptError();
+  }
+
   const url = new URL(`${branch}/members`, hostConfig.hostname);
 
   const data = {
@@ -28,7 +52,7 @@ export const addRefsetMember = async (
     headers: createHeaders(hostConfig.languages),
   });
 
-  return await handleJsonResponse<AddResponse>(response);
+  return handleJsonResponse<AddResponse>(response);
 };
 
 export interface Member {
@@ -36,7 +60,7 @@ export interface Member {
 }
 
 export interface RefsetMemberResponse {
-  totalElements: number;
+  total: number;
   items: Member[];
 }
 
@@ -55,7 +79,7 @@ export const getRefsetMembers = async (
     headers: createHeaders(hostConfig.languages),
   });
 
-  return await handleJsonResponse<RefsetMemberResponse>(response);
+  return handleJsonResponse<RefsetMemberResponse>(response);
 };
 
 export const removeRefsetMember = async (
@@ -71,5 +95,5 @@ export const removeRefsetMember = async (
     headers: createHeaders(hostConfig.languages),
   });
 
-  return await handleTextResponse(response);
+  return handleTextResponse(response);
 };

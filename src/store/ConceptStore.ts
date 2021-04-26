@@ -1,8 +1,9 @@
 import { SnowstormConfig } from "../config";
 import { LIMIT } from "../constants";
 import { createHeaders, handleJsonResponse } from "../utils/api";
+import { Branch } from ".";
 
-interface Term {
+export interface Term {
   term: string;
 }
 
@@ -12,7 +13,7 @@ export interface Concept {
   pt: Term;
 }
 
-interface Description {
+export interface Description {
   concept: Concept;
 }
 
@@ -21,11 +22,11 @@ export interface ConceptResponse {
   items: Description[];
 }
 
-export const fetchConcepts = async (
+const fetchConcepts = async (
   hostConfig: SnowstormConfig,
-  branch: string,
+  branch: Branch["path"],
   query: string,
-  referenceSet = "",
+  refsetId = "",
   offset = "0",
   limit = LIMIT
 ): Promise<ConceptResponse> => {
@@ -41,12 +42,25 @@ export const fetchConcepts = async (
       .forEach((language) => url.searchParams.append("language", language));
   }
   url.searchParams.set("conceptActive", "true");
-  url.searchParams.set("conceptRefset", referenceSet);
+  url.searchParams.set("conceptRefset", refsetId);
   url.searchParams.set("term", query);
   const response = await fetch(url.toString(), {
     method: "GET",
     headers: createHeaders(hostConfig.languages),
   });
 
-  return await handleJsonResponse<ConceptResponse>(response);
+  return handleJsonResponse<ConceptResponse>(response);
 };
+
+export const searchConcepts = async (
+  hostConfig: SnowstormConfig,
+  branch: string,
+  query: string,
+  referenceSet = "",
+  offset = "0",
+  limit = LIMIT
+): Promise<ConceptResponse[]> =>
+  Promise.all([
+    fetchConcepts(hostConfig, branch, query, referenceSet, offset, limit),
+    fetchConcepts(hostConfig, branch, query, "", offset, limit),
+  ]);

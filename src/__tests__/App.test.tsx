@@ -1,14 +1,25 @@
-import { render, screen, within } from "@testing-library/react";
+import {
+  render,
+  screen,
+  waitForElementToBeRemoved,
+  within,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { rest } from "msw";
 
 import App, { Wrapper } from "../App";
+import halsbrannDescriptions from "../mocks/__data__/halsbrann/descriptions.json";
+import descriptions from "../mocks/__data__/skjoldbruskkjertelkreft/descriptions.json";
+import { Endpoints } from "../mocks/handlers";
+import { respondServerError } from "../mocks/response";
+import { server } from "../mocks/server";
 
 jest.mock("../config", () => ({
   __esModule: true,
   default: {
     hosts: [
       {
-        hostname: "https://snowstorm.rundberg.no/branches",
+        hostname: "https://snowstorm.rundberg.no",
         defaultBranch: "MAIN",
         codeSystems: [
           {
@@ -46,13 +57,16 @@ describe("Given that the Search component should be rendered", () => {
 
       const refsetSelect = screen.getByLabelText("Reference set");
       expect(refsetSelect).toBeVisible();
+      userEvent.selectOptions(refsetSelect, "1991000202102");
 
       const searchInput = screen.getByLabelText("Search");
       expect(searchInput).toBeVisible();
 
       userEvent.type(searchInput, "Skjoldbruskkjertelkreft");
 
-      const results = await screen.findByLabelText("Results");
+      const results = await screen.findByLabelText(
+        'Results in refset "Sykdommer"'
+      );
 
       const hits = within(results).getByText("1 hit");
       expect(hits).toBeVisible();
@@ -70,10 +84,13 @@ describe("Given that the Search component should be rendered", () => {
       const snomedCt = within(preferredTerm).getByText("363478007");
       expect(snomedCt).toBeVisible();
 
-      const synonym = await within(preferredTerm).findByText(
+      const synonymList = await within(preferredTerm).findByLabelText(
+        "Synonyms"
+      );
+      const firstSynonym = await within(synonymList).findByText(
         "Kreft i skjoldbruskkjertelen"
       );
-      expect(synonym).toBeVisible();
+      expect(firstSynonym).toBeVisible();
 
       const icpc2 = await within(preferredTerm).findByText("T71");
       expect(icpc2).toBeVisible();
@@ -92,6 +109,18 @@ describe("Given that the Search component should be rendered", () => {
 
       userEvent.selectOptions(refsetSelect, "1991000202102");
 
+      server.use(
+        rest.get(Endpoints.ConceptIndex, (req, res, ctx) => {
+          // Return empty list for refset query
+          if (req.url.searchParams.get("conceptRefset") === "1991000202102") {
+            return res(ctx.json({ items: [] }));
+          }
+
+          // Include "Halsbrann" in suggestions
+          return res(ctx.json(halsbrannDescriptions));
+        })
+      );
+
       const searchInput = screen.getByLabelText("Search");
       userEvent.clear(searchInput);
       userEvent.type(searchInput, "Halsbrann");
@@ -108,13 +137,239 @@ describe("Given that the Search component should be rendered", () => {
         name: "Add to refset",
       });
 
+      server.use(
+        rest.get(Endpoints.ConceptIndex, (req, res, ctx) => {
+          // Include "Halsbrann" in refset
+          if (req.url.searchParams.get("conceptRefset") === "1991000202102") {
+            return res(ctx.json(halsbrannDescriptions));
+          }
+          // Return empty list for refset query
+
+          return res(ctx.json({ items: [] }));
+        })
+      );
+      userEvent.click(addButton);
+      await waitForElementToBeRemoved(addButton);
+
+      const updatedRefsetResult = await screen.findByLabelText(
+        'Results in refset "Sykdommer"'
+      );
+      within(updatedRefsetResult).getByText("1 hit");
+
+      const preferredTerm = within(updatedRefsetResult).getByLabelText(
+        "Halsbrann"
+      );
+      expect(preferredTerm).toBeVisible();
+
+      within(preferredTerm).getByRole("button", {
+        name: "Remove from refset",
+      });
+    });
+  });
+
+  describe("When you want to remove a concept to a refset", () => {
+    it("Then the concept can be found and removed", async () => {
+      render(
+        <Wrapper>
+          <App />
+        </Wrapper>
+      );
+
+      const refsetSelect = await screen.findByLabelText("Reference set");
+
+      userEvent.selectOptions(refsetSelect, "1991000202102");
+
+      const searchInput = screen.getByLabelText("Search");
+      userEvent.clear(searchInput);
+      userEvent.type(searchInput, "Skjoldbruskkjertelkreft");
+
+      const refSetresults = await screen.findByLabelText(
+        'Results in refset "Sykdommer"'
+      );
+      within(refSetresults).getByText("1 hit");
+
+      const preferredTerm = within(refSetresults).getByLabelText(
+        "Skjoldbruskkjertelkreft"
+      );
+
+      const removeButton = within(preferredTerm).getByRole("button", {
+        name: "Remove from refset",
+      });
+
+      server.use(
+        rest.get(Endpoints.ConceptIndex, (req, res, ctx) => {
+          // Return empty list for refset query
+          if (req.url.searchParams.get("conceptRefset") === "1991000202102") {
+            return res(ctx.json({ items: [] }));
+          }
+          // Include "Skjoldbruskkjertelkreft" in suggestions
+          return res(ctx.json(descriptions));
+        })
+      );
+
+      userEvent.click(removeButton);
+
+      await waitForElementToBeRemoved(removeButton);
+
+      const updatedRefsetResult = await screen.findByLabelText(
+        'Results in refset "Sykdommer"'
+      );
+      within(updatedRefsetResult).getByText("0 hits");
+
+      const suggestions = await screen.findByLabelText("Suggestions");
+
+      const suggestion = within(suggestions).getByLabelText(
+        "Skjoldbruskkjertelkreft"
+      );
+      expect(suggestion).toBeVisible();
+
+      within(suggestion).getByRole("button", {
+        name: "Add to refset",
+      });
+    });
+
+    describe("When branches fail to load", () => {
+      it("Then an error message is displayed", async () => {
+        respondServerError(Endpoints.BranchIndex);
+
+        render(
+          <Wrapper>
+            <App />
+          </Wrapper>
+        );
+
+        const error = await screen.findByRole("alert");
+        expect(error).toBeVisible();
+        expect(error).toHaveTextContent("Failed to load branches");
+      });
+    });
+
+    describe("When concepts fail to load", () => {
+      it("Then an error message is displayed", async () => {
+        respondServerError(Endpoints.ConceptIndex);
+
+        render(
+          <Wrapper>
+            <App />
+          </Wrapper>
+        );
+
+        const error = await screen.findByRole("alert");
+        expect(error).toBeVisible();
+        expect(error).toHaveTextContent("Failed to load concepts");
+      });
+    });
+
+    describe("When concept fails to be added to refset", () => {
+      it("Then an error message is displayed", async () => {
+        respondServerError(Endpoints.RefsetIndex, "post");
+
+        server.use(
+          rest.get(Endpoints.ConceptIndex, (req, res, ctx) => {
+            if (req.url.searchParams.get("conceptRefset") === "1991000202102") {
+              return res(ctx.json({ items: [] }));
+            }
+
+            return res(ctx.json(halsbrannDescriptions));
+          })
+        );
+
+        render(
+          <Wrapper>
+            <App />
+          </Wrapper>
+        );
+
+        const refsetSelect = await screen.findByLabelText("Reference set");
+
+        userEvent.selectOptions(refsetSelect, "1991000202102");
+
+        const searchInput = screen.getByLabelText("Search");
+        userEvent.clear(searchInput);
+        userEvent.type(searchInput, "Halsbrann");
+
+        const addButton = await screen.findByRole("button", {
+          name: "Add to refset",
+        });
+
+        userEvent.click(addButton);
+        await waitForElementToBeRemoved(addButton);
+
+        const error = await screen.findByRole("alert");
+        expect(error).toBeVisible();
+        expect(error).toHaveTextContent("Failed to add concept to refset");
+      });
+    });
+
+    describe("When concept fails to be removed from refset", () => {
+      it("Then an error message is displayed", async () => {
+        respondServerError(Endpoints.RefsetDelete, "delete");
+
+        render(
+          <Wrapper>
+            <App />
+          </Wrapper>
+        );
+
+        const refsetSelect = await screen.findByLabelText("Reference set");
+
+        userEvent.selectOptions(refsetSelect, "1991000202102");
+
+        const searchInput = screen.getByLabelText("Search");
+        userEvent.clear(searchInput);
+        userEvent.type(searchInput, "Skjoldbruskkjertelkreft");
+
+        const removeButton = await screen.findByRole("button", {
+          name: "Remove from refset",
+        });
+
+        userEvent.click(removeButton);
+
+        const error = await screen.findByRole("alert");
+        expect(error).toBeVisible();
+        expect(error).toHaveTextContent("Failed to remove concept from refset");
+      });
+    });
+  });
+});
+
+describe("Given that the concept is already added to the refset", () => {
+  describe("When trying to add it again", () => {
+    it("Then an error message is displayed", async () => {
+      server.use(
+        rest.get(Endpoints.ConceptIndex, (req, res, ctx) => {
+          // Return empty list for refset query
+          if (req.url.searchParams.get("conceptRefset") === "1991000202102") {
+            return res(ctx.json({ items: [] }));
+          }
+          // Include "Skjoldbruskkjertelkreft" in suggestions
+          return res(ctx.json(descriptions));
+        })
+      );
+
+      render(
+        <Wrapper>
+          <App />
+        </Wrapper>
+      );
+
+      const refsetSelect = await screen.findByLabelText("Reference set");
+
+      userEvent.selectOptions(refsetSelect, "1991000202102");
+
+      const searchInput = screen.getByLabelText("Search");
+      userEvent.clear(searchInput);
+      userEvent.type(searchInput, "Skjoldbruskkjertelkreft");
+
+      const addButton = await screen.findByRole("button", {
+        name: "Add to refset",
+      });
+
       userEvent.click(addButton);
 
-      // TODO: Sjekk at konseptet er lagt til refsetet
-      // await within(refSetresults).findByText("1 hit");
-
-      // const preferredTerm = within(refSetresults).getByLabelText("Halsbrann");
-      // expect(preferredTerm).toBeVisible();
+      const error = await screen.findByRole("alert");
+      expect(error).toBeVisible();
+      expect(error).toHaveTextContent("Refset already contains this concept");
     });
   });
 });

@@ -3,21 +3,18 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 import { SnowstormConfig } from "../config";
+import { Branch } from "../store";
 import { Concept as ConceptInterface } from "../store/ConceptStore";
+import Button, { ButtonVariant } from "./Button";
 import CodeSystemList from "./CodeSystemList";
 import styles from "./Definition.module.scss";
 import SynonymList from "./SynonymList";
 
-export enum ButtonVariant {
-  Primary,
-  Danger,
-}
-
 interface ConceptProps {
   hostConfig: SnowstormConfig;
-  branch: string;
+  branch: Branch["path"];
   concept: ConceptInterface;
-  handle?: (conceptId: string) => void;
+  handleRefsetChange?: (conceptId: ConceptInterface["conceptId"]) => void;
   buttonText?: string;
   buttonVariant?: ButtonVariant;
 }
@@ -26,7 +23,7 @@ const Concept: React.FunctionComponent<ConceptProps> = ({
   hostConfig,
   branch,
   concept,
-  handle,
+  handleRefsetChange,
   buttonText,
   buttonVariant = ButtonVariant.Primary,
 }) => {
@@ -35,40 +32,41 @@ const Concept: React.FunctionComponent<ConceptProps> = ({
   return (
     <div className="row">
       <div className="col-lg-6">
-        <h2 id={concept.conceptId}>{concept.pt.term}</h2>
+        <h2
+          id={`${concept.conceptId}-pt`}
+          aria-describedby={`${concept.conceptId}-fsn`}
+        >
+          {concept.pt.term}
+        </h2>
+        <p id={`${concept.conceptId}-fsn`}>{concept.fsn.term}</p>
         <SynonymList
           hostConfig={hostConfig}
           branch={branch}
           conceptId={concept.conceptId}
           preferredTerm={concept.pt.term}
         />
-        <p>{concept.fsn.term}</p>
       </div>
-      <div
+
+      <dl
         className={classNames(
           "col-12 col-sm-6 flex-lg-grow-1",
           styles.definition
         )}
       >
-        <dl>
-          <dt>{t("snomedct")}</dt>
-          <dd>{concept.conceptId}</dd>
-        </dl>
-      </div>
+        <dt>{t("snomedct")}</dt>
+        <dd>{concept.conceptId}</dd>
+      </dl>
       {hostConfig.codeSystems && (
         <CodeSystemList hostConfig={hostConfig} conceptId={concept.conceptId} />
       )}
-      {handle && buttonText && (
+      {handleRefsetChange && buttonText && (
         <div className="col-12">
-          <button
-            onClick={() => handle(concept.conceptId)}
-            className={classNames("btn", {
-              "btn-outline-primary": buttonVariant === ButtonVariant.Primary,
-              "btn-outline-danger": buttonVariant === ButtonVariant.Danger,
-            })}
+          <Button
+            onClick={() => handleRefsetChange(concept.conceptId)}
+            variant={buttonVariant}
           >
             {buttonText}
-          </button>
+          </Button>
         </div>
       )}
     </div>

@@ -7,8 +7,9 @@ describe("Given that the Error component should be rendered", () => {
     it("Then the error message is visible", async () => {
       render(<Error>This is an error</Error>);
 
-      const message = screen.getByText("This is an error");
-      expect(message).toBeVisible();
+      const alert = screen.getByRole("alert");
+      expect(alert).toBeVisible();
+      expect(alert).toHaveTextContent("This is an error");
     });
   });
 });

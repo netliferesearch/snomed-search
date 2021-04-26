@@ -1,8 +1,9 @@
 import { SnowstormConfig } from "../config";
 import { Language, LIMIT } from "../constants";
 import { createHeaders, handleJsonResponse } from "../utils/api";
+import { Branch, Concept } from ".";
 
-interface Description {
+export interface Synonym {
   term: string;
   type: string;
   lang: Language;
@@ -10,13 +11,13 @@ interface Description {
 }
 
 interface SynonymResponse {
-  items: Description[];
+  items: Synonym[];
 }
 
 export const fetchSynonyms = async (
   hostConfig: SnowstormConfig,
-  branch: string,
-  conceptId: string,
+  branch: Branch["path"],
+  conceptId: Concept["conceptId"],
   offset = "0",
   limit = LIMIT
 ): Promise<SynonymResponse> => {
@@ -29,5 +30,5 @@ export const fetchSynonyms = async (
     headers: createHeaders(hostConfig.languages),
   });
 
-  return await handleJsonResponse<SynonymResponse>(response);
+  return handleJsonResponse<SynonymResponse>(response);
 };

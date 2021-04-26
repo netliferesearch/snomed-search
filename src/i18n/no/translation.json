@@ -10,8 +10,16 @@
   "results.label": "Resultater",
   "results.suggestionsLabel": "Forslag",
   "results.refsetLabel": "Resultater i refset \"{{title}}\"",
+  "results.synonyms": "Synonymer",
   "snomedct": "Snomed CT",
   "status.loading": "Laster...",
   "button.add": "Legg til i refset",
-  "button.remove": "Fjern fra refset"
+  "button.remove": "Fjern fra refset",
+  "error.removeFromRefset": "Kunne ikke fjerne konsept fra refset",
+  "error.addToRefset": "Kunne ikke legge til konsept i refset",
+  "error.fetchCodeSystems": "Kunne ikke laste kodesystemer",
+  "error.fetchSynonyms": "Kunne ikke laste synonymer",
+  "error.fetchBranches": "Kunne ikke laste brancher",
+  "error.fetchConcepts": "Kunne ikke laste konsepter",
+  "error.refsetContainsConcept": "Refsettet inneholder allerede dette konseptet"
 }
