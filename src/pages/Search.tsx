@@ -18,6 +18,7 @@ import { Concept as ConceptInterface } from "../store/ConceptStore";
 import {
   addRefsetMember,
   getRefsetMembers,
+  RefsetContainsConceptError,
   removeRefsetMember,
 } from "../store/RefsetStore";
 
@@ -110,21 +111,24 @@ const Search: React.FunctionComponent = () => {
 
   const addToRefset = async (conceptId: string): Promise<void> => {
     try {
-      // TODO: Check first if conceptId is a member of the refset
       await addRefsetMember(hostConfig, branch, conceptId, referenceSet);
-    } catch {
-      setError(t("error.addToRefset"));
+    } catch (error) {
+      if (error instanceof RefsetContainsConceptError) {
+        setError(t("error.refsetContainsConcept"));
+      } else {
+        setError(t("error.addToRefset"));
+      }
     }
     await searchRequest.execute();
   };
   const removeFromRefset = async (conceptId: string): Promise<void> => {
-    const response = await getRefsetMembers(
-      hostConfig,
-      branch,
-      conceptId,
-      referenceSet
-    );
     try {
+      const response = await getRefsetMembers(
+        hostConfig,
+        branch,
+        conceptId,
+        referenceSet
+      );
       await Promise.all(
         response.items.map((member) =>
           removeRefsetMember(hostConfig, branch, member.memberId)

@@ -5,6 +5,19 @@ import {
   handleTextResponse,
 } from "../utils/api";
 
+export class RefsetContainsConceptError extends Error {
+  constructor(...params: string[]) {
+    // Pass remaining arguments (including vendor specific ones) to parent constructor
+    super(...params);
+    Object.setPrototypeOf(this, new.target.prototype); // restore prototype chain
+    // Maintains proper stack trace for where our error was thrown (only available on V8)
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, RefsetContainsConceptError);
+    }
+    this.name = "RefsetContainsConceptError";
+  }
+}
+
 interface AddResponse {}
 
 export const addRefsetMember = async (
@@ -13,6 +26,16 @@ export const addRefsetMember = async (
   conceptId: string,
   refsetId: string
 ): Promise<AddResponse> => {
+  const refsetMembers = await getRefsetMembers(
+    hostConfig,
+    branch,
+    conceptId,
+    refsetId
+  );
+  if (refsetMembers.total > 0) {
+    throw new RefsetContainsConceptError();
+  }
+
   const url = new URL(`${branch}/members`, hostConfig.hostname);
 
   const data = {
@@ -36,7 +59,7 @@ export interface Member {
 }
 
 export interface RefsetMemberResponse {
-  totalElements: number;
+  total: number;
   items: Member[];
 }
 

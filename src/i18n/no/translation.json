@@ -20,5 +20,6 @@
   "error.fetchCodeSystems": "Kunne ikke laste kodesystemer",
   "error.fetchSynonyms": "Kunne ikke laste synonymer",
   "error.fetchBranches": "Kunne ikke laste brancher",
-  "error.fetchConcepts": "Kunne ikke laste konsepter"
+  "error.fetchConcepts": "Kunne ikke laste konsepter",
+  "error.refsetContainsConcept": "Refsettet inneholder allerede dette konseptet"
 }

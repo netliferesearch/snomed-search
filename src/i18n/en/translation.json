@@ -20,5 +20,6 @@
   "error.fetchCodeSystems": "Failed to load code systems",
   "error.fetchSynonyms": "Failed to load synonyms",
   "error.fetchBranches": "Failed to load branches",
-  "error.fetchConcepts": "Failed to load concepts"
+  "error.fetchConcepts": "Failed to load concepts",
+  "error.refsetContainsConcept": "Refset already contains this concept"
 }

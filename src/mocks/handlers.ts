@@ -83,6 +83,10 @@ const handlers = [
       Concepts.Skjoldbruskkjertelkreft
     ) {
       return res(ctx.json(members));
+    } else if (
+      req.url.searchParams.get("referencedComponentId") === Concepts.Halsbrann
+    ) {
+      return res(ctx.json({ items: [] }));
     }
     return;
   }),

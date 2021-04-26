@@ -332,3 +332,44 @@ describe("Given that the Search component should be rendered", () => {
     });
   });
 });
+
+describe("Given that the concept is already added to the refset", () => {
+  describe("When trying to add it again", () => {
+    it("Then an error message is displayed", async () => {
+      server.use(
+        rest.get(Endpoints.ConceptIndex, (req, res, ctx) => {
+          // Return empty list for refset query
+          if (req.url.searchParams.get("conceptRefset") === "1991000202102") {
+            return res(ctx.json({ items: [] }));
+          }
+          // Include "Skjoldbruskkjertelkreft" in suggestions
+          return res(ctx.json(descriptions));
+        })
+      );
+
+      render(
+        <Wrapper>
+          <App />
+        </Wrapper>
+      );
+
+      const refsetSelect = await screen.findByLabelText("Reference set");
+
+      userEvent.selectOptions(refsetSelect, "1991000202102");
+
+      const searchInput = screen.getByLabelText("Search");
+      userEvent.clear(searchInput);
+      userEvent.type(searchInput, "Skjoldbruskkjertelkreft");
+
+      const addButton = await screen.findByRole("button", {
+        name: "Add to refset",
+      });
+
+      userEvent.click(addButton);
+
+      const error = await screen.findByRole("alert");
+      expect(error).toBeVisible();
+      expect(error).toHaveTextContent("Refset already contains this concept");
+    });
+  });
+});
