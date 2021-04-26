@@ -10,6 +10,8 @@ import { rest } from "msw";
 import App, { Wrapper } from "../App";
 import halsbrannDescriptions from "../mocks/__data__/halsbrann/descriptions.json";
 import descriptions from "../mocks/__data__/skjoldbruskkjertelkreft/descriptions.json";
+import { Endpoints } from "../mocks/handlers";
+import { respondServerError } from "../mocks/response";
 import { server } from "../mocks/server";
 
 jest.mock("../config", () => ({
@@ -108,18 +110,15 @@ describe("Given that the Search component should be rendered", () => {
       userEvent.selectOptions(refsetSelect, "1991000202102");
 
       server.use(
-        rest.get(
-          "https://snowstorm.rundberg.no/browser/MAIN/descriptions",
-          (req, res, ctx) => {
-            // Return empty list for refset query
-            if (req.url.searchParams.get("conceptRefset") === "1991000202102") {
-              return res(ctx.json({ items: [] }));
-            }
-
-            // Include "Halsbrann" in suggestions
-            return res(ctx.json(halsbrannDescriptions));
+        rest.get(Endpoints.ConceptIndex, (req, res, ctx) => {
+          // Return empty list for refset query
+          if (req.url.searchParams.get("conceptRefset") === "1991000202102") {
+            return res(ctx.json({ items: [] }));
           }
-        )
+
+          // Include "Halsbrann" in suggestions
+          return res(ctx.json(halsbrannDescriptions));
+        })
       );
 
       const searchInput = screen.getByLabelText("Search");
@@ -139,18 +138,15 @@ describe("Given that the Search component should be rendered", () => {
       });
 
       server.use(
-        rest.get(
-          "https://snowstorm.rundberg.no/browser/MAIN/descriptions",
-          (req, res, ctx) => {
-            // Include "Halsbrann" in refset
-            if (req.url.searchParams.get("conceptRefset") === "1991000202102") {
-              return res(ctx.json(halsbrannDescriptions));
-            }
-            // Return empty list for refset query
-
-            return res(ctx.json({ items: [] }));
+        rest.get(Endpoints.ConceptIndex, (req, res, ctx) => {
+          // Include "Halsbrann" in refset
+          if (req.url.searchParams.get("conceptRefset") === "1991000202102") {
+            return res(ctx.json(halsbrannDescriptions));
           }
-        )
+          // Return empty list for refset query
+
+          return res(ctx.json({ items: [] }));
+        })
       );
       userEvent.click(addButton);
       await waitForElementToBeRemoved(addButton);
@@ -201,17 +197,14 @@ describe("Given that the Search component should be rendered", () => {
       });
 
       server.use(
-        rest.get(
-          "https://snowstorm.rundberg.no/browser/MAIN/descriptions",
-          (req, res, ctx) => {
-            // Return empty list for refset query
-            if (req.url.searchParams.get("conceptRefset") === "1991000202102") {
-              return res(ctx.json({ items: [] }));
-            }
-            // Include "Skjoldbruskkjertelkreft" in suggestions
-            return res(ctx.json(descriptions));
+        rest.get(Endpoints.ConceptIndex, (req, res, ctx) => {
+          // Return empty list for refset query
+          if (req.url.searchParams.get("conceptRefset") === "1991000202102") {
+            return res(ctx.json({ items: [] }));
           }
-        )
+          // Include "Skjoldbruskkjertelkreft" in suggestions
+          return res(ctx.json(descriptions));
+        })
       );
 
       userEvent.click(removeButton);
@@ -237,14 +230,7 @@ describe("Given that the Search component should be rendered", () => {
 
     describe("When branches fail to load", () => {
       it("Then an error message is displayed", async () => {
-        server.use(
-          rest.get(
-            "https://snowstorm.rundberg.no/branches",
-            (req, res, ctx) => {
-              return res(ctx.status(500));
-            }
-          )
-        );
+        respondServerError(Endpoints.BranchIndex);
 
         render(
           <Wrapper>
@@ -260,14 +246,7 @@ describe("Given that the Search component should be rendered", () => {
 
     describe("When concepts fail to load", () => {
       it("Then an error message is displayed", async () => {
-        server.use(
-          rest.get(
-            "https://snowstorm.rundberg.no/browser/MAIN/descriptions",
-            (req, res, ctx) => {
-              return res(ctx.status(500));
-            }
-          )
-        );
+        respondServerError(Endpoints.ConceptIndex);
 
         render(
           <Wrapper>
@@ -283,28 +262,16 @@ describe("Given that the Search component should be rendered", () => {
 
     describe("When concept fails to be added to refset", () => {
       it("Then an error message is displayed", async () => {
-        server.use(
-          rest.post(
-            "https://snowstorm.rundberg.no/MAIN/members",
-            (req, res, ctx) => {
-              return res(ctx.status(500));
-            }
-          )
-        );
+        respondServerError(Endpoints.RefsetIndex, "post");
 
         server.use(
-          rest.get(
-            "https://snowstorm.rundberg.no/browser/MAIN/descriptions",
-            (req, res, ctx) => {
-              if (
-                req.url.searchParams.get("conceptRefset") === "1991000202102"
-              ) {
-                return res(ctx.json({ items: [] }));
-              }
-
-              return res(ctx.json(halsbrannDescriptions));
+          rest.get(Endpoints.ConceptIndex, (req, res, ctx) => {
+            if (req.url.searchParams.get("conceptRefset") === "1991000202102") {
+              return res(ctx.json({ items: [] }));
             }
-          )
+
+            return res(ctx.json(halsbrannDescriptions));
+          })
         );
 
         render(
@@ -336,14 +303,7 @@ describe("Given that the Search component should be rendered", () => {
 
     describe("When concept fails to be removed from refset", () => {
       it("Then an error message is displayed", async () => {
-        server.use(
-          rest.delete(
-            "https://snowstorm.rundberg.no/MAIN/members/:memberId",
-            (req, res, ctx) => {
-              return res(ctx.status(500));
-            }
-          )
-        );
+        respondServerError(Endpoints.RefsetDelete, "delete");
 
         render(
           <Wrapper>

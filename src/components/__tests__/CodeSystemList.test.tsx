@@ -1,9 +1,8 @@
 import { render, screen } from "@testing-library/react";
-import { rest } from "msw";
 
 import { Wrapper } from "../../App";
-import { Concepts } from "../../mocks/handlers";
-import { server } from "../../mocks/server";
+import { Concepts, Endpoints } from "../../mocks/handlers";
+import { respondServerError } from "../../mocks/response";
 import { hostConfig } from "../__data__/config";
 import CodeSystemList from "../CodeSystemList";
 
@@ -32,14 +31,7 @@ describe("Given that the CodeSystemList component should be rendered", () => {
 
   describe("When code systems fail to load", () => {
     it("Then an error message is displayed", async () => {
-      server.use(
-        rest.get(
-          "https://snowstorm.rundberg.no/browser/main/ICPC2/members",
-          (req, res, ctx) => {
-            return res(ctx.status(500));
-          }
-        )
-      );
+      respondServerError(Endpoints.CodeSystemIndex);
 
       render(
         <Wrapper>
