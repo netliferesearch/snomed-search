@@ -204,6 +204,8 @@ const Search: React.FunctionComponent = () => {
                       }
                       buttonText={t("button.remove")}
                       buttonVariant={ButtonVariant.Danger}
+                      disableSynonymList
+                      disableCodeSystemList
                     />
                   </li>
                 ))}
@@ -237,6 +239,8 @@ const Search: React.FunctionComponent = () => {
                         id={concept.conceptId}
                         handleRefsetChange={refsetId ? addToRefset : undefined}
                         buttonText={t("button.add")}
+                        disableSynonymList
+                        disableCodeSystemList
                       />
                     </li>
                   ))}

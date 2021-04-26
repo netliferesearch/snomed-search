@@ -18,6 +18,8 @@ interface ConceptProps {
   handleRefsetChange?: (conceptId: ConceptInterface["conceptId"]) => void;
   buttonText?: string;
   buttonVariant?: ButtonVariant;
+  disableSynonymList?: boolean;
+  disableCodeSystemList?: boolean;
 }
 
 const Concept: React.FunctionComponent<ConceptProps> = ({
@@ -28,6 +30,8 @@ const Concept: React.FunctionComponent<ConceptProps> = ({
   handleRefsetChange,
   buttonText,
   buttonVariant = ButtonVariant.Primary,
+  disableSynonymList = false,
+  disableCodeSystemList = false,
 }) => {
   const { t } = useTranslation();
 
@@ -38,12 +42,14 @@ const Concept: React.FunctionComponent<ConceptProps> = ({
           {concept.pt.term}
         </h2>
         <p id={`${id}-fsn`}>{concept.fsn.term}</p>
-        <SynonymList
-          hostConfig={hostConfig}
-          branch={branch}
-          conceptId={concept.conceptId}
-          preferredTerm={concept.pt.term}
-        />
+        {!disableSynonymList && (
+          <SynonymList
+            hostConfig={hostConfig}
+            branch={branch}
+            conceptId={concept.conceptId}
+            preferredTerm={concept.pt.term}
+          />
+        )}
       </div>
 
       <dl
@@ -55,7 +61,7 @@ const Concept: React.FunctionComponent<ConceptProps> = ({
         <dt>{t("snomedct")}</dt>
         <dd>{concept.conceptId}</dd>
       </dl>
-      {hostConfig.codeSystems && (
+      {!disableCodeSystemList && hostConfig.codeSystems && (
         <CodeSystemList hostConfig={hostConfig} conceptId={concept.conceptId} />
       )}
       {handleRefsetChange && buttonText && (
