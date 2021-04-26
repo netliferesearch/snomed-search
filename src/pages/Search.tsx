@@ -188,7 +188,7 @@ const Search: React.FunctionComponent = () => {
                 })}
               </p>
               <ol className="list-unstyled">
-                {refsetMemberResponse?.items.map(({ referencedComponent }) =>
+                {refsetMemberResponse?.items?.map(({ referencedComponent }) =>
                   referencedComponent ? (
                     <li
                       key={referencedComponent?.memberId}

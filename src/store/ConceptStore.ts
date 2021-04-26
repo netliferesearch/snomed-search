@@ -73,12 +73,14 @@ export const searchConcepts = async (
     query
       ? fetchConcepts(hostConfig, branch, query, undefined, offset, limit)
       : ({} as ConceptResponse),
-    fetchRefsetMembers(
-      hostConfig,
-      branch,
-      undefined,
-      refsetId,
-      offset,
-      Limit.High
-    ),
+    refsetId
+      ? fetchRefsetMembers(
+          hostConfig,
+          branch,
+          undefined,
+          refsetId,
+          offset,
+          Limit.High
+        )
+      : ({} as RefsetMemberResponse),
   ]);
