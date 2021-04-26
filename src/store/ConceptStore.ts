@@ -1,7 +1,7 @@
 import { SnowstormConfig } from "../config";
-import { LIMIT } from "../constants";
+import { Limit } from "../constants";
 import { createHeaders, handleJsonResponse } from "../utils/api";
-import { Branch } from ".";
+import { Branch, fetchRefsetMembers, RefsetMemberResponse } from ".";
 
 export interface Term {
   term: string;
@@ -28,7 +28,7 @@ const fetchConcepts = async (
   query: string,
   refsetId = "",
   offset = "0",
-  limit = LIMIT
+  limit = Limit.Default
 ): Promise<ConceptResponse> => {
   const url = new URL(`browser/${branch}/descriptions`, hostConfig.hostname);
   url.searchParams.set("offset", offset);
@@ -52,15 +52,33 @@ const fetchConcepts = async (
   return handleJsonResponse<ConceptResponse>(response);
 };
 
+export type SearchResult = [
+  conceptResponse: ConceptResponse,
+  suggestionResponse: ConceptResponse,
+  refsetMemberResponse: RefsetMemberResponse
+];
+
 export const searchConcepts = async (
   hostConfig: SnowstormConfig,
   branch: string,
-  query: string,
-  referenceSet = "",
+  query = "",
+  refsetId = "",
   offset = "0",
-  limit = LIMIT
-): Promise<ConceptResponse[]> =>
+  limit = Limit.Default
+): Promise<SearchResult> =>
   Promise.all([
-    fetchConcepts(hostConfig, branch, query, referenceSet, offset, limit),
-    fetchConcepts(hostConfig, branch, query, "", offset, limit),
+    query
+      ? fetchConcepts(hostConfig, branch, query, refsetId, offset, limit)
+      : ({} as ConceptResponse),
+    query
+      ? fetchConcepts(hostConfig, branch, query, undefined, offset, limit)
+      : ({} as ConceptResponse),
+    fetchRefsetMembers(
+      hostConfig,
+      branch,
+      undefined,
+      refsetId,
+      offset,
+      Limit.High
+    ),
   ]);

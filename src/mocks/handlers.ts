@@ -11,6 +11,9 @@ export enum Concepts {
   Halsbrann = "16331000",
   Skjoldbruskkjertelkreft = "363478007",
 }
+export enum Refsets {
+  Sykdommer = "1991000202102",
+}
 
 export enum Endpoints {
   BranchIndex = "https://snowstorm.rundberg.no/branches",
@@ -86,6 +89,8 @@ const handlers = [
     } else if (
       req.url.searchParams.get("referencedComponentId") === Concepts.Halsbrann
     ) {
+      return res(ctx.json({ items: [] }));
+    } else if (req.url.searchParams.get("referenceSet") === Refsets.Sykdommer) {
       return res(ctx.json({ items: [] }));
     }
     return;

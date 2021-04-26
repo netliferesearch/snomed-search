@@ -14,37 +14,42 @@ interface ConceptProps {
   hostConfig: SnowstormConfig;
   branch: Branch["path"];
   concept: ConceptInterface;
+  id: string;
   handleRefsetChange?: (conceptId: ConceptInterface["conceptId"]) => void;
   buttonText?: string;
   buttonVariant?: ButtonVariant;
+  disableSynonymList?: boolean;
+  disableCodeSystemList?: boolean;
 }
 
 const Concept: React.FunctionComponent<ConceptProps> = ({
   hostConfig,
   branch,
   concept,
+  id,
   handleRefsetChange,
   buttonText,
   buttonVariant = ButtonVariant.Primary,
+  disableSynonymList = false,
+  disableCodeSystemList = false,
 }) => {
   const { t } = useTranslation();
 
   return (
     <div className="row">
       <div className="col-lg-6">
-        <h2
-          id={`${concept.conceptId}-pt`}
-          aria-describedby={`${concept.conceptId}-fsn`}
-        >
+        <h2 id={`${id}-pt`} aria-describedby={`${id}-fsn`}>
           {concept.pt.term}
         </h2>
-        <p id={`${concept.conceptId}-fsn`}>{concept.fsn.term}</p>
-        <SynonymList
-          hostConfig={hostConfig}
-          branch={branch}
-          conceptId={concept.conceptId}
-          preferredTerm={concept.pt.term}
-        />
+        <p id={`${id}-fsn`}>{concept.fsn.term}</p>
+        {!disableSynonymList && (
+          <SynonymList
+            hostConfig={hostConfig}
+            branch={branch}
+            conceptId={concept.conceptId}
+            preferredTerm={concept.pt.term}
+          />
+        )}
       </div>
 
       <dl
@@ -56,7 +61,7 @@ const Concept: React.FunctionComponent<ConceptProps> = ({
         <dt>{t("snomedct")}</dt>
         <dd>{concept.conceptId}</dd>
       </dl>
-      {hostConfig.codeSystems && (
+      {!disableCodeSystemList && hostConfig.codeSystems && (
         <CodeSystemList hostConfig={hostConfig} conceptId={concept.conceptId} />
       )}
       {handleRefsetChange && buttonText && (

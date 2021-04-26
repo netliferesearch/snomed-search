@@ -9,14 +9,14 @@ import Form from "../components/Form";
 import Header from "../components/Header";
 import Loading, { LoadingSize } from "../components/Loading";
 import config from "../config";
-import { fetchBranches } from "../store";
-import { Concept as ConceptInterface } from "../store/ConceptStore";
 import {
   addRefsetMember,
-  getRefsetMembers,
+  fetchBranches,
+  fetchRefsetMembers,
   RefsetContainsConceptError,
   removeRefsetMember,
-} from "../store/RefsetStore";
+} from "../store";
+import { Concept as ConceptInterface } from "../store/ConceptStore";
 import useSearch from "../utils/use-search";
 
 const Search: React.FunctionComponent = () => {
@@ -68,10 +68,9 @@ const Search: React.FunctionComponent = () => {
   };
 
   const branches = branchRequest.result || [];
-  const [refsetResult, suggestionsResult] = searchRequest.result || [];
-  const { totalElements = 0, items = [] } = refsetResult || {};
-  const { totalElements: totalSuggestions = 0, items: suggestions = [] } =
-    suggestionsResult || {};
+  const [conceptResponse, suggestionResponse, refsetMemberResponse] =
+    searchRequest.result || [];
+
   const hostnames = config.hosts.map((h) => h.hostname);
 
   const addToRefset = async (conceptId: string): Promise<void> => {
@@ -88,7 +87,7 @@ const Search: React.FunctionComponent = () => {
   };
   const removeFromRefset = async (conceptId: string): Promise<void> => {
     try {
-      const response = await getRefsetMembers(
+      const response = await fetchRefsetMembers(
         hostConfig,
         branch,
         conceptId,
@@ -106,7 +105,11 @@ const Search: React.FunctionComponent = () => {
     await searchRequest.execute();
   };
   const hideRefsetMember = (concept: ConceptInterface) =>
-    !items.map((i) => i.concept.conceptId).includes(concept.conceptId);
+    !conceptResponse?.items
+      .map((i) => i.concept.conceptId)
+      .includes(concept.conceptId);
+
+  const refset = hostConfig.referenceSets?.find((r) => r.id === refsetId);
 
   return (
     <div className="container">
@@ -139,17 +142,17 @@ const Search: React.FunctionComponent = () => {
               <h1 className="h5 mt-5" id="results">
                 {refsetId
                   ? t("results.refsetLabel", {
-                      title: hostConfig.referenceSets?.find(
-                        (r) => r.id === refsetId
-                      )?.title,
+                      title: refset?.title,
                     })
                   : t("results.label")}
               </h1>
               <p aria-live="polite">
-                {t("results.hitWithCount", { count: totalElements })}
+                {t("results.hitWithCount", {
+                  count: conceptResponse?.totalElements ?? 0,
+                })}
               </p>
               <ol className="list-unstyled">
-                {items.map(({ concept }) => (
+                {conceptResponse?.items?.map(({ concept }) => (
                   <li
                     key={concept.conceptId}
                     className="card p-3 mb-3"
@@ -159,6 +162,7 @@ const Search: React.FunctionComponent = () => {
                       hostConfig={hostConfig}
                       branch={branch}
                       concept={concept}
+                      id={concept.conceptId}
                       handleRefsetChange={
                         refsetId ? removeFromRefset : undefined
                       }
@@ -171,17 +175,57 @@ const Search: React.FunctionComponent = () => {
             </section>
           )}
 
-          {refsetId && query && !searchRequest.loading && (
+          {!query && refsetId && !searchRequest.loading && (
+            <section aria-labelledby="results">
+              <h1 className="h5 mt-5" id="results">
+                {t("results.refsetLabel", {
+                  title: refset?.title,
+                })}
+              </h1>
+              <p aria-live="polite">
+                {t("results.hitWithCount", {
+                  count: refsetMemberResponse?.total ?? 0,
+                })}
+              </p>
+              <ol className="list-unstyled">
+                {refsetMemberResponse?.items.map(({ referencedComponent }) => (
+                  <li
+                    key={referencedComponent.memberId}
+                    className="card p-3 mb-3"
+                    aria-labelledby={`${referencedComponent.conceptId}-pt`}
+                  >
+                    <Concept
+                      hostConfig={hostConfig}
+                      branch={branch}
+                      concept={referencedComponent}
+                      id={referencedComponent.memberId}
+                      handleRefsetChange={
+                        refsetId ? removeFromRefset : undefined
+                      }
+                      buttonText={t("button.remove")}
+                      buttonVariant={ButtonVariant.Danger}
+                      disableSynonymList
+                      disableCodeSystemList
+                    />
+                  </li>
+                ))}
+              </ol>
+            </section>
+          )}
+
+          {query && refsetId && !searchRequest.loading && (
             <section aria-labelledby="suggestions">
               <h1 className="h5 mt-5" id="suggestions">
                 {t("results.suggestionsLabel")}
               </h1>
               <p aria-live="polite">
-                {t("results.hitWithCount", { count: totalSuggestions })}
+                {t("results.hitWithCount", {
+                  count: suggestionResponse?.totalElements ?? 0,
+                })}
               </p>
               <ol className="list-unstyled">
-                {suggestions
-                  .filter(({ concept }) => hideRefsetMember(concept))
+                {suggestionResponse?.items
+                  ?.filter(({ concept }) => hideRefsetMember(concept))
                   .map(({ concept }) => (
                     <li
                       key={concept.conceptId}
@@ -192,8 +236,11 @@ const Search: React.FunctionComponent = () => {
                         hostConfig={hostConfig}
                         branch={branch}
                         concept={concept}
+                        id={concept.conceptId}
                         handleRefsetChange={refsetId ? addToRefset : undefined}
                         buttonText={t("button.add")}
+                        disableSynonymList
+                        disableCodeSystemList
                       />
                     </li>
                   ))}
