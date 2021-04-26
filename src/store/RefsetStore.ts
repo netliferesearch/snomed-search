@@ -63,7 +63,7 @@ interface ReferencedComponent extends Concept {
 
 export interface Member {
   memberId: string;
-  referencedComponent: ReferencedComponent;
+  referencedComponent?: ReferencedComponent;
 }
 
 export interface RefsetMemberResponse {
