@@ -9,7 +9,7 @@ export enum Language {
 
 export enum Limit {
   Default = "10",
-  High = "1000",
+  High = "5000",
 }
 
 export const ACCEPT_LANGUAGE_SEPARATOR = ";";
