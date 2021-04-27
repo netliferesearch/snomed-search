@@ -57,19 +57,29 @@ export const addRefsetMember = async (
   return handleJsonResponse<AddResponse>(response);
 };
 
-interface ReferencedComponent extends Concept {
+export interface ConceptMember {
   memberId: string;
+  referencedComponent: Concept;
 }
 
-export interface Member {
+export interface UnknownMember {
   memberId: string;
-  referencedComponent?: ReferencedComponent;
+  referencedComponent?: unknown;
 }
 
 export interface RefsetMemberResponse {
   total: number;
-  items: Member[];
+  items: (ConceptMember | UnknownMember)[];
 }
+
+export interface RefsetConceptResponse {
+  total: number;
+  items: ConceptMember[];
+}
+
+const isConcept = (item: unknown): item is ConceptMember => {
+  return (item as ConceptMember).referencedComponent?.fsn !== undefined;
+};
 
 export const fetchRefsetMembers = async (
   hostConfig: SnowstormConfig,
@@ -78,7 +88,7 @@ export const fetchRefsetMembers = async (
   refsetId?: string,
   offset = "0",
   limit = Limit.Default
-): Promise<RefsetMemberResponse> => {
+): Promise<RefsetConceptResponse> => {
   const url = new URL(`${branch}/members`, hostConfig.hostname);
   conceptId && url.searchParams.set("referencedComponentId", conceptId);
   refsetId && url.searchParams.set("referenceSet", refsetId);
@@ -90,7 +100,10 @@ export const fetchRefsetMembers = async (
     headers: createHeaders(hostConfig.languages),
   });
 
-  return handleJsonResponse<RefsetMemberResponse>(response);
+  const members = await handleJsonResponse<RefsetMemberResponse>(response);
+  const items = members.items.filter<ConceptMember>(isConcept);
+
+  return { total: members.total, items: items };
 };
 
 export const removeRefsetMember = async (

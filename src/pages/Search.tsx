@@ -188,29 +188,27 @@ const Search: React.FunctionComponent = () => {
                 })}
               </p>
               <ol className="list-unstyled">
-                {refsetMemberResponse?.items?.map(({ referencedComponent }) =>
-                  referencedComponent ? (
-                    <li
-                      key={referencedComponent?.memberId}
-                      className="card p-3 mb-3"
-                      aria-labelledby={`${referencedComponent.conceptId}-pt`}
-                    >
-                      <Concept
-                        hostConfig={hostConfig}
-                        branch={branch}
-                        concept={referencedComponent}
-                        id={referencedComponent.memberId}
-                        handleRefsetChange={
-                          refsetId ? removeFromRefset : undefined
-                        }
-                        buttonText={t("button.remove")}
-                        buttonVariant={ButtonVariant.Danger}
-                        disableSynonymList
-                        disableCodeSystemList
-                      />
-                    </li>
-                  ) : null
-                )}
+                {refsetMemberResponse?.items?.map((item) => (
+                  <li
+                    key={item.memberId}
+                    className="card p-3 mb-3"
+                    aria-labelledby={`${item.memberId}-pt`}
+                  >
+                    <Concept
+                      hostConfig={hostConfig}
+                      branch={branch}
+                      concept={item.referencedComponent}
+                      id={item.memberId}
+                      handleRefsetChange={
+                        refsetId ? removeFromRefset : undefined
+                      }
+                      buttonText={t("button.remove")}
+                      buttonVariant={ButtonVariant.Danger}
+                      disableSynonymList
+                      disableCodeSystemList
+                    />
+                  </li>
+                ))}
               </ol>
             </section>
           )}

@@ -1,7 +1,7 @@
 import { SnowstormConfig } from "../config";
 import { Limit } from "../constants";
 import { createHeaders, handleJsonResponse } from "../utils/api";
-import { Branch, fetchRefsetMembers, RefsetMemberResponse } from ".";
+import { Branch, fetchRefsetMembers, RefsetConceptResponse } from ".";
 
 export interface Term {
   term: string;
@@ -55,7 +55,7 @@ const fetchConcepts = async (
 export type SearchResult = [
   conceptResponse: ConceptResponse,
   suggestionResponse: ConceptResponse,
-  refsetMemberResponse: RefsetMemberResponse
+  refsetConceptResponse: RefsetConceptResponse
 ];
 
 export const searchConcepts = async (
@@ -82,5 +82,5 @@ export const searchConcepts = async (
           offset,
           Limit.High
         )
-      : ({} as RefsetMemberResponse),
+      : ({} as RefsetConceptResponse),
   ]);
