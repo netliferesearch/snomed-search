@@ -1,3 +1,17 @@
+# [0.6.0](https://github.com/netliferesearch/snomed-search/compare/v0.5.1...v0.6.0) (2021-04-27)
+
+
+### Bug Fixes
+
+* do not fail if refset members are not concepts ([004d6fd](https://github.com/netliferesearch/snomed-search/commit/004d6fdf47af08c7dfab0dd05e61ff59e2f5dee9))
+
+
+### Features
+
+* increase upper limit to 5000 concepts ([f954bc7](https://github.com/netliferesearch/snomed-search/commit/f954bc72444299d338750da30871fe639538cd05))
+
+
+
 ## [0.5.1](https://github.com/netliferesearch/snomed-search/compare/v0.5.0...v0.5.1) (2021-04-27)
 
 
