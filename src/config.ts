@@ -77,6 +77,10 @@ const config: SnomedSearchConfig = {
           id: "1311000202107",
           title: "Virkestoff med antibakteriell eller antimykotisk effekt",
         },
+        {
+          id: "1301000202105",
+          title: "Refset test",
+        },
       ],
       languages: [
         Language.Bokmål,
@@ -117,6 +121,10 @@ const config: SnomedSearchConfig = {
         {
           id: "1311000202107",
           title: "Virkestoff med antibakteriell eller antimykotisk effekt",
+        },
+        {
+          id: "1301000202105",
+          title: "Refset test",
         },
       ],
       languages: [
