@@ -1,3 +1,12 @@
+# [0.4.0](https://github.com/netliferesearch/snomed-search/compare/v0.3.2...v0.4.0) (2021-04-27)
+
+
+### Features
+
+* add snowstorm.conteir.no to server config ([c73f321](https://github.com/netliferesearch/snomed-search/commit/c73f3211e56b448ffa03007d3dc2b410029eff65))
+
+
+
 ## [0.3.2](https://github.com/netliferesearch/snomed-search/compare/v0.3.1...v0.3.2) (2021-04-26)
 
 
