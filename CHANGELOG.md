@@ -1,3 +1,12 @@
+# [0.5.0](https://github.com/netliferesearch/snomed-search/compare/v0.4.0...v0.5.0) (2021-04-27)
+
+
+### Features
+
+* new refset for testing in config ([8a62640](https://github.com/netliferesearch/snomed-search/commit/8a626405a782c601ea44213fa4e1257c91a78904))
+
+
+
 # [0.4.0](https://github.com/netliferesearch/snomed-search/compare/v0.3.2...v0.4.0) (2021-04-27)
 
 
