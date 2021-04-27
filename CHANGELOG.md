@@ -1,3 +1,12 @@
+## [0.5.1](https://github.com/netliferesearch/snomed-search/compare/v0.5.0...v0.5.1) (2021-04-27)
+
+
+### Bug Fixes
+
+* detect correct language and add fallback to en ([f533bfb](https://github.com/netliferesearch/snomed-search/commit/f533bfb653da216e3e06b2153d0b5a7693f670d8))
+
+
+
 # [0.5.0](https://github.com/netliferesearch/snomed-search/compare/v0.4.0...v0.5.0) (2021-04-27)
 
 
