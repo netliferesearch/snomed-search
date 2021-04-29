@@ -1,3 +1,13 @@
+## [0.6.1](https://github.com/netliferesearch/snomed-search/compare/v0.6.0...v0.6.1) (2021-04-29)
+
+
+### Bug Fixes
+
+* exclude incative synonyms ([ca7d2d2](https://github.com/netliferesearch/snomed-search/commit/ca7d2d220855ccc3a98a85aa37e4ce658390eece))
+* set language quality in header ([5955e86](https://github.com/netliferesearch/snomed-search/commit/5955e86ca524e65142be60989a809a40cec3f82d))
+
+
+
 # [0.6.0](https://github.com/netliferesearch/snomed-search/compare/v0.5.1...v0.6.0) (2021-04-27)
 
 
