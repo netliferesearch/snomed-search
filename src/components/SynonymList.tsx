@@ -3,7 +3,6 @@ import { useAsync } from "react-async-hook";
 import { useTranslation } from "react-i18next";
 
 import { SnowstormConfig } from "../config";
-import { SNOWSTORM_SYNONYM_TYPE } from "../constants";
 import { Branch, Concept, fetchSynonyms, Synonym, Term } from "../store";
 import Error from "./Error";
 import Loading, { LoadingSize } from "./Loading";
@@ -24,24 +23,12 @@ const SynonymList: React.FunctionComponent<SynonymProps> = ({
   const { t } = useTranslation();
   const request = useAsync(fetchSynonyms, [hostConfig, branch, conceptId]);
 
-  const { items: synonyms = [] } = request.result || {};
-
-  const onlySynonyms = (synonym: Synonym) =>
-    synonym.type === SNOWSTORM_SYNONYM_TYPE;
-
-  const onlyLanguages = (synonym: Synonym) =>
-    !hostConfig.languages || hostConfig.languages.includes(synonym.lang);
+  const synonymList = request.result || [];
 
   const excludePreferredTerm = (synonym: Synonym) =>
     synonym.term !== preferredTerm;
 
-  const excludeInactive = (synonym: Synonym) => synonym.active;
-
-  const filtered = synonyms
-    .filter(excludeInactive)
-    .filter(onlySynonyms)
-    .filter(onlyLanguages)
-    .filter(excludePreferredTerm);
+  const filtered = synonymList.filter(excludePreferredTerm);
 
   return (
     <>
