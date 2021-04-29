@@ -12,7 +12,9 @@ export enum Limit {
   High = "5000",
 }
 
-export const ACCEPT_LANGUAGE_SEPARATOR = ";";
+export const ACCEPT_LANGUAGE_SEPARATOR = ",";
+
+export const QUALITY_SEPARATOR = ";q=";
 
 export const DEFAULT_LANGUAGE = Language.English;
 

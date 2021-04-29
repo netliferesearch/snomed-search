@@ -1,4 +1,8 @@
-import { ACCEPT_LANGUAGE_SEPARATOR, DEFAULT_LANGUAGE } from "../constants";
+import {
+  ACCEPT_LANGUAGE_SEPARATOR,
+  DEFAULT_LANGUAGE,
+  QUALITY_SEPARATOR,
+} from "../constants";
 
 const headers: Record<string, string> = {
   Accept: "application/json",
@@ -8,9 +12,13 @@ const headers: Record<string, string> = {
 export const createHeaders = (
   languageList = [DEFAULT_LANGUAGE]
 ): HeadersInit => {
+  const initial = 0.9;
+  const step = 0.1;
   return {
     ...headers,
-    "Accept-Language": languageList.join(ACCEPT_LANGUAGE_SEPARATOR),
+    "Accept-Language": languageList
+      .map((lang, i) => `${lang}${QUALITY_SEPARATOR}${initial - step * i}`)
+      .join(ACCEPT_LANGUAGE_SEPARATOR),
   };
 };
 
