@@ -77,9 +77,8 @@ export interface RefsetConceptResponse {
   items: ConceptMember[];
 }
 
-const isConcept = (item: unknown): item is ConceptMember => {
-  return (item as ConceptMember).referencedComponent?.fsn !== undefined;
-};
+const memberIsConcept = (item: unknown): item is ConceptMember =>
+  (item as ConceptMember).referencedComponent?.fsn !== undefined;
 
 export const fetchRefsetMembers = async (
   hostConfig: SnowstormConfig,
@@ -101,9 +100,10 @@ export const fetchRefsetMembers = async (
   });
 
   const members = await handleJsonResponse<RefsetMemberResponse>(response);
-  const items = members.items.filter<ConceptMember>(isConcept);
 
-  return { total: members.total, items: items };
+  const concepts = members.items.filter<ConceptMember>(memberIsConcept);
+
+  return { total: members.total, items: concepts };
 };
 
 export const removeRefsetMember = async (

@@ -16,7 +16,6 @@ import {
   RefsetContainsConceptError,
   removeRefsetMember,
 } from "../store";
-import { Concept as ConceptInterface } from "../store/ConceptStore";
 import useSearch from "../utils/use-search";
 
 const Search: React.FunctionComponent = () => {
@@ -104,10 +103,6 @@ const Search: React.FunctionComponent = () => {
 
     await searchRequest.execute();
   };
-  const hideRefsetMember = (concept: ConceptInterface) =>
-    !conceptResponse?.items
-      .map((i) => i.concept.conceptId)
-      .includes(concept.conceptId);
 
   const refset = hostConfig.referenceSets?.find((r) => r.id === refsetId);
 
@@ -225,26 +220,24 @@ const Search: React.FunctionComponent = () => {
                 })}
               </p>
               <ol className="list-unstyled">
-                {suggestionResponse?.items
-                  ?.filter(({ concept }) => hideRefsetMember(concept))
-                  .map(({ concept }) => (
-                    <li
-                      key={concept.conceptId}
-                      className="card p-3 mb-3"
-                      aria-labelledby={`${concept.conceptId}-pt`}
-                    >
-                      <Concept
-                        hostConfig={hostConfig}
-                        branch={branch}
-                        concept={concept}
-                        id={concept.conceptId}
-                        handleRefsetChange={refsetId ? addToRefset : undefined}
-                        buttonText={t("button.add")}
-                        disableSynonymList
-                        disableCodeSystemList
-                      />
-                    </li>
-                  ))}
+                {suggestionResponse?.items?.map(({ concept }) => (
+                  <li
+                    key={concept.conceptId}
+                    className="card p-3 mb-3"
+                    aria-labelledby={`${concept.conceptId}-pt`}
+                  >
+                    <Concept
+                      hostConfig={hostConfig}
+                      branch={branch}
+                      concept={concept}
+                      id={concept.conceptId}
+                      handleRefsetChange={refsetId ? addToRefset : undefined}
+                      buttonText={t("button.add")}
+                      disableSynonymList
+                      disableCodeSystemList
+                    />
+                  </li>
+                ))}
               </ol>
             </section>
           )}

@@ -65,15 +65,19 @@ export const searchConcepts = async (
   refsetId = "",
   offset = "0",
   limit = Limit.Default
-): Promise<SearchResult> =>
-  Promise.all([
+): Promise<SearchResult> => {
+  const [
+    conceptResponse,
+    suggestionResponse,
+    refsetConceptResponse,
+  ] = await Promise.all([
     query
       ? fetchConcepts(hostConfig, branch, query, refsetId, offset, limit)
       : ({} as ConceptResponse),
-    query
+    query && refsetId
       ? fetchConcepts(hostConfig, branch, query, undefined, offset, limit)
       : ({} as ConceptResponse),
-    refsetId
+    !query && refsetId
       ? fetchRefsetMembers(
           hostConfig,
           branch,
@@ -84,3 +88,18 @@ export const searchConcepts = async (
         )
       : ({} as RefsetConceptResponse),
   ]);
+
+  const excludeRefsetMember = (concept: Concept) =>
+    !conceptResponse?.items
+      .map((i) => i.concept.conceptId)
+      .includes(concept.conceptId);
+
+  const filteredSuggestionResponse: ConceptResponse = {
+    totalElements: suggestionResponse.totalElements,
+    items: suggestionResponse.items?.filter((item) =>
+      excludeRefsetMember(item.concept)
+    ),
+  };
+
+  return [conceptResponse, filteredSuggestionResponse, refsetConceptResponse];
+};

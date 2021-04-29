@@ -23,23 +23,22 @@ export const fetchCodeSystems = (
   conceptId: Concept["conceptId"],
   limit = Limit.Default
 ): Promise<CodeSystemResponse[]> => {
-  if (hostConfig.codeSystems) {
-    return Promise.all(
-      hostConfig.codeSystems.map(async ({ id, branch }) => {
-        const url = new URL(`browser/${branch}/members`, hostConfig.hostname);
-        url.searchParams.set("limit", limit);
-        url.searchParams.set("active", "true");
-        url.searchParams.set("referenceSet", id);
-        url.searchParams.set("referencedComponentId", conceptId);
-        const response = await fetch(url.toString(), {
-          method: "GET",
-          headers: createHeaders(hostConfig.languages),
-        });
-
-        return handleJsonResponse<CodeSystemResponse>(response);
-      })
-    );
+  if (!hostConfig.codeSystems) {
+    throw new Error("Host configuration must include codesystems");
   }
+  return Promise.all(
+    hostConfig.codeSystems.map(async ({ id, branch }) => {
+      const url = new URL(`browser/${branch}/members`, hostConfig.hostname);
+      url.searchParams.set("limit", limit);
+      url.searchParams.set("active", "true");
+      url.searchParams.set("referenceSet", id);
+      url.searchParams.set("referencedComponentId", conceptId);
+      const response = await fetch(url.toString(), {
+        method: "GET",
+        headers: createHeaders(hostConfig.languages),
+      });
 
-  return Promise.reject("Host configuration must include codesystems");
+      return handleJsonResponse<CodeSystemResponse>(response);
+    })
+  );
 };

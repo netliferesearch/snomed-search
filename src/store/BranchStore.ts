@@ -16,7 +16,9 @@ export const fetchBranches = async (
     method: "GET",
     headers: createHeaders(hostConfig.languages),
   });
-  const branchList = await handleJsonResponse<BranchResponse>(response);
+  const branchResponse = await handleJsonResponse<BranchResponse>(response);
 
-  return branchList.filter(({ containsContent }) => containsContent);
+  const branchHasContent = (branch: Branch) => branch.containsContent;
+
+  return branchResponse.filter(branchHasContent);
 };
