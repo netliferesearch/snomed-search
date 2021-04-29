@@ -8,6 +8,7 @@ export interface Synonym {
   type: string;
   lang: Language;
   descriptionId: string;
+  active: boolean;
 }
 
 interface SynonymResponse {

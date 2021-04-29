@@ -35,7 +35,10 @@ const SynonymList: React.FunctionComponent<SynonymProps> = ({
   const excludePreferredTerm = (synonym: Synonym) =>
     synonym.term !== preferredTerm;
 
+  const excludeInactive = (synonym: Synonym) => synonym.active;
+
   const filtered = synonyms
+    .filter(excludeInactive)
     .filter(onlySynonyms)
     .filter(onlyLanguages)
     .filter(excludePreferredTerm);
