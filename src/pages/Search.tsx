@@ -118,7 +118,7 @@ const Search: React.FunctionComponent = () => {
         <div className="col">
           {branchRequest.error && <Error>{t("error.fetchBranches")}</Error>}
           {error && <Error>{error}</Error>}
-          {!branchRequest.loading && !branchRequest.error && (
+          {!branchRequest.error && (
             <Form
               handleFormSubmit={handleFormSubmit}
               handleInputChange={handleInputChange}
@@ -129,6 +129,7 @@ const Search: React.FunctionComponent = () => {
               query={query}
               hostname={hostname}
               branch={branch}
+              disabled={branchRequest.loading}
             />
           )}
         </div>

@@ -16,6 +16,7 @@ interface FormProps {
   refsetList?: ReferenceSet[];
   hostname: SnowstormConfig["hostname"];
   branch: Branch["path"];
+  disabled: boolean;
 }
 
 const Form: React.FunctionComponent<FormProps> = ({
@@ -28,6 +29,7 @@ const Form: React.FunctionComponent<FormProps> = ({
   refsetList,
   hostname,
   branch,
+  disabled,
 }) => {
   const { t } = useTranslation();
 
@@ -43,6 +45,7 @@ const Form: React.FunctionComponent<FormProps> = ({
               className="form-control"
               value={hostname}
               onChange={handleInputChange}
+              disabled={disabled}
             >
               {hostnameList.map((hostname) => (
                 <option value={hostname} key={hostname}>
@@ -61,6 +64,7 @@ const Form: React.FunctionComponent<FormProps> = ({
               className="form-control"
               value={branch}
               onChange={handleInputChange}
+              disabled={disabled}
             >
               {branchList.map(({ path }) => (
                 <option value={path} key={path}>
@@ -80,6 +84,7 @@ const Form: React.FunctionComponent<FormProps> = ({
                 className="form-control"
                 value={refsetId}
                 onChange={handleInputChange}
+                disabled={disabled}
               >
                 <option value="">{t("form.notselected")}</option>
                 {refsetList.map(({ id, title }) => (
@@ -102,6 +107,7 @@ const Form: React.FunctionComponent<FormProps> = ({
               value={query}
               autoComplete="off"
               onChange={handleInputChange}
+              disabled={disabled}
             />
           </div>
         </div>
