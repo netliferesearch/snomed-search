@@ -144,7 +144,8 @@ const Search: React.FunctionComponent = () => {
               </h1>
               <p aria-live="polite">
                 {t("results.hitWithCount", {
-                  count: conceptResponse?.totalElements ?? 0,
+                  count: conceptResponse?.items?.length ?? 0,
+                  total: conceptResponse?.totalElements ?? 0,
                 })}
               </p>
               <ol className="list-unstyled">
@@ -180,7 +181,8 @@ const Search: React.FunctionComponent = () => {
               </h1>
               <p aria-live="polite">
                 {t("results.hitWithCount", {
-                  count: refsetMemberResponse?.total ?? 0,
+                  count: refsetMemberResponse?.items?.length ?? 0,
+                  total: refsetMemberResponse?.total ?? 0,
                 })}
               </p>
               <ol className="list-unstyled">
@@ -216,7 +218,8 @@ const Search: React.FunctionComponent = () => {
               </h1>
               <p aria-live="polite">
                 {t("results.hitWithCount", {
-                  count: suggestionResponse?.totalElements ?? 0,
+                  count: suggestionResponse?.items?.length ?? 0,
+                  total: suggestionResponse?.totalElements ?? 0,
                 })}
               </p>
               <ol className="list-unstyled">
