@@ -1,9 +1,10 @@
 module.exports = {
   root: true,
-  plugins: ["import", "simple-import-sort"],
+  plugins: ["import", "simple-import-sort", "jsx-a11y"],
   extends: [
     "react-app",
     "react-app/jest",
+    "plugin:jsx-a11y/recommended",
     "plugin:import/errors",
     "plugin:import/warnings",
     "plugin:import/typescript",
@@ -18,5 +19,6 @@ module.exports = {
     "simple-import-sort/exports": "error",
     "simple-import-sort/imports": "error",
     "sort-imports": "off",
+    "jsx-a11y/no-onchange": "off",
   },
 };
