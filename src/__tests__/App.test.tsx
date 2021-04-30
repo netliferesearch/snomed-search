@@ -1,6 +1,7 @@
 import {
   render,
   screen,
+  waitFor,
   waitForElementToBeRemoved,
   within,
 } from "@testing-library/react";
@@ -57,6 +58,7 @@ describe("Given that the Search component should be rendered", () => {
 
       const refsetSelect = screen.getByLabelText("Reference set");
       expect(refsetSelect).toBeVisible();
+      await waitFor(() => expect(refsetSelect).toBeEnabled());
       userEvent.selectOptions(refsetSelect, "1991000202102");
 
       const searchInput = screen.getByLabelText("Search");
@@ -68,7 +70,7 @@ describe("Given that the Search component should be rendered", () => {
         'Results in refset "Sykdommer"'
       );
 
-      const hits = within(results).getByText("1 hit");
+      const hits = within(results).getByText("1 hit of 1 total");
       expect(hits).toBeVisible();
 
       const preferredTerm = within(results).getByLabelText(
@@ -128,7 +130,7 @@ describe("Given that the Search component should be rendered", () => {
       const refSetresults = await screen.findByLabelText(
         'Results in refset "Sykdommer"'
       );
-      within(refSetresults).getByText("0 hits");
+      within(refSetresults).getByText("0 hits of 0 total");
 
       const suggestions = await screen.findByLabelText("Suggestions");
 
@@ -154,7 +156,7 @@ describe("Given that the Search component should be rendered", () => {
       const updatedRefsetResult = await screen.findByLabelText(
         'Results in refset "Sykdommer"'
       );
-      within(updatedRefsetResult).getByText("1 hit");
+      within(updatedRefsetResult).getByText("1 hit of 1 total");
 
       const preferredTerm = within(updatedRefsetResult).getByLabelText(
         "Halsbrann"
@@ -186,7 +188,7 @@ describe("Given that the Search component should be rendered", () => {
       const refSetresults = await screen.findByLabelText(
         'Results in refset "Sykdommer"'
       );
-      within(refSetresults).getByText("1 hit");
+      within(refSetresults).getByText("1 hit of 1 total");
 
       const preferredTerm = within(refSetresults).getByLabelText(
         "Skjoldbruskkjertelkreft"
@@ -214,7 +216,7 @@ describe("Given that the Search component should be rendered", () => {
       const updatedRefsetResult = await screen.findByLabelText(
         'Results in refset "Sykdommer"'
       );
-      within(updatedRefsetResult).getByText("0 hits");
+      within(updatedRefsetResult).getByText("0 hits of 0 total");
 
       const suggestions = await screen.findByLabelText("Suggestions");
 
