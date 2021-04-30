@@ -1,3 +1,13 @@
+## [0.6.2](https://github.com/netliferesearch/snomed-search/compare/v0.6.1...v0.6.2) (2021-04-30)
+
+
+### Bug Fixes
+
+* form is disabled while changing hostnames ([16079e4](https://github.com/netliferesearch/snomed-search/commit/16079e49f9c7c000e65674e4ec301f817dcc6e6d))
+* show displayed vs total hits ([64273f2](https://github.com/netliferesearch/snomed-search/commit/64273f2f51963460fc4caf52fb96202b341b8d02))
+
+
+
 ## [0.6.1](https://github.com/netliferesearch/snomed-search/compare/v0.6.0...v0.6.1) (2021-04-29)
 
 
