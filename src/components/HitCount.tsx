@@ -14,10 +14,14 @@ const Error: React.FunctionComponent<ErrorProps> = ({ hits, total }) => {
   }
   return (
     <p aria-live="polite">
-      {t("results.hitWithCount", {
-        count: hits,
-        total: total ?? 0,
-      })}
+      {total
+        ? t("results.totalHitsWithCount", {
+            count: hits,
+            total: total,
+          })
+        : t("results.hitsWithCount", {
+            count: hits,
+          })}
     </p>
   );
 };

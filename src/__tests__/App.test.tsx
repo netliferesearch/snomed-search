@@ -130,7 +130,7 @@ describe("Given that the Search component should be rendered", () => {
       const refSetresults = await screen.findByLabelText(
         'Results in refset "Sykdommer"'
       );
-      within(refSetresults).getByText("0 hits of 0 total");
+      within(refSetresults).getByText("0 hits");
 
       const suggestions = await screen.findByLabelText("Suggestions");
 
@@ -216,7 +216,7 @@ describe("Given that the Search component should be rendered", () => {
       const updatedRefsetResult = await screen.findByLabelText(
         'Results in refset "Sykdommer"'
       );
-      within(updatedRefsetResult).getByText("0 hits of 0 total");
+      within(updatedRefsetResult).getByText("0 hits");
 
       const suggestions = await screen.findByLabelText("Suggestions");
 

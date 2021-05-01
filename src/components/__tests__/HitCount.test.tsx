@@ -34,7 +34,7 @@ describe("Given that the HitCount component should be rendered", () => {
         </Wrapper>
       );
 
-      const hits = screen.getByText("0 hits of 0 total");
+      const hits = screen.getByText("0 hits");
       expect(hits).toBeVisible();
     });
   });
@@ -46,7 +46,7 @@ describe("Given that the HitCount component should be rendered", () => {
         </Wrapper>
       );
 
-      const hits = screen.getByText("0 hits of 0 total");
+      const hits = screen.getByText("0 hits");
       expect(hits).toBeVisible();
     });
   });
