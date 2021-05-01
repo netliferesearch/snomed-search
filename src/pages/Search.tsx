@@ -7,6 +7,7 @@ import Concept from "../components/Concept";
 import Error from "../components/Error";
 import Form from "../components/Form";
 import Header from "../components/Header";
+import HitCount from "../components/HitCount";
 import Loading, { LoadingSize } from "../components/Loading";
 import config from "../config";
 import {
@@ -69,8 +70,8 @@ const Search: React.FunctionComponent = () => {
   const branches = branchRequest.result || [];
   const [conceptResponse, suggestionResponse, refsetMemberResponse] =
     searchRequest.result || [];
-
   const hostnames = config.hosts.map((h) => h.hostname);
+  const refset = hostConfig.referenceSets?.find((r) => r.id === refsetId);
 
   const addToRefset = async (conceptId: string): Promise<void> => {
     try {
@@ -84,6 +85,7 @@ const Search: React.FunctionComponent = () => {
     }
     await searchRequest.execute();
   };
+
   const removeFromRefset = async (conceptId: string): Promise<void> => {
     try {
       const response = await fetchRefsetMembers(
@@ -100,11 +102,8 @@ const Search: React.FunctionComponent = () => {
     } catch {
       setError(t("error.removeFromRefset"));
     }
-
     await searchRequest.execute();
   };
-
-  const refset = hostConfig.referenceSets?.find((r) => r.id === refsetId);
 
   return (
     <div className="container">
@@ -142,12 +141,10 @@ const Search: React.FunctionComponent = () => {
                     })
                   : t("results.label")}
               </h1>
-              <p aria-live="polite">
-                {t("results.hitWithCount", {
-                  count: conceptResponse?.items?.length ?? 0,
-                  total: conceptResponse?.totalElements ?? 0,
-                })}
-              </p>
+              <HitCount
+                hits={conceptResponse?.items?.length}
+                total={conceptResponse?.totalElements}
+              />
               <ol className="list-unstyled">
                 {conceptResponse?.items?.map(({ concept }) => (
                   <li
@@ -179,12 +176,10 @@ const Search: React.FunctionComponent = () => {
                   title: refset?.title,
                 })}
               </h1>
-              <p aria-live="polite">
-                {t("results.hitWithCount", {
-                  count: refsetMemberResponse?.items?.length ?? 0,
-                  total: refsetMemberResponse?.total ?? 0,
-                })}
-              </p>
+              <HitCount
+                hits={refsetMemberResponse?.items?.length}
+                total={refsetMemberResponse?.total}
+              />
               <ol className="list-unstyled">
                 {refsetMemberResponse?.items?.map((item) => (
                   <li
@@ -216,12 +211,10 @@ const Search: React.FunctionComponent = () => {
               <h1 className="h5 mt-5" id="suggestions">
                 {t("results.suggestionsLabel")}
               </h1>
-              <p aria-live="polite">
-                {t("results.hitWithCount", {
-                  count: suggestionResponse?.items?.length ?? 0,
-                  total: suggestionResponse?.totalElements ?? 0,
-                })}
-              </p>
+              <HitCount
+                hits={suggestionResponse?.items?.length}
+                total={suggestionResponse?.totalElements}
+              />
               <ol className="list-unstyled">
                 {suggestionResponse?.items?.map(({ concept }) => (
                   <li
