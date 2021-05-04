@@ -1,3 +1,12 @@
+## [0.6.3](https://github.com/netliferesearch/snomed-search/compare/v0.6.2...v0.6.3) (2021-05-04)
+
+
+### Bug Fixes
+
+* vary hit count based on total hits ([5d5d91e](https://github.com/netliferesearch/snomed-search/commit/5d5d91ea13de3608788498f90ce9ddca6aab2242))
+
+
+
 ## [0.6.2](https://github.com/netliferesearch/snomed-search/compare/v0.6.1...v0.6.2) (2021-04-30)
 
 
