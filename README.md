@@ -7,6 +7,8 @@ Requirements:
 
 - [Snowstorm server with basic authentication (for making changes)](docs/snowstorm.md)
 
+![](docs/snomed-search.png?raw=true)
+
 # Development
 
 ## Installation
