@@ -2,7 +2,7 @@
 
 ## Server requirements
 
-We've installed it on Ubuntu 18.04 server with 4 vCPUs, 8GB RAM and 160GB SSD. This is a \$40 per month server on Digital Ocean.
+We've installed it on Ubuntu 18.04 server with 4 vCPUs, 8GB RAM and 160GB SSD.
 
 The Snowstorm server contains the Elasticsearch database, the Snowstorm runtime and an Nginx server acting as a proxy. Only Nginx is available from the outside.
 
