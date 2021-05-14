@@ -1,44 +1,27 @@
-import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { useAsync } from "react-async-hook";
-import { useTranslation } from "react-i18next";
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { useAsync } from 'react-async-hook';
+import { useTranslation } from 'react-i18next';
 
-import { ButtonVariant } from "../components/Button";
-import Concept from "../components/Concept";
-import Error from "../components/Error";
-import Form from "../components/Form";
-import Header from "../components/Header";
-import HitCount from "../components/HitCount";
-import Loading, { LoadingSize } from "../components/Loading";
-import config from "../config";
-import {
-  addRefsetMember,
-  fetchBranches,
-  fetchRefsetMembers,
-  RefsetContainsConceptError,
-  removeRefsetMember,
-} from "../store";
-import useSearch from "../utils/use-search";
+import { ButtonVariant } from '../components/Button';
+import Concept from '../components/Concept';
+import Error from '../components/Error';
+import Form from '../components/Form';
+import Header from '../components/Header';
+import HitCount from '../components/HitCount';
+import Loading, { LoadingSize } from '../components/Loading';
+import config from '../config';
+import { addRefsetMember, fetchBranches, fetchRefsetMembers, RefsetContainsConceptError, removeRefsetMember } from '../store';
+import useSearch from '../utils/use-search';
 
 const Search: React.FunctionComponent = () => {
   const { t } = useTranslation();
   const [error, setError] = useState<string>();
-  const {
-    hostname,
-    branch,
-    query,
-    refsetId,
-    setQueryParams,
-    searchRequest,
-    hostConfig,
-  } = useSearch(config);
+  const { hostname, branch, query, refsetId, setQueryParams, searchRequest, hostConfig } = useSearch(config);
   const branchRequest = useAsync(fetchBranches, [hostConfig]);
 
   useEffect(() => {
     if (branchRequest.result && !branch) {
-      const { path } =
-        branchRequest.result.find(
-          (b) => b.path === hostConfig?.defaultBranch
-        ) || {};
+      const { path } = branchRequest.result.find((b) => b.path === hostConfig?.defaultBranch) || {};
       if (path) {
         setQueryParams({ b: path });
       }
@@ -55,9 +38,7 @@ const Search: React.FunctionComponent = () => {
     event.preventDefault();
   };
 
-  const handleInputChange = (
-    event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const target = event.target;
     const value = target.value;
     const name = target.name;
@@ -68,8 +49,7 @@ const Search: React.FunctionComponent = () => {
   };
 
   const branches = branchRequest.result || [];
-  const [conceptResponse, suggestionResponse, refsetMemberResponse] =
-    searchRequest.result || [];
+  const [conceptResponse, suggestionResponse, refsetMemberResponse] = searchRequest.result || [];
   const hostnames = config.hosts.map((h) => h.hostname);
   const refset = hostConfig.referenceSets?.find((r) => r.id === refsetId);
 
@@ -78,9 +58,9 @@ const Search: React.FunctionComponent = () => {
       await addRefsetMember(hostConfig, branch, conceptId, refsetId);
     } catch (error) {
       if (error instanceof RefsetContainsConceptError) {
-        setError(t("error.refsetContainsConcept"));
+        setError(t('error.refsetContainsConcept'));
       } else {
-        setError(t("error.addToRefset"));
+        setError(t('error.addToRefset'));
       }
     }
     await searchRequest.execute();
@@ -88,19 +68,10 @@ const Search: React.FunctionComponent = () => {
 
   const removeFromRefset = async (conceptId: string): Promise<void> => {
     try {
-      const response = await fetchRefsetMembers(
-        hostConfig,
-        branch,
-        conceptId,
-        refsetId
-      );
-      await Promise.all(
-        response.items.map((member) =>
-          removeRefsetMember(hostConfig, branch, member.memberId)
-        )
-      );
+      const response = await fetchRefsetMembers(hostConfig, branch, conceptId, refsetId);
+      await Promise.all(response.items.map((member) => removeRefsetMember(hostConfig, branch, member.memberId)));
     } catch {
-      setError(t("error.removeFromRefset"));
+      setError(t('error.removeFromRefset'));
     }
     await searchRequest.execute();
   };
@@ -110,7 +81,7 @@ const Search: React.FunctionComponent = () => {
       <Header />
       <div className="row mb-5">
         <div className="col">
-          {branchRequest.error && <Error>{t("error.fetchBranches")}</Error>}
+          {branchRequest.error && <Error>{t('error.fetchBranches')}</Error>}
           {error && <Error>{error}</Error>}
           {!branchRequest.error && (
             <Form
@@ -131,36 +102,27 @@ const Search: React.FunctionComponent = () => {
       <div className="row">
         <div className="col">
           {searchRequest.loading && <Loading size={LoadingSize.Large} />}
-          {searchRequest.error && <Error>{t("error.fetchConcepts")}</Error>}
+          {searchRequest.error && <Error>{t('error.fetchConcepts')}</Error>}
           {query && !searchRequest.loading && (
             <section aria-labelledby="results">
               <h1 className="h5 mt-5" id="results">
                 {refsetId
-                  ? t("results.refsetLabel", {
+                  ? t('results.refsetLabel', {
                       title: refset?.title,
                     })
-                  : t("results.label")}
+                  : t('results.label')}
               </h1>
-              <HitCount
-                hits={conceptResponse?.items?.length}
-                total={conceptResponse?.totalElements}
-              />
+              <HitCount hits={conceptResponse?.items?.length} total={conceptResponse?.totalElements} />
               <ol className="list-unstyled">
                 {conceptResponse?.items?.map(({ concept }) => (
-                  <li
-                    key={concept.conceptId}
-                    className="card p-3 mb-3"
-                    aria-labelledby={`${concept.conceptId}-pt`}
-                  >
+                  <li key={concept.conceptId} className="card p-3 mb-3" aria-labelledby={`${concept.conceptId}-pt`}>
                     <Concept
                       hostConfig={hostConfig}
                       branch={branch}
                       concept={concept}
                       id={concept.conceptId}
-                      handleRefsetChange={
-                        refsetId ? removeFromRefset : undefined
-                      }
-                      buttonText={t("button.remove")}
+                      handleRefsetChange={refsetId ? removeFromRefset : undefined}
+                      buttonText={t('button.remove')}
                       buttonVariant={ButtonVariant.Danger}
                     />
                   </li>
@@ -172,30 +134,21 @@ const Search: React.FunctionComponent = () => {
           {!query && refsetId && !searchRequest.loading && (
             <section aria-labelledby="results">
               <h1 className="h5 mt-5" id="results">
-                {t("results.refsetLabel", {
+                {t('results.refsetLabel', {
                   title: refset?.title,
                 })}
               </h1>
-              <HitCount
-                hits={refsetMemberResponse?.items?.length}
-                total={refsetMemberResponse?.total}
-              />
+              <HitCount hits={refsetMemberResponse?.items?.length} total={refsetMemberResponse?.total} />
               <ol className="list-unstyled">
                 {refsetMemberResponse?.items?.map((item) => (
-                  <li
-                    key={item.memberId}
-                    className="card p-3 mb-3"
-                    aria-labelledby={`${item.memberId}-pt`}
-                  >
+                  <li key={item.memberId} className="card p-3 mb-3" aria-labelledby={`${item.memberId}-pt`}>
                     <Concept
                       hostConfig={hostConfig}
                       branch={branch}
                       concept={item.referencedComponent}
                       id={item.memberId}
-                      handleRefsetChange={
-                        refsetId ? removeFromRefset : undefined
-                      }
-                      buttonText={t("button.remove")}
+                      handleRefsetChange={refsetId ? removeFromRefset : undefined}
+                      buttonText={t('button.remove')}
                       buttonVariant={ButtonVariant.Danger}
                       disableSynonymList
                       disableCodeSystemList
@@ -209,26 +162,19 @@ const Search: React.FunctionComponent = () => {
           {query && refsetId && !searchRequest.loading && (
             <section aria-labelledby="suggestions">
               <h1 className="h5 mt-5" id="suggestions">
-                {t("results.suggestionsLabel")}
+                {t('results.suggestionsLabel')}
               </h1>
-              <HitCount
-                hits={suggestionResponse?.items?.length}
-                total={suggestionResponse?.totalElements}
-              />
+              <HitCount hits={suggestionResponse?.items?.length} total={suggestionResponse?.totalElements} />
               <ol className="list-unstyled">
                 {suggestionResponse?.items?.map(({ concept }) => (
-                  <li
-                    key={concept.conceptId}
-                    className="card p-3 mb-3"
-                    aria-labelledby={`${concept.conceptId}-pt`}
-                  >
+                  <li key={concept.conceptId} className="card p-3 mb-3" aria-labelledby={`${concept.conceptId}-pt`}>
                     <Concept
                       hostConfig={hostConfig}
                       branch={branch}
                       concept={concept}
                       id={concept.conceptId}
                       handleRefsetChange={refsetId ? addToRefset : undefined}
-                      buttonText={t("button.add")}
+                      buttonText={t('button.add')}
                       disableSynonymList
                       disableCodeSystemList
                     />

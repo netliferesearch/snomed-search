@@ -1,21 +1,19 @@
-import React, { ChangeEvent, FormEvent } from "react";
-import { useTranslation } from "react-i18next";
+import React, { ChangeEvent, FormEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 
-import { ReferenceSet, SnowstormConfig } from "../config";
-import { Branch } from "../store";
+import { ReferenceSet, SnowstormConfig } from '../config';
+import { Branch } from '../store';
 
 interface FormProps {
   handleFormSubmit: (event: FormEvent<HTMLFormElement>) => void;
-  handleInputChange: (
-    event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => void;
-  hostnameList: SnowstormConfig["hostname"][];
+  handleInputChange: (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+  hostnameList: SnowstormConfig['hostname'][];
   branchList: Branch[];
-  refsetId: ReferenceSet["id"];
+  refsetId: ReferenceSet['id'];
   query: string;
   refsetList?: ReferenceSet[];
-  hostname: SnowstormConfig["hostname"];
-  branch: Branch["path"];
+  hostname: SnowstormConfig['hostname'];
+  branch: Branch['path'];
   disabled: boolean;
 }
 
@@ -38,15 +36,8 @@ const Form: React.FunctionComponent<FormProps> = ({
       <div className="form-row">
         <div className="col-lg-6 col-xxl-3">
           <div className="form-group">
-            <label htmlFor="host">{t("form.host")}</label>
-            <select
-              id="host"
-              name="h"
-              className="form-control"
-              value={hostname}
-              onChange={handleInputChange}
-              disabled={disabled}
-            >
+            <label htmlFor="host">{t('form.host')}</label>
+            <select id="host" name="h" className="form-control" value={hostname} onChange={handleInputChange} disabled={disabled}>
               {hostnameList.map((hostname) => (
                 <option value={hostname} key={hostname}>
                   {hostname}
@@ -57,15 +48,8 @@ const Form: React.FunctionComponent<FormProps> = ({
         </div>
         <div className="col-lg-6 col-xxl-3">
           <div className="form-group">
-            <label htmlFor="branch">{t("form.branch")}</label>
-            <select
-              id="branch"
-              name="b"
-              className="form-control"
-              value={branch}
-              onChange={handleInputChange}
-              disabled={disabled}
-            >
+            <label htmlFor="branch">{t('form.branch')}</label>
+            <select id="branch" name="b" className="form-control" value={branch} onChange={handleInputChange} disabled={disabled}>
               {branchList.map(({ path }) => (
                 <option value={path} key={path}>
                   {path}
@@ -77,7 +61,7 @@ const Form: React.FunctionComponent<FormProps> = ({
         {refsetList && (
           <div className="col-lg-6 col-xxl-3">
             <div className="form-group">
-              <label htmlFor="referenceSet">{t("form.referenceset")}</label>
+              <label htmlFor="referenceSet">{t('form.referenceset')}</label>
               <select
                 id="referenceSet"
                 name="rs"
@@ -86,7 +70,7 @@ const Form: React.FunctionComponent<FormProps> = ({
                 onChange={handleInputChange}
                 disabled={disabled}
               >
-                <option value="">{t("form.notselected")}</option>
+                <option value="">{t('form.notselected')}</option>
                 {refsetList.map(({ id, title }) => (
                   <option value={id} key={id}>
                     {title}
@@ -98,7 +82,7 @@ const Form: React.FunctionComponent<FormProps> = ({
         )}
         <div className="col-lg-6 col-xxl-3">
           <div className="form-group">
-            <label htmlFor="query">{t("form.search")}</label>
+            <label htmlFor="query">{t('form.search')}</label>
             <input
               id="query"
               name="q"

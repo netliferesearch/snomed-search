@@ -1,5 +1,5 @@
-import classNames from "classnames";
-import React from "react";
+import classNames from 'classnames';
+import React from 'react';
 
 export enum ButtonVariant {
   Primary,
@@ -12,16 +12,12 @@ interface ButtonProps {
   onClick: () => void;
 }
 
-const Button: React.FunctionComponent<ButtonProps> = ({
-  children,
-  variant,
-  onClick,
-}) => (
+const Button: React.FunctionComponent<ButtonProps> = ({ children, variant, onClick }) => (
   <button
     onClick={onClick}
-    className={classNames("btn", {
-      "btn-outline-primary": variant === ButtonVariant.Primary,
-      "btn-outline-danger": variant === ButtonVariant.Danger,
+    className={classNames('btn', {
+      'btn-outline-primary': variant === ButtonVariant.Primary,
+      'btn-outline-danger': variant === ButtonVariant.Danger,
     })}
   >
     {children}

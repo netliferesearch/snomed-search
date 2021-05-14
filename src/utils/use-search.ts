@@ -1,24 +1,21 @@
-import debounce from "awesome-debounce-promise";
-import { useAsync } from "react-async-hook";
-import useConstant from "use-constant";
-import { useQueryParams } from "use-query-params";
+import debounce from 'awesome-debounce-promise';
+import { useAsync } from 'react-async-hook';
+import useConstant from 'use-constant';
+import { useQueryParams } from 'use-query-params';
 
-import { SnomedSearchConfig } from "../config";
-import { DEBOUNCE_WAIT_MS, QUERY_PARAMS_CONFIG } from "../constants";
-import { searchConcepts, SearchResult } from "../store";
+import { SnomedSearchConfig } from '../config';
+import { DEBOUNCE_WAIT_MS, QUERY_PARAMS_CONFIG } from '../constants';
+import { searchConcepts, SearchResult } from '../store';
 
 const useSearch = (config: SnomedSearchConfig) => {
   // Handle the input text state
   const [queryParams, setQueryParams] = useQueryParams(QUERY_PARAMS_CONFIG);
   const { q: query, h: hostname, b: branch, rs: refsetId } = queryParams;
 
-  const hostConfig =
-    config.hosts.find((h) => h.hostname === hostname) || config.hosts[0];
+  const hostConfig = config.hosts.find((h) => h.hostname === hostname) || config.hosts[0];
 
   // Debounce the original search async function
-  const debouncedSearch = useConstant(() =>
-    debounce(searchConcepts, DEBOUNCE_WAIT_MS)
-  );
+  const debouncedSearch = useConstant(() => debounce(searchConcepts, DEBOUNCE_WAIT_MS));
 
   const searchRequest = useAsync(async (): Promise<SearchResult> => {
     if (hostname && branch) {

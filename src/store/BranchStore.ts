@@ -1,5 +1,5 @@
-import { SnowstormConfig } from "../config";
-import { createHeaders, handleJsonResponse } from "../utils/api";
+import { SnowstormConfig } from '../config';
+import { createHeaders, handleJsonResponse } from '../utils/api';
 
 export interface Branch {
   path: string;
@@ -8,12 +8,10 @@ export interface Branch {
 
 type BranchResponse = Branch[];
 
-export const fetchBranches = async (
-  hostConfig: SnowstormConfig
-): Promise<Branch[]> => {
-  const url = new URL("branches", hostConfig.hostname);
+export const fetchBranches = async (hostConfig: SnowstormConfig): Promise<Branch[]> => {
+  const url = new URL('branches', hostConfig.hostname);
   const response = await fetch(url.toString(), {
-    method: "GET",
+    method: 'GET',
     headers: createHeaders(hostConfig.languages),
   });
   const branchResponse = await handleJsonResponse<BranchResponse>(response);

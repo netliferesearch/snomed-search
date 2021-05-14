@@ -20,20 +20,21 @@
     "use-query-params": "^1.2.2"
   },
   "scripts": {
-    "commit": "cz",
     "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --watchAll=false",
+    "eject": "react-scripts eject",
+    "commit": "cz",
     "prebuild": "npm-run-all clean generate:tsdefinitions validate",
     "generate:tsdefinitions": "tsm --nameFormat none --exportType default src",
     "clean": "rimraf build",
-    "build": "react-scripts build",
-    "test": "react-scripts test --watchAll=false",
     "test:watch": "react-scripts test --watchAll=true",
-    "eject": "react-scripts eject",
     "prepare": "husky install",
-    "validate": "npm-run-all style:js type-check test",
-    "style:js": "cross-env NODE_ENV=production eslint src/**/*.{js,jsx,ts,tsx}",
-    "prettier": "prettier --check src/**/*.{js,jsx,ts,tsx,css,scss}",
-    "prettier:fix": "prettier --write src/**/*.{js,jsx,ts,tsx,css,scss}",
+    "validate": "npm-run-all prettier eslint type-check test",
+    "eslint": "cross-env NODE_ENV=production eslint src/**/*.{js,jsx,ts,tsx}",
+    "eslint:fix": "npm run eslint -- --fix",
+    "prettier": "prettier --check src/**/*.{js,jsx,ts,tsx,css,scss,md,json}",
+    "prettier:fix": "prettier --write src/**/*.{js,jsx,ts,tsx,css,scss,md,json}",
     "pretype-check": "tsc -v",
     "type-check": "tsc --noEmit"
   },
@@ -94,7 +95,7 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": "eslint --cache --fix",
-    "*.{js,jsx,ts,tsx,css,scss,md}": "prettier --write"
+    "*.{js,jsx,ts,tsx,css,scss,md,json}": "prettier --write"
   },
   "msw": {
     "workerDirectory": "public"

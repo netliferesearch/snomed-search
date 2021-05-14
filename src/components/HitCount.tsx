@@ -1,5 +1,5 @@
-import React from "react";
-import { useTranslation } from "react-i18next";
+import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface ErrorProps {
   hits?: number;
@@ -15,11 +15,11 @@ const Error: React.FunctionComponent<ErrorProps> = ({ hits, total }) => {
   return (
     <p aria-live="polite">
       {total
-        ? t("results.totalHitsWithCount", {
+        ? t('results.totalHitsWithCount', {
             count: hits,
             total: total,
           })
-        : t("results.hitsWithCount", {
+        : t('results.hitsWithCount', {
             count: hits,
           })}
     </p>

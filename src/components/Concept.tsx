@@ -1,21 +1,21 @@
-import classNames from "classnames";
-import React from "react";
-import { useTranslation } from "react-i18next";
+import classNames from 'classnames';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
 
-import { SnowstormConfig } from "../config";
-import { Branch } from "../store";
-import { Concept as ConceptInterface } from "../store/ConceptStore";
-import Button, { ButtonVariant } from "./Button";
-import CodeSystemList from "./CodeSystemList";
-import styles from "./Definition.module.scss";
-import SynonymList from "./SynonymList";
+import { SnowstormConfig } from '../config';
+import { Branch } from '../store';
+import { Concept as ConceptInterface } from '../store/ConceptStore';
+import Button, { ButtonVariant } from './Button';
+import CodeSystemList from './CodeSystemList';
+import styles from './Definition.module.scss';
+import SynonymList from './SynonymList';
 
 interface ConceptProps {
   hostConfig: SnowstormConfig;
-  branch: Branch["path"];
+  branch: Branch['path'];
   concept: ConceptInterface;
   id: string;
-  handleRefsetChange?: (conceptId: ConceptInterface["conceptId"]) => void;
+  handleRefsetChange?: (conceptId: ConceptInterface['conceptId']) => void;
   buttonText?: string;
   buttonVariant?: ButtonVariant;
   disableSynonymList?: boolean;
@@ -43,33 +43,18 @@ const Concept: React.FunctionComponent<ConceptProps> = ({
         </h2>
         <p id={`${id}-fsn`}>{concept.fsn.term}</p>
         {!disableSynonymList && (
-          <SynonymList
-            hostConfig={hostConfig}
-            branch={branch}
-            conceptId={concept.conceptId}
-            preferredTerm={concept.pt.term}
-          />
+          <SynonymList hostConfig={hostConfig} branch={branch} conceptId={concept.conceptId} preferredTerm={concept.pt.term} />
         )}
       </div>
 
-      <dl
-        className={classNames(
-          "col-12 col-sm-6 flex-lg-grow-1",
-          styles.definition
-        )}
-      >
-        <dt>{t("snomedct")}</dt>
+      <dl className={classNames('col-12 col-sm-6 flex-lg-grow-1', styles.definition)}>
+        <dt>{t('snomedct')}</dt>
         <dd>{concept.conceptId}</dd>
       </dl>
-      {!disableCodeSystemList && hostConfig.codeSystems && (
-        <CodeSystemList hostConfig={hostConfig} conceptId={concept.conceptId} />
-      )}
+      {!disableCodeSystemList && hostConfig.codeSystems && <CodeSystemList hostConfig={hostConfig} conceptId={concept.conceptId} />}
       {handleRefsetChange && buttonText && (
         <div className="col-12">
-          <Button
-            onClick={() => handleRefsetChange(concept.conceptId)}
-            variant={buttonVariant}
-          >
+          <Button onClick={() => handleRefsetChange(concept.conceptId)} variant={buttonVariant}>
             {buttonText}
           </Button>
         </div>

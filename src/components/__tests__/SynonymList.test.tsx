@@ -1,14 +1,14 @@
-import { render, screen, within } from "@testing-library/react";
+import { render, screen, within } from '@testing-library/react';
 
-import { Wrapper } from "../../App";
-import { Concepts, Endpoints } from "../../mocks/handlers";
-import { respondServerError } from "../../mocks/response";
-import { hostConfig } from "../__data__/config";
-import SynonymList from "../SynonymList";
+import { Wrapper } from '../../App';
+import { Concepts, Endpoints } from '../../mocks/handlers';
+import { respondServerError } from '../../mocks/response';
+import { hostConfig } from '../__data__/config';
+import SynonymList from '../SynonymList';
 
-describe("Given that the SynonymList component should be rendered", () => {
-  describe("When there are synonyms for the concept", () => {
-    it("Then a list of synonyms is displayed", async () => {
+describe('Given that the SynonymList component should be rendered', () => {
+  describe('When there are synonyms for the concept', () => {
+    it('Then a list of synonyms is displayed', async () => {
       render(
         <Wrapper>
           <SynonymList
@@ -20,20 +20,18 @@ describe("Given that the SynonymList component should be rendered", () => {
         </Wrapper>
       );
 
-      const status = screen.getByRole("status");
+      const status = screen.getByRole('status');
       expect(status).toBeVisible();
-      expect(status).toHaveTextContent("Loading...");
+      expect(status).toHaveTextContent('Loading...');
 
-      const synonymList = await screen.findByLabelText("Synonyms");
-      const firstSynonym = await within(synonymList).findByText(
-        "Kreft i skjoldbruskkjertelen"
-      );
+      const synonymList = await screen.findByLabelText('Synonyms');
+      const firstSynonym = await within(synonymList).findByText('Kreft i skjoldbruskkjertelen');
       expect(firstSynonym).toBeVisible();
     });
   });
 
-  describe("When code systems fail to load", () => {
-    it("Then an error message is displayed", async () => {
+  describe('When code systems fail to load', () => {
+    it('Then an error message is displayed', async () => {
       respondServerError(Endpoints.SynonymIndex);
 
       render(
@@ -47,9 +45,9 @@ describe("Given that the SynonymList component should be rendered", () => {
         </Wrapper>
       );
 
-      const error = await screen.findByRole("alert");
+      const error = await screen.findByRole('alert');
       expect(error).toBeVisible();
-      expect(error).toHaveTextContent("Failed to load synonyms");
+      expect(error).toHaveTextContent('Failed to load synonyms');
     });
   });
 });

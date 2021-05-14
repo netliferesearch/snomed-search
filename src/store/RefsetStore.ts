@@ -1,11 +1,7 @@
-import { ReferenceSet, SnowstormConfig } from "../config";
-import { Limit } from "../constants";
-import {
-  createHeaders,
-  handleJsonResponse,
-  handleTextResponse,
-} from "../utils/api";
-import { Branch, Concept } from ".";
+import { ReferenceSet, SnowstormConfig } from '../config';
+import { Limit } from '../constants';
+import { createHeaders, handleJsonResponse, handleTextResponse } from '../utils/api';
+import { Branch, Concept } from '.';
 
 export class RefsetContainsConceptError extends Error {
   constructor(...params: string[]) {
@@ -16,7 +12,7 @@ export class RefsetContainsConceptError extends Error {
     if (Error.captureStackTrace) {
       Error.captureStackTrace(this, RefsetContainsConceptError);
     }
-    this.name = "RefsetContainsConceptError";
+    this.name = 'RefsetContainsConceptError';
   }
 }
 
@@ -24,16 +20,11 @@ interface AddResponse {}
 
 export const addRefsetMember = async (
   hostConfig: SnowstormConfig,
-  branch: Branch["path"],
-  conceptId: Concept["conceptId"],
-  refsetId: ReferenceSet["id"]
+  branch: Branch['path'],
+  conceptId: Concept['conceptId'],
+  refsetId: ReferenceSet['id']
 ): Promise<AddResponse> => {
-  const refsetMembers = await fetchRefsetMembers(
-    hostConfig,
-    branch,
-    conceptId,
-    refsetId
-  );
+  const refsetMembers = await fetchRefsetMembers(hostConfig, branch, conceptId, refsetId);
   if (refsetMembers.total > 0) {
     throw new RefsetContainsConceptError();
   }
@@ -48,8 +39,8 @@ export const addRefsetMember = async (
   };
 
   const response = await fetch(url.toString(), {
-    method: "POST",
-    credentials: "include",
+    method: 'POST',
+    credentials: 'include',
     body: JSON.stringify(data),
     headers: createHeaders(hostConfig.languages),
   });
@@ -77,25 +68,24 @@ export interface RefsetConceptResponse {
   items: ConceptMember[];
 }
 
-const memberIsConcept = (item: unknown): item is ConceptMember =>
-  (item as ConceptMember).referencedComponent?.fsn !== undefined;
+const memberIsConcept = (item: unknown): item is ConceptMember => (item as ConceptMember).referencedComponent?.fsn !== undefined;
 
 export const fetchRefsetMembers = async (
   hostConfig: SnowstormConfig,
   branch: string,
   conceptId?: string,
   refsetId?: string,
-  offset = "0",
+  offset = '0',
   limit = Limit.Default
 ): Promise<RefsetConceptResponse> => {
   const url = new URL(`${branch}/members`, hostConfig.hostname);
-  conceptId && url.searchParams.set("referencedComponentId", conceptId);
-  refsetId && url.searchParams.set("referenceSet", refsetId);
-  url.searchParams.set("offset", offset);
-  url.searchParams.set("limit", limit);
+  conceptId && url.searchParams.set('referencedComponentId', conceptId);
+  refsetId && url.searchParams.set('referenceSet', refsetId);
+  url.searchParams.set('offset', offset);
+  url.searchParams.set('limit', limit);
 
   const response = await fetch(url.toString(), {
-    method: "GET",
+    method: 'GET',
     headers: createHeaders(hostConfig.languages),
   });
 
@@ -106,16 +96,12 @@ export const fetchRefsetMembers = async (
   return { total: members.total, items: concepts };
 };
 
-export const removeRefsetMember = async (
-  hostConfig: SnowstormConfig,
-  branch: string,
-  uuid: string
-): Promise<string> => {
+export const removeRefsetMember = async (hostConfig: SnowstormConfig, branch: string, uuid: string): Promise<string> => {
   const url = new URL(`${branch}/members/${uuid}`, hostConfig.hostname);
 
   const response = await fetch(url.toString(), {
-    method: "DELETE",
-    credentials: "include",
+    method: 'DELETE',
+    credentials: 'include',
     headers: createHeaders(hostConfig.languages),
   });
 

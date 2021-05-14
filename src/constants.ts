@@ -1,30 +1,30 @@
-import { StringParam, withDefault } from "use-query-params";
+import { StringParam, withDefault } from 'use-query-params';
 
 export enum Language {
-  Bokmål = "nb",
-  Nynorsk = "nn",
-  Norsk = "no",
-  English = "en",
+  Bokmål = 'nb',
+  Nynorsk = 'nn',
+  Norsk = 'no',
+  English = 'en',
 }
 
 export enum Limit {
-  Default = "10",
-  High = "5000",
+  Default = '10',
+  High = '5000',
 }
 
-export const ACCEPT_LANGUAGE_SEPARATOR = ",";
+export const ACCEPT_LANGUAGE_SEPARATOR = ',';
 
-export const QUALITY_SEPARATOR = ";q=";
+export const QUALITY_SEPARATOR = ';q=';
 
 export const DEFAULT_LANGUAGE = Language.English;
 
-export const SNOWSTORM_SYNONYM_TYPE = "SYNONYM";
+export const SNOWSTORM_SYNONYM_TYPE = 'SYNONYM';
 
 export const DEBOUNCE_WAIT_MS = 500;
 
 export const QUERY_PARAMS_CONFIG = {
-  q: withDefault(StringParam, ""),
-  h: withDefault(StringParam, ""),
-  b: withDefault(StringParam, ""),
-  rs: withDefault(StringParam, ""),
+  q: withDefault(StringParam, ''),
+  h: withDefault(StringParam, ''),
+  b: withDefault(StringParam, ''),
+  rs: withDefault(StringParam, ''),
 };
