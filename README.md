@@ -30,6 +30,7 @@ yarn test
 yarn build
 ```
 
-This tool uses Create React App, and the finished files are created in a folder called `build`. You can copy or deploy these files to a hosting service of your choosing.
+This tool uses Create React App, and the finished files are created in a folder called `build`. You can copy or deploy these files to a
+hosting service of your choosing.
 
 [A Github Action](.github/workflows/release.yml) has been setup to deploy to Netlify automatically.

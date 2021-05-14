@@ -4,7 +4,8 @@
 
 We've installed it on Ubuntu 18.04 server with 4 vCPUs, 8GB RAM and 160GB SSD.
 
-The Snowstorm server contains the Elasticsearch database, the Snowstorm runtime and an Nginx server acting as a proxy. Only Nginx is available from the outside.
+The Snowstorm server contains the Elasticsearch database, the Snowstorm runtime and an Nginx server acting as a proxy. Only Nginx is
+available from the outside.
 
 ## Versions
 
@@ -28,7 +29,8 @@ mvn clean package
 
 ### Optional install
 
-We installed http://tomcat.apache.org/native-doc/ as well, as Snowstorm was suggesting it on startup, but it's not necessary. Suggest to get everything running first and consult someone who knows their Java about whether Tomcat Native is necessary.
+We installed http://tomcat.apache.org/native-doc/ as well, as Snowstorm was suggesting it on startup, but it's not necessary. Suggest to get
+everything running first and consult someone who knows their Java about whether Tomcat Native is necessary.
 
 ## Elasticsearch config
 
@@ -50,7 +52,8 @@ We installed http://tomcat.apache.org/native-doc/ as well, as Snowstorm was sugg
 
 ## First import
 
-Upload the snapshot .zip-file to the server and run the following command to start Snowstorm and begin the import. It will take 20-30 minutes. You will get an "import complete" message once it's done.
+Upload the snapshot .zip-file to the server and run the following command to start Snowstorm and begin the import. It will take 20-30
+minutes. You will get an "import complete" message once it's done.
 
 ```
 java -Xms2g -Xmx2g -jar snowstorm/snowstorm-4.5.1.jar --delete-indices --import=SnomedCT_InternationalRF2_PRODUCTION_20190731T120000Z.zip --exit &

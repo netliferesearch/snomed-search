@@ -21,7 +21,7 @@ const useSearch = (config: SnomedSearchConfig) => {
     if (hostname && branch) {
       return debouncedSearch(hostConfig, branch, query, refsetId);
     }
-    return ([{}, {}, {}] as unknown) as SearchResult;
+    return [{}, {}, {}] as unknown as SearchResult;
   }, [query, branch, refsetId]); // Ensure a new request is made everytime the text changes (even if it's debounced)
 
   // Return everything needed for the hook consumer
