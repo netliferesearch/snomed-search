@@ -121,6 +121,14 @@ const config: SnomedSearchConfig = {
           id: '1301000202105',
           title: 'Refset test',
         },
+        {
+          id: '23951000202100',
+          title: 'Toksiske stoffer',
+        },
+        {
+          id: '23941000202103',
+          title: 'Målgrupper Helsebiblioteket',
+        },
       ],
       languages: [Language.Bokmål, Language.Nynorsk, Language.Norsk, Language.English],
     },
