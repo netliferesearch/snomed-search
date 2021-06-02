@@ -1,3 +1,12 @@
+# [0.7.0](https://github.com/netliferesearch/snomed-search/compare/v0.6.3...v0.7.0) (2021-06-02)
+
+
+### Features
+
+* refset-eksempler for Helsebiblioteket ([90c28fc](https://github.com/netliferesearch/snomed-search/commit/90c28fc8afce58fe76fdd0a1df5e1c1d6037c167))
+
+
+
 ## [0.6.3](https://github.com/netliferesearch/snomed-search/compare/v0.6.2...v0.6.3) (2021-05-04)
 
 
