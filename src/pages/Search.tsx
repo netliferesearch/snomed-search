@@ -81,7 +81,11 @@ const Search: React.FunctionComponent = () => {
       <Header />
       <div className="row mb-5">
         <div className="col">
-          {branchRequest.error && <Error>{t('error.fetchBranches')}</Error>}
+          {branchRequest.error && (
+            <Error>
+              {t('error.fetchBranches')} {branchRequest.error.message}
+            </Error>
+          )}
           {error && <Error>{error}</Error>}
           {!branchRequest.error && (
             <Form

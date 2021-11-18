@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface ErrorProps {
-  children: string;
+  children: React.ReactNode;
 }
 
 const Error: React.FunctionComponent<ErrorProps> = ({ children }) => (
