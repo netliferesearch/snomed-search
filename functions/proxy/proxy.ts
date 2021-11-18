@@ -7,7 +7,7 @@ export const handler: Handler = async (event, context) => {
 
   const response = await fetch(url.toString(), {
     method: event.httpMethod,
-    body: event.body,
+    ...(event.body ? { body: event.body } : {}),
     headers: { ...event.headers, host: '' },
   });
 
