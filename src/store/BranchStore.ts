@@ -9,7 +9,7 @@ export interface Branch {
 type BranchResponse = Branch[];
 
 export const fetchBranches = async (hostConfig: SnowstormConfig): Promise<Branch[]> => {
-  const url = new URL('branches', hostConfig.hostname);
+  const url = new URL('branches', hostConfig.proxy ?? hostConfig.hostname);
   const response = await fetch(url.toString(), {
     method: 'GET',
     headers: createHeaders(hostConfig.languages),

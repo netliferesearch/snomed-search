@@ -14,6 +14,7 @@ export interface ReferenceSet {
 
 export interface SnowstormConfig {
   hostname: string;
+  proxy?: string;
   defaultBranch?: CodeSystem['branch'];
   moduleId?: string;
   codeSystems?: CodeSystem[];
@@ -29,6 +30,7 @@ const config: SnomedSearchConfig = {
   hosts: [
     {
       hostname: 'https://snowstorm.rundberg.no',
+      proxy: '/.netlify/functions/proxy/',
       defaultBranch: 'MAIN',
       moduleId: '51000202101',
       codeSystems: [

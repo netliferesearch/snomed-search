@@ -28,7 +28,7 @@ export const fetchCodeSystems = (
   }
   return Promise.all(
     hostConfig.codeSystems.map(async ({ id, branch }) => {
-      const url = new URL(`browser/${branch}/members`, hostConfig.hostname);
+      const url = new URL(`browser/${branch}/members`, hostConfig.proxy ?? hostConfig.hostname);
       url.searchParams.set('limit', limit);
       url.searchParams.set('active', 'true');
       url.searchParams.set('referenceSet', id);
