@@ -1,3 +1,12 @@
+## [0.8.3](https://github.com/netliferesearch/snomed-search/compare/v0.8.2...v0.8.3) (2021-11-18)
+
+
+### Bug Fixes
+
+* hardcode proxy url ([e74e561](https://github.com/netliferesearch/snomed-search/commit/e74e561e78543474afef5508525707896118fec3))
+
+
+
 ## [0.8.2](https://github.com/netliferesearch/snomed-search/compare/v0.8.1...v0.8.2) (2021-11-18)
 
 
