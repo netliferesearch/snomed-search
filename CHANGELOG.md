@@ -1,3 +1,12 @@
+## [0.8.2](https://github.com/netliferesearch/snomed-search/compare/v0.8.1...v0.8.2) (2021-11-18)
+
+
+### Bug Fixes
+
+* show branchRequest error message ([9354493](https://github.com/netliferesearch/snomed-search/commit/935449390c358ace989591c813beb0fae948d88a))
+
+
+
 ## [0.8.1](https://github.com/netliferesearch/snomed-search/compare/v0.8.0...v0.8.1) (2021-11-18)
 
 
