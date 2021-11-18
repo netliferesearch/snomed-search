@@ -1,3 +1,12 @@
+## [0.8.1](https://github.com/netliferesearch/snomed-search/compare/v0.8.0...v0.8.1) (2021-11-18)
+
+
+### Bug Fixes
+
+* prefix proxy with domain ([b4fd647](https://github.com/netliferesearch/snomed-search/commit/b4fd64754b861ce0730a1b42c5508003007e4420))
+
+
+
 # [0.8.0](https://github.com/netliferesearch/snomed-search/compare/v0.7.0...v0.8.0) (2021-11-18)
 
 
