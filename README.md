@@ -18,6 +18,15 @@ yarn install
 yarn start
 ```
 
+### Netlify specific
+
+Instead of `yarn start`, use `netlify dev` after installing the Netlify CLI. This is only necessary to use Netlify Functions.
+
+```bash
+yarn global add netlify-cli
+netlify dev
+```
+
 ## Tests
 
 ```bash

@@ -30,7 +30,7 @@ const fetchConcepts = async (
   offset = '0',
   limit = Limit.Default
 ): Promise<ConceptResponse> => {
-  const url = new URL(`browser/${branch}/descriptions`, hostConfig.hostname);
+  const url = new URL(`browser/${branch}/descriptions`, hostConfig.proxy ?? hostConfig.hostname);
   url.searchParams.set('offset', offset);
   url.searchParams.set('limit', limit);
   url.searchParams.set('active', 'true');

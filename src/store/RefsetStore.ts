@@ -29,7 +29,7 @@ export const addRefsetMember = async (
     throw new RefsetContainsConceptError();
   }
 
-  const url = new URL(`${branch}/members`, hostConfig.hostname);
+  const url = new URL(`${branch}/members`, hostConfig.proxy ?? hostConfig.hostname);
 
   const data = {
     active: true,
@@ -78,7 +78,7 @@ export const fetchRefsetMembers = async (
   offset = '0',
   limit = Limit.Default
 ): Promise<RefsetConceptResponse> => {
-  const url = new URL(`${branch}/members`, hostConfig.hostname);
+  const url = new URL(`${branch}/members`, hostConfig.proxy ?? hostConfig.hostname);
   conceptId && url.searchParams.set('referencedComponentId', conceptId);
   refsetId && url.searchParams.set('referenceSet', refsetId);
   url.searchParams.set('offset', offset);
@@ -97,7 +97,7 @@ export const fetchRefsetMembers = async (
 };
 
 export const removeRefsetMember = async (hostConfig: SnowstormConfig, branch: string, uuid: string): Promise<string> => {
-  const url = new URL(`${branch}/members/${uuid}`, hostConfig.hostname);
+  const url = new URL(`${branch}/members/${uuid}`, hostConfig.proxy ?? hostConfig.hostname);
 
   const response = await fetch(url.toString(), {
     method: 'DELETE',

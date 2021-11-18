@@ -22,7 +22,7 @@ export const fetchSynonyms = async (
   offset = '0',
   limit = Limit.Default
 ): Promise<Synonym[]> => {
-  const url = new URL(`${branch}/descriptions`, hostConfig.hostname);
+  const url = new URL(`${branch}/descriptions`, hostConfig.proxy ?? hostConfig.hostname);
   url.searchParams.set('concept', conceptId);
   url.searchParams.set('offset', offset);
   url.searchParams.set('limit', limit);
