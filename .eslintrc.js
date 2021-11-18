@@ -22,5 +22,6 @@ module.exports = {
     'simple-import-sort/imports': 'error',
     'sort-imports': 'off',
     'jsx-a11y/no-onchange': 'off',
+    'jest/valid-describe': 'off',
   },
 };

@@ -21,6 +21,7 @@ const Error: React.FunctionComponent<ErrorProps> = ({ hits, total }) => {
           })
         : t('results.hitsWithCount', {
             count: hits,
+            total: total,
           })}
     </p>
   );

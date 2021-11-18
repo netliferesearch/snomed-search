@@ -25,7 +25,7 @@ const Loading: React.FunctionComponent<LoadingProps> = ({ size = LoadingSize.Med
 
   return (
     <div className={loadingClassNameList} role="status">
-      <span className="sr-only">{t('status.loading')}</span>
+      <span className="visually-hidden">{t('status.loading')}</span>
     </div>
   );
 };

@@ -33,11 +33,11 @@ const Form: React.FunctionComponent<FormProps> = ({
 
   return (
     <form onSubmit={handleFormSubmit} role="search">
-      <div className="form-row">
+      <div className="row">
         <div className="col-lg-6 col-xxl-3">
-          <div className="form-group">
+          <div className="mb-3">
             <label htmlFor="host">{t('form.host')}</label>
-            <select id="host" name="h" className="form-control" value={hostname} onChange={handleInputChange} disabled={disabled}>
+            <select id="host" name="h" className="form-select" value={hostname} onChange={handleInputChange} disabled={disabled}>
               {hostnameList.map((hostname) => (
                 <option value={hostname} key={hostname}>
                   {hostname}
@@ -47,9 +47,9 @@ const Form: React.FunctionComponent<FormProps> = ({
           </div>
         </div>
         <div className="col-lg-6 col-xxl-3">
-          <div className="form-group">
+          <div className="mb-3">
             <label htmlFor="branch">{t('form.branch')}</label>
-            <select id="branch" name="b" className="form-control" value={branch} onChange={handleInputChange} disabled={disabled}>
+            <select id="branch" name="b" className="form-select" value={branch} onChange={handleInputChange} disabled={disabled}>
               {branchList.map(({ path }) => (
                 <option value={path} key={path}>
                   {path}
@@ -60,16 +60,9 @@ const Form: React.FunctionComponent<FormProps> = ({
         </div>
         {refsetList && (
           <div className="col-lg-6 col-xxl-3">
-            <div className="form-group">
+            <div className="mb-3">
               <label htmlFor="referenceSet">{t('form.referenceset')}</label>
-              <select
-                id="referenceSet"
-                name="rs"
-                className="form-control"
-                value={refsetId}
-                onChange={handleInputChange}
-                disabled={disabled}
-              >
+              <select id="referenceSet" name="rs" className="form-select" value={refsetId} onChange={handleInputChange} disabled={disabled}>
                 <option value="">{t('form.notselected')}</option>
                 {refsetList.map(({ id, title }) => (
                   <option value={id} key={id}>
@@ -81,7 +74,7 @@ const Form: React.FunctionComponent<FormProps> = ({
           </div>
         )}
         <div className="col-lg-6 col-xxl-3">
-          <div className="form-group">
+          <div className="mb-3">
             <label htmlFor="query">{t('form.search')}</label>
             <input
               id="query"

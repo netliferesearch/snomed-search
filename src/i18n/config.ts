@@ -1,4 +1,4 @@
-import i18n from 'i18next';
+import { use } from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
 
@@ -20,7 +20,8 @@ export const resources = {
   },
 } as const;
 
-i18n.use(LanguageDetector).use(initReactI18next).init({
+use(LanguageDetector).use(initReactI18next).init({
   resources,
   fallbackLng: 'en-US',
+  compatibilityJSON: 'v3',
 });
