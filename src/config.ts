@@ -30,7 +30,7 @@ const config: SnomedSearchConfig = {
   hosts: [
     {
       hostname: 'https://snowstorm.rundberg.no',
-      proxy: process.env.URL + '/.netlify/functions/proxy/',
+      proxy: 'https://snomed-search.netlify.app/.netlify/functions/proxy/',
       defaultBranch: 'MAIN',
       moduleId: '51000202101',
       codeSystems: [
