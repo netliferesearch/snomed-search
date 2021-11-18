@@ -1,3 +1,12 @@
+# [0.8.0](https://github.com/netliferesearch/snomed-search/compare/v0.7.0...v0.8.0) (2021-11-18)
+
+
+### Features
+
+* use proxy when connection to snowstorm server ([#17](https://github.com/netliferesearch/snomed-search/issues/17)) ([efa46b4](https://github.com/netliferesearch/snomed-search/commit/efa46b4e31a13ce0e90216722459f5d732b7c97b))
+
+
+
 # [0.7.0](https://github.com/netliferesearch/snomed-search/compare/v0.6.3...v0.7.0) (2021-06-02)
 
 
