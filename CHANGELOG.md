@@ -1,3 +1,12 @@
+## [0.8.4](https://github.com/netliferesearch/snomed-search/compare/v0.8.3...v0.8.4) (2021-11-18)
+
+
+### Bug Fixes
+
+* add event body if set ([ab141cd](https://github.com/netliferesearch/snomed-search/commit/ab141cd0016bff6c3d9d2d69412cfa46ec33b091))
+
+
+
 ## [0.8.3](https://github.com/netliferesearch/snomed-search/compare/v0.8.2...v0.8.3) (2021-11-18)
 
 
