@@ -3,7 +3,7 @@ require('isomorphic-fetch');
 
 export const handler: Handler = async (event, context) => {
   const path = event.path.substr(25);
-  const url = new URL(`${path}?${event.rawQuery}`, process.env.PROXY_HOSTNAME);
+  const url = new URL(`${process.env.PROXY_HOSTNAME}${path}?${event.rawQuery}`);
 
   const response = await fetch(url.toString(), {
     method: event.httpMethod,
